@@ -2,7 +2,11 @@ package com.applications.toms.mimetodoplanificado.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Purple200 = Color(0xFFBB86FC)
-val Purple500 = Color(0xFF6200EE)
-val Purple700 = Color(0xFF3700B3)
-val Teal200 = Color(0xFF03DAC5)
+val Cottage = Color(0xFFF5F8FF)
+val Purple = Color(0xFF7B61FF)
+val LightBlack = Color(0xFF333333)
+val Black = Color(0xFF000000)
+val White = Color(0xFFFFFFFF)
+val ScarletGum = Color(0xFF573362)
+val CarnationPink = Color(0xFFFDA8BF)
+val ErrorRed = Color(0xFFB00020)
