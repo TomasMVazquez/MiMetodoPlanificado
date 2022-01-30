@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Mi Metodo Planificado</string>
+    <string name="home">home</string>
+
+    // OnBoarding
+    <string name="obg_title_choose">Elige</string>
+    <string name="obg_title_set">Configura</string>
+    <string name="obg_title_relax">Relajate</string>
+    <string name="obg_desc_choose">Elige el metodo anticonceptivo que estas usando o quieres comenzar a usar</string>
+    <string name="obg_desc_set">Configura las fechas y modos de recordatorio</string>
+    <string name="obg_desc_relax">Relajate sabiendo que estamos aqui para ayudarte a recordar</string>
+
+    <string name="obg_img_desc_choose">Imagen de mujer eligiendo</string>
+    <string name="obg_img_desc_set">Imagen de mujer configurando</string>
+    <string name="obg_img_desc_relax">Imagen de mujer relajando</string>
+    <string name="ong_skip">Saltar</string>
+    <string name="obg_btn_start">COMENZAR</string>
 </resources>
