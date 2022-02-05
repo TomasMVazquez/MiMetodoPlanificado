@@ -16,8 +16,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.applications.toms.domain.OnBoardingPage
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.ButtonType
-import com.applications.toms.mimetodoplanificado.ui.components.GenericButton
+import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
+import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.applications.toms.mimetodoplanificado.ui.theme.VividRaspberry
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown

@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.components
+package com.applications.toms.mimetodoplanificado.ui.components.generics
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer

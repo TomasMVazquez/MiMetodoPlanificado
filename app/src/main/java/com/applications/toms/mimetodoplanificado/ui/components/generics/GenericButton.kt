@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.components
+package com.applications.toms.mimetodoplanificado.ui.components.generics
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues

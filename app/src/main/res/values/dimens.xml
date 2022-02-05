@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="padding_bottom_sheet">24dp</dimen>
+    <dimen name="corner_bottom_sheet">0dp</dimen>
 
     <dimen name="spacer_xsmall">2dp</dimen>
     <dimen name="spacer_small">4dp</dimen>
@@ -8,6 +9,7 @@
 
     <dimen name="padding_large">16dp</dimen>
     <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_xsmall">4dp</dimen>
     <dimen name="no_padding">0dp</dimen>
 
     <dimen name="border_xxsmall">1dp</dimen>

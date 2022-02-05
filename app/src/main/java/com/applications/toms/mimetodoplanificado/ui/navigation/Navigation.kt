@@ -2,38 +2,49 @@ package com.applications.toms.mimetodoplanificado.ui.navigation
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.applications.toms.domain.UserAction
+import com.applications.toms.mimetodoplanificado.ui.AppState
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
 import com.applications.toms.mimetodoplanificado.ui.screen.home.OnBoarding
+import com.applications.toms.mimetodoplanificado.ui.screen.methods.Settings
 import com.google.accompanist.pager.ExperimentalPagerApi
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(navController: NavHostController, showOnBoarding: Boolean) {
+fun Navigation(appState: AppState) {
+
+    val showOnBoarding = appState.showOnBoarding
 
     NavHost(
-        navController = navController,
+        navController = appState.navController,
         startDestination = NavFeature.HOME.route
     ) {
-        nav(navController = navController, showOnBoarding)
+        nav(navController = appState.navController, showOnBoarding){
+            appState.showModalSheet()
+        }
     }
 
 }
 
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 private fun NavGraphBuilder.nav (
     navController: NavController,
-    showOnBoarding: Boolean
+    showOnBoarding: Boolean,
+    goToSettings: (UserAction) -> Unit
 ) {
     navigation(
         startDestination = ContentType(NavFeature.ON_BOARDING).route,
@@ -51,15 +62,12 @@ private fun NavGraphBuilder.nav (
         }
 
         composable(navCommand = ContentType(NavFeature.HOME)){
-            Home(){ userAction ->
+            Home { userAction ->
                 when (userAction) {
                     UserAction.ABOUT_US_CLICK -> {
                         navController.navigate(ContentType(NavFeature.ABOUT_US).route)
                     }
-                    UserAction.PILLS_CLICK -> TODO()
-                    UserAction.RING_CLICK -> TODO()
-                    UserAction.SHOOT_CLICK -> TODO()
-                    UserAction.OTHER -> TODO()
+                    else -> goToSettings(userAction)
                 }
             }
         }
