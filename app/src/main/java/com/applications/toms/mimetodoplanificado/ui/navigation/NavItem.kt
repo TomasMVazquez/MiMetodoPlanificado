@@ -1,20 +1,7 @@
 package com.applications.toms.mimetodoplanificado.ui.navigation
 
-import androidx.annotation.StringRes
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.applications.toms.mimetodoplanificado.R
-
-enum class NavItem(
-    val navCommand: NavCommand,
-    val icon: ImageVector,
-    @StringRes val title: Int
-) {
-    HOME(NavCommand.ContentType(NavFeature.HOME), Icons.Default.Home, R.string.home)
-}
 
 sealed class NavCommand (
     internal val feature: NavFeature,
@@ -30,7 +17,10 @@ sealed class NavCommand (
 
     val route = run {
         val argKeys = navArgs.map { "{${it.key}}" }
-        listOf(feature.route, subRoute).plus(argKeys).joinToString("/")
+        listOf(feature.route)
+            .plus(subRoute)
+            .plus(argKeys)
+            .joinToString("/")
     }
 
     val args = navArgs.map {

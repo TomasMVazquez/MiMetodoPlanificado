@@ -3,42 +3,31 @@ package com.applications.toms.mimetodoplanificado.ui.screen.home
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.applications.toms.domain.OnBoardingPage
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.applications.toms.mimetodoplanificado.ui.theme.VividRaspberry
+import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
 import com.applications.toms.mimetodoplanificado.ui.utils.onBoardingHasFinished
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
 fun OnBoarding(onGettingStartedClick:()->Unit, onSkipClicked:()->Unit) {
-
-    val context = LocalContext.current
-    val pagerState = rememberPagerState(0)
 
     val onboardPages = listOf(
         OnBoardingPage(
@@ -61,6 +50,23 @@ fun OnBoarding(onGettingStartedClick:()->Unit, onSkipClicked:()->Unit) {
         )
     )
 
+    if (hasOnBoardingAlreadyShown(LocalContext.current)) onGettingStartedClick()
+
+    OnBoardingContent(onboardPages, onSkipClicked, onGettingStartedClick)
+}
+
+@ExperimentalAnimationApi
+@ExperimentalPagerApi
+@Composable
+private fun OnBoardingContent(
+    onboardPages: List<OnBoardingPage>,
+    onSkipClicked: () -> Unit,
+    onGettingStartedClick: () -> Unit
+) {
+
+    val context = LocalContext.current
+    val pagerState = rememberPagerState(0)
+
     Column() {
 
         Box(
@@ -68,7 +74,6 @@ fun OnBoarding(onGettingStartedClick:()->Unit, onSkipClicked:()->Unit) {
             contentAlignment = Alignment.CenterEnd
         ) {
             GenericButton(
-//                modifier = Modifier.padding(16.dp),
                 buttonType = ButtonType.LOW_EMPHASIS,
                 text = stringResource(R.string.ong_skip)
             ) {
@@ -97,7 +102,7 @@ fun OnBoarding(onGettingStartedClick:()->Unit, onSkipClicked:()->Unit) {
             inactiveColor = Purple.copy(ContentAlpha.disabled)
         )
 
-        AnimatedVisibility(visible = pagerState.currentPage == 2 ) {
+        AnimatedVisibility(visible = pagerState.currentPage == 2) {
             Box(
                 modifier = Modifier.fillMaxWidth(),
                 contentAlignment = Alignment.CenterEnd

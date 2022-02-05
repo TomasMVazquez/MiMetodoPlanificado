@@ -26,7 +26,7 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
             Box(modifier = Modifier.padding(paddingValues)) {
                 Navigation(
                     navController = appState.navController,
-                    hasOnBoardingAlreadyShown = appState.hasOnBoardingAlreadyShown
+                    showOnBoarding = appState.showOnBoarding
                 )
             }
 

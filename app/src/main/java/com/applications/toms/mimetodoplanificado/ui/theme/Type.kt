@@ -54,26 +54,26 @@ val Typography = Typography(
     defaultFontFamily = Roboto,
     h1 = TextStyle(
         fontFamily = Nunito,
-        fontWeight = FontWeight.Light,
-        fontSize = 96.sp,
+        fontWeight = FontWeight.Bold,
+        fontSize = 48.sp,
         letterSpacing = (-1.5).sp
     ),
     h2= TextStyle(
         fontFamily = Nunito,
-        fontWeight = FontWeight.Light,
-        fontSize = 60.sp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 42.sp,
         letterSpacing = (-0.5).sp
     ),
     h3= TextStyle(
         fontFamily = Nunito,
         fontWeight = FontWeight.Normal,
-        fontSize = 48.sp,
+        fontSize = 36.sp,
         letterSpacing = 0.sp
     ),
     h4= TextStyle(
         fontFamily = Nunito,
-        fontWeight = FontWeight.Normal,
-        fontSize = 34.sp,
+        fontWeight = FontWeight.Light,
+        fontSize = 32.sp,
         letterSpacing = 0.25.sp
     ),
     h5= TextStyle(

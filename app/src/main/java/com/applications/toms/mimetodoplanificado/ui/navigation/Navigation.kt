@@ -6,6 +6,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
+import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
+import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
 import com.applications.toms.mimetodoplanificado.ui.screen.home.OnBoarding
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -14,13 +17,13 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(navController: NavHostController, hasOnBoardingAlreadyShown:Boolean) {
+fun Navigation(navController: NavHostController, showOnBoarding: Boolean) {
 
     NavHost(
         navController = navController,
         startDestination = NavFeature.HOME.route
     ) {
-        homeNav(navController = navController, !hasOnBoardingAlreadyShown)
+        nav(navController = navController, showOnBoarding)
     }
 
 }
@@ -28,57 +31,55 @@ fun Navigation(navController: NavHostController, hasOnBoardingAlreadyShown:Boole
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-private fun NavGraphBuilder.homeNav(
+private fun NavGraphBuilder.nav (
     navController: NavController,
-    showOnboarding: Boolean
+    showOnBoarding: Boolean
 ) {
     navigation(
-        startDestination = NavCommand.ContentType(NavFeature.HOME).route,
+        startDestination = ContentType(NavFeature.ON_BOARDING).route,
         route = NavFeature.HOME.route
-    ) {
-
-        composable(navCommand = NavCommand.ContentType(NavFeature.HOME)) {
-            if (showOnboarding) {
+    ){
+        composable(navCommand = ContentType(NavFeature.ON_BOARDING)) {
+            if (showOnBoarding) {
                 OnBoarding(
-                    onGettingStartedClick = {
-                        navController.navigate(NavCommand.ContentType(NavFeature.HOME).route)
-                    },
-                    onSkipClicked = {
-                        navController.navigate(NavCommand.ContentType(NavFeature.HOME).route)
-                    }
+                    onGettingStartedClick = { onFinishOnBoarding(navController) },
+                    onSkipClicked = { onFinishOnBoarding(navController) }
                 )
-            }
-            else {
-                Home()
+            } else {
+                onFinishOnBoarding(navController)
             }
         }
 
+        composable(navCommand = ContentType(NavFeature.HOME)){
+            Home(){ userAction ->
+                when (userAction) {
+                    UserAction.ABOUT_US_CLICK -> {
+                        navController.navigate(ContentType(NavFeature.ABOUT_US).route)
+                    }
+                    UserAction.PILLS_CLICK -> TODO()
+                    UserAction.RING_CLICK -> TODO()
+                    UserAction.SHOOT_CLICK -> TODO()
+                    UserAction.OTHER -> TODO()
+                }
+            }
+        }
+
+        composable(navCommand = ContentType(NavFeature.ABOUT_US)) {
+            AboutUs {
+                navController.popBackStack()
+            }
+        }
     }
+
 }
 
-/*
-@ExperimentalFoundationApi
-private fun NavGraphBuilder.typeNav(
-    navController: NavController
-) {
-    navigation(
-        startDestination = NavCommand.ContentType(Feature.BY_TYPE).route,
-        route = Feature.BY_TYPE.route
+private fun onFinishOnBoarding(navController: NavController) {
+    navController.navigate(
+        ContentType(NavFeature.HOME).route
     ) {
-
-        composable(navCommand = NavCommand.ContentType(Feature.BY_TYPE)) {
-            ByTypeScreen {
-                navController.navigate(NavCommand.ContentDetail(Feature.BY_TYPE).createNavRout(it.id))
-            }
-        }
-
-        composable(navCommand = NavCommand.ContentDetail(Feature.BY_TYPE)) { backStackEntry ->
-            PokemonDetail(
-                id = backStackEntry.findArg(NavArg.Id)
-            )
-        }
+        launchSingleTop = true
     }
-}*/
+}
 
 private fun NavGraphBuilder.composable(
     navCommand: NavCommand,
