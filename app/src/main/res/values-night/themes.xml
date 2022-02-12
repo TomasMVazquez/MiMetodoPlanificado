@@ -14,4 +14,9 @@
         <item name="android:windowLightStatusBar">false</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="CalenderViewCustom" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorAccent">@color/vividRaspberry</item>
+        <item name="colorOnPrimary">@color/light_black</item>
+        <item name="colorSurface">@color/white</item>
+    </style>
 </resources>

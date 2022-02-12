@@ -6,14 +6,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
+import com.applications.toms.domain.MethodState
 import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.methods.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
 import com.applications.toms.mimetodoplanificado.R
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.flow.collect
 
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -22,11 +26,23 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
+    var methodState by remember { mutableStateOf(MethodState()) }
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(lifecycleOwner) {
+        appState.state.collect {
+            methodState = MethodState(
+                methodChosen = it.methodChosen,
+                startDate = it.startDate
+            )
+        }
+    }
+
     MiMetPlanScreen {
 
         ModalBottomSheetLayout(
             sheetContent = {
-                Settings {
+                Settings(methodState.methodChosen) {
                     appState.hideModalSheet()
                 }
             },

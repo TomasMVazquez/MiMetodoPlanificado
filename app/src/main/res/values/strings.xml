@@ -65,4 +65,14 @@
 
     // Settings
     <string name="content_description_close">cerrar</string>
+    <string name="settings_title">Configuración</string>
+    <string name="settings_label_start_date">Fecha de inicio</string>
+    <string name="content_desc_calendar">Icono calendario</string>
+    <string name="settings_text_start_date">Selecciona la fecha con la cual comenzaste o comenzaras a usar este metodo anticonceptivo</string>
+    <string name="settings_ring_start_date_text">Comienzo del ciclo de 21 días el %1$s</string>
+    <string name="settings_ring_break_date_text">El descanso comienza el %1$s y durará 7 días</string>
+    <string name="settings_ring_next_date_text">El próximo ciclo comienza el %1$s</string>
+    <string name="settings_pills_start_date_text">Comienzo del ciclo de 28 días el %1$s</string>
+    <string name="content_description_add">Sumar uno</string>
+    <string name="content_description_remove">Restar uno</string>
 </resources>

@@ -42,7 +42,7 @@ fun Home(onUserAction: (UserAction) -> Unit){
 
             IconButton(
                 onClick = {
-                    onUserAction(UserAction.ABOUT_US_CLICK)
+                    onUserAction(UserAction.ABOUT_US)
                 }
             ) {
                 Icon(

@@ -23,4 +23,10 @@
     <style name="Theme.MiMetodoPlanificado.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MiMetodoPlanificado.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CalenderViewCustom" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorAccent">@color/purple</item>
+        <item name="colorOnPrimary">@color/light_black</item>
+        <item name="colorSurface">@color/white</item>
+    </style>
 </resources>

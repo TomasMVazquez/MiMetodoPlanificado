@@ -14,7 +14,6 @@ import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
 import com.applications.toms.mimetodoplanificado.ui.screen.home.OnBoarding
-import com.applications.toms.mimetodoplanificado.ui.screen.methods.Settings
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalMaterialApi
@@ -31,6 +30,7 @@ fun Navigation(appState: AppState) {
         startDestination = NavFeature.HOME.route
     ) {
         nav(navController = appState.navController, showOnBoarding){
+            appState.setMethodChosen(it)
             appState.showModalSheet()
         }
     }
@@ -64,7 +64,7 @@ private fun NavGraphBuilder.nav (
         composable(navCommand = ContentType(NavFeature.HOME)){
             Home { userAction ->
                 when (userAction) {
-                    UserAction.ABOUT_US_CLICK -> {
+                    UserAction.ABOUT_US -> {
                         navController.navigate(ContentType(NavFeature.ABOUT_US).route)
                     }
                     else -> goToSettings(userAction)

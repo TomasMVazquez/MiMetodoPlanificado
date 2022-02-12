@@ -23,7 +23,7 @@ fun CardButton(method: MethodCard, onClick: (UserAction) -> Unit) {
         onClick = { onClick(method.action) },
         modifier = Modifier.padding(16.dp),
         elevation = 8.dp,
-        backgroundColor = Cottage
+        backgroundColor = MaterialTheme.colors.primary
     ) {
         Column(
             modifier = Modifier.padding(16.dp),
@@ -35,13 +35,14 @@ fun CardButton(method: MethodCard, onClick: (UserAction) -> Unit) {
                 modifier = Modifier.padding(8.dp),
                 painter = painterResource(id = method.icon),
                 contentDescription = method.icon_description,
-                tint = Purple
+                tint = MaterialTheme.colors.secondary
             )
 
             Text(
                 modifier = Modifier.padding(8.dp),
                 text = method.name,
-                style = MaterialTheme.typography.h6
+                style = MaterialTheme.typography.h6,
+                color = MaterialTheme.colors.onPrimary
             )
         }
     }
