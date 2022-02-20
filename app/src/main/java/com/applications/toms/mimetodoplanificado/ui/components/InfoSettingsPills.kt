@@ -19,25 +19,35 @@ fun InfoSettingsPills(startDate: LocalDate, pillsBreakDays: Int, pillsBreakDaysC
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
+            .padding(
+                top = dimensionResource(id = R.dimen.padding_small),
+                start = dimensionResource(id = R.dimen.padding_small)
+            ),
         text = stringResource(
             id = R.string.settings_pills_start_date_text,
             startDate.toFormattedString()
         ),
-        style = MaterialTheme.typography.body2,
+        style = MaterialTheme.typography.caption,
         color = MaterialTheme.colors.onPrimary
     )
 
+    Text(
+        modifier = Modifier.fillMaxWidth()
+            .padding(start = dimensionResource(id = R.dimen.padding_small)),
+        text = stringResource(R.string.settings_pills_subtitle_break),
+        style = MaterialTheme.typography.caption,
+        color = MaterialTheme.colors.onPrimary
+    )
     PlusMinusNumber(input = pillsBreakDays, onInputChange = pillsBreakDaysChange)
 
     Text(
         modifier = Modifier.fillMaxWidth()
-            .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
+            .padding(start = dimensionResource(id = R.dimen.padding_small)),
         text = stringResource(
             id = R.string.settings_ring_next_date_text,
             startDate.plusDays(TOTAL_CYCLE_DAYS).toFormattedString()
         ),
-        style = MaterialTheme.typography.body2,
+        style = MaterialTheme.typography.caption,
         color = MaterialTheme.colors.onPrimary
     )
 }

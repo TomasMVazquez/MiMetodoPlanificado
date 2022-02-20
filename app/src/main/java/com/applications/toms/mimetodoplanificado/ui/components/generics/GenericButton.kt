@@ -78,7 +78,11 @@ fun HighEmphasisButton(
             horizontal = 20.dp,
             vertical = 12.dp
         ),
-        shape = Shapes.medium
+        shape = Shapes.medium,
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = MaterialTheme.colors.secondary,
+            contentColor = MaterialTheme.colors.onSecondary
+        )
     ) {
         if (withIcon){
             Icon(

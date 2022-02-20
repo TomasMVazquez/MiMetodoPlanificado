@@ -17,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericOutlinedButton
 
 @Composable
 fun PlusMinusNumber(input: Int, onInputChange: (Int) -> Unit) {
@@ -24,29 +25,16 @@ fun PlusMinusNumber(input: Int, onInputChange: (Int) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(
-                all = dimensionResource(id = R.dimen.padding_small)
-            ),
+            .padding(all = dimensionResource(id = R.dimen.padding_xsmall)),
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        OutlinedButton(
-            modifier = Modifier.size(dimensionResource(id = R.dimen.rounded_icon)),
-            onClick = { if (input > 0) onInputChange(input.minus(1)) },
-            border = BorderStroke(1.dp, MaterialTheme.colors.onBackground),
-            shape = CircleShape,
-            colors = ButtonDefaults.outlinedButtonColors(
-                backgroundColor = MaterialTheme.colors.onBackground,
-                contentColor = MaterialTheme.colors.secondary
-            )
+        GenericOutlinedButton(
+            icon = Icons.Filled.Remove,
+            iconDesc = stringResource(R.string.content_description_remove)
         ) {
-            Icon(
-                imageVector = Icons.Filled.Remove,
-                contentDescription = stringResource(
-                    R.string.content_description_remove
-                )
-            )
+            if (input > 0) onInputChange(input.minus(1))
         }
 
         Column(modifier = Modifier
@@ -64,26 +52,15 @@ fun PlusMinusNumber(input: Int, onInputChange: (Int) -> Unit) {
                 text = input.toString(),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.body1,
-                color = MaterialTheme.colors.onPrimary
+                color = MaterialTheme.colors.secondary
             )
         }
 
-        OutlinedButton(
-            modifier = Modifier.size(dimensionResource(id = R.dimen.rounded_icon)),
-            onClick = { onInputChange(input.plus(1)) },
-            border = BorderStroke(1.dp, MaterialTheme.colors.onBackground),
-            shape = CircleShape,
-            colors = ButtonDefaults.outlinedButtonColors(
-                backgroundColor = MaterialTheme.colors.onBackground,
-                contentColor = MaterialTheme.colors.secondary
-            )
+        GenericOutlinedButton(
+            icon = Icons.Filled.Add,
+            iconDesc = stringResource(R.string.content_description_add)
         ) {
-            Icon(
-                imageVector = Icons.Filled.Add,
-                contentDescription = stringResource(
-                    R.string.content_description_add
-                )
-            )
+            onInputChange(input.plus(1))
         }
 
     }
