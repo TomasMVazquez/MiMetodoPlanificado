@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.applications.toms.domain.MethodCard
+import com.applications.toms.domain.Method
 import com.applications.toms.domain.UserAction
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CardButton
@@ -24,7 +25,7 @@ import com.applications.toms.mimetodoplanificado.ui.screen.methods.methods
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun Home(onUserAction: (UserAction) -> Unit){
+fun Home(onUserAction: (Method?, UserAction) -> Unit){
 
     Column() {
         Row(
@@ -42,7 +43,7 @@ fun Home(onUserAction: (UserAction) -> Unit){
 
             IconButton(
                 onClick = {
-                    onUserAction(UserAction.ABOUT_US)
+                    onUserAction(null, UserAction.ABOUT_US)
                 }
             ) {
                 Icon(
@@ -60,7 +61,7 @@ fun Home(onUserAction: (UserAction) -> Unit){
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun HomeContent(methods: List<MethodCard>, onUserAction: (UserAction) -> Unit) {
+fun HomeContent(methods: List<MethodCard>, onUserAction: (Method, UserAction) -> Unit) {
 
     Column(
         modifier = Modifier.padding(

@@ -80,4 +80,5 @@
     <string name="settings_notification_info">Al habilitar las notificaciones podremos configurar los avisos necesarios para recordar alguna acción</string>
     <string name="settings_alarm_title">Habilitar Alarmas</string>
     <string name="settings_alarm_info">Al habilitar la alarma te solicitaremos luego que nos confirmes la hora para no olvidarte</string>
+    <string name="settings_btn_start">COMENZAR</string>
 </resources>

@@ -3,6 +3,6 @@ package com.applications.toms.domain
 import java.time.LocalDate
 
 data class MethodState(
-    val methodChosen: UserAction = UserAction.NONE,
+    val methodChosen: Method? = null,
     val startDate: LocalDate = LocalDate.now()
 )

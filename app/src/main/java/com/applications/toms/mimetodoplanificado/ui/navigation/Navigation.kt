@@ -8,6 +8,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.applications.toms.domain.Method
 import com.applications.toms.domain.UserAction
 import com.applications.toms.mimetodoplanificado.ui.AppState
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
@@ -44,7 +45,7 @@ fun Navigation(appState: AppState) {
 private fun NavGraphBuilder.nav (
     navController: NavController,
     showOnBoarding: Boolean,
-    goToSettings: (UserAction) -> Unit
+    goToSettings: (Method) -> Unit
 ) {
     navigation(
         startDestination = ContentType(NavFeature.ON_BOARDING).route,
@@ -62,12 +63,12 @@ private fun NavGraphBuilder.nav (
         }
 
         composable(navCommand = ContentType(NavFeature.HOME)){
-            Home { userAction ->
+            Home { method, userAction ->
                 when (userAction) {
                     UserAction.ABOUT_US -> {
                         navController.navigate(ContentType(NavFeature.ABOUT_US).route)
                     }
-                    else -> goToSettings(userAction)
+                    else -> method?.let { goToSettings(it) }
                 }
             }
         }

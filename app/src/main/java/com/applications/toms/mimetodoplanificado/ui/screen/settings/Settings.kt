@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.screen.methods
+package com.applications.toms.mimetodoplanificado.ui.screen.settings
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.*
@@ -7,11 +7,12 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.applications.toms.domain.Method
 import com.applications.toms.domain.UserAction
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.ClickableOutlineTextField
@@ -19,17 +20,16 @@ import com.applications.toms.mimetodoplanificado.ui.components.CustomCalendarVie
 import com.applications.toms.mimetodoplanificado.ui.components.InfoSettingsPills
 import com.applications.toms.mimetodoplanificado.ui.components.InfoSettingsRing
 import com.applications.toms.mimetodoplanificado.ui.components.generics.*
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun Settings(methodChosen: UserAction, onDone: () -> Unit) {
-    var onStartClick by rememberSaveable { mutableStateOf(false) }
-    var startDate by rememberSaveable { mutableStateOf(LocalDate.now()) }
-    var showDatePicker by rememberSaveable { mutableStateOf(false) }
-    var pillsBreakDays by rememberSaveable { mutableStateOf(5) }
-    var notifictions by rememberSaveable { mutableStateOf(true) }
-    var alarm by rememberSaveable { mutableStateOf(true) }
+fun Settings(
+    methodChosen: Method?,
+    viewModel: SettingsViewModel = viewModel(),
+    onDone: () -> Unit
+) {
+
+    methodChosen?.let { viewModel.setMethodChosen(it) }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -70,14 +70,14 @@ fun Settings(methodChosen: UserAction, onDone: () -> Unit) {
                         color = MaterialTheme.colors.onPrimary
                     )
 
-                    ClickableOutlineTextField(input = startDate.format(DateTimeFormatter.ofPattern("dd/MM/yy"))) {
-                        showDatePicker = !showDatePicker
+                    ClickableOutlineTextField(input = viewModel.state.startDate.format(DateTimeFormatter.ofPattern("dd/MM/yy"))) {
+                        viewModel.changeShowDatePicker(!viewModel.state.showDatePicker)
                     }
 
-                    AnimatedVisibility(visible = showDatePicker) {
+                    AnimatedVisibility(visible = viewModel.state.showDatePicker) {
                         CustomCalendarView {
-                            startDate = it
-                            showDatePicker = !showDatePicker
+                            viewModel.changeStartDate(it)
+                            viewModel.changeShowDatePicker(!viewModel.state.showDatePicker)
                         }
                     }
 
@@ -88,20 +88,20 @@ fun Settings(methodChosen: UserAction, onDone: () -> Unit) {
                 }
 
                 item {
-                    when(methodChosen) {
-                        UserAction.PILLS -> {
+                    when (methodChosen) {
+                        Method.PILLS -> {
                             InfoSettingsPills(
-                                startDate = startDate,
-                                pillsBreakDays = pillsBreakDays
+                                startDate = viewModel.state.startDate,
+                                pillsBreakDays = viewModel.state.pillsBreakDays
                             ) {
-                                pillsBreakDays = it
+                                viewModel.changePillsBreakDays(it)
                             }
                         }
-                        UserAction.RING -> {
-                            InfoSettingsRing(startDate = startDate)
+                        Method.RING -> {
+                            InfoSettingsRing(startDate = viewModel.state.startDate)
                         }
-                        UserAction.SHOOT -> TODO()
-                        UserAction.PATCH -> TODO()
+                        Method.SHOOT -> TODO()
+                        Method.PATCH -> TODO()
                     }
 
                     GenericSpacer(
@@ -114,17 +114,17 @@ fun Settings(methodChosen: UserAction, onDone: () -> Unit) {
                     GenericSwitchSetting(
                         stringResource(R.string.settings_notifications_title),
                         stringResource(R.string.settings_notification_info),
-                        notifictions
+                        viewModel.state.notifications
                     ){
-                        notifictions = it
+                        viewModel.changeNotificationValue(!viewModel.state.notifications)
                     }
 
                     GenericSwitchSetting(
                         stringResource(R.string.settings_alarm_title),
                         stringResource(R.string.settings_alarm_info),
-                        alarm
+                        viewModel.state.alarm
                     ){
-                        alarm = it
+                        viewModel.changeAlarmValue(!viewModel.state.alarm)
                     }
 
                     GenericSpacer(
@@ -134,17 +134,17 @@ fun Settings(methodChosen: UserAction, onDone: () -> Unit) {
                 }
 
                 item {
-                    AnimatedVisibility(visible = !onStartClick) {
+                    AnimatedVisibility(visible = !viewModel.state.loading) {
                         GenericButton(
                             modifier = Modifier.fillMaxWidth(),
                             buttonType = ButtonType.HIGH_EMPHASIS,
-                            text = "COMENZAR"
+                            text = stringResource(R.string.settings_btn_start)
                         ) {
-                            onStartClick = !onStartClick
+                            viewModel.changeLoading(!viewModel.state.loading)
                         }
                     }
 
-                    AnimatedVisibility(visible = onStartClick) {
+                    AnimatedVisibility(visible = viewModel.state.loading) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.BottomCenter

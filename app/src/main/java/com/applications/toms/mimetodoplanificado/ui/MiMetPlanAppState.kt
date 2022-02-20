@@ -3,12 +3,11 @@ package com.applications.toms.mimetodoplanificado.ui
 import android.content.Context
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.applications.toms.domain.UserAction
+import com.applications.toms.domain.Method
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -59,21 +58,14 @@ class AppState (
         }
     }
 
-    fun setMethodChosen(method: UserAction) {
+    fun setMethodChosen(method: Method) {
         _state.value = MethodState(
             methodChosen = method
         )
     }
 
-    fun setMethodDate(method: UserAction, startDate: LocalDate) {
-        _state.value = MethodState(
-            methodChosen = method,
-            startDate = startDate
-        )
-    }
-
     data class MethodState(
-        val methodChosen: UserAction = UserAction.NONE,
+        val methodChosen: Method? = null,
         val startDate: LocalDate = LocalDate.now()
     )
 
