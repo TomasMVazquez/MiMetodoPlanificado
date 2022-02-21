@@ -13,14 +13,13 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.applications.toms.domain.Method
-import com.applications.toms.domain.UserAction
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.ClickableOutlineTextField
-import com.applications.toms.mimetodoplanificado.ui.components.CustomCalendarView
-import com.applications.toms.mimetodoplanificado.ui.components.InfoSettingsPills
-import com.applications.toms.mimetodoplanificado.ui.components.InfoSettingsRing
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsRing
 import com.applications.toms.mimetodoplanificado.ui.components.generics.*
-import java.time.format.DateTimeFormatter
+import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 
 @Composable
 fun Settings(
@@ -61,24 +60,9 @@ fun Settings(
 
             LazyColumn {
                 item {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(dimensionResource(id = R.dimen.padding_small)),
-                        text = stringResource(R.string.settings_text_start_date),
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.onPrimary
-                    )
 
-                    ClickableOutlineTextField(input = viewModel.state.startDate.format(DateTimeFormatter.ofPattern("dd/MM/yy"))) {
-                        viewModel.changeShowDatePicker(!viewModel.state.showDatePicker)
-                    }
-
-                    AnimatedVisibility(visible = viewModel.state.showDatePicker) {
-                        CustomCalendarView {
-                            viewModel.changeStartDate(it)
-                            viewModel.changeShowDatePicker(!viewModel.state.showDatePicker)
-                        }
+                    DatePickerSettingsItem(viewModel.state.startDate) {
+                        viewModel.changeStartDate(it)
                     }
 
                     GenericSpacer(
@@ -111,20 +95,18 @@ fun Settings(
                 }
 
                 item {
-                    GenericSwitchSetting(
-                        stringResource(R.string.settings_notifications_title),
-                        stringResource(R.string.settings_notification_info),
-                        viewModel.state.notifications
-                    ){
-                        viewModel.changeNotificationValue(!viewModel.state.notifications)
+                    NotificationSettingsItem { isNotifEnable, time ->
+                        viewModel.changeNotificationValue(
+                            value = isNotifEnable,
+                            time = time
+                        )
                     }
 
-                    GenericSwitchSetting(
-                        stringResource(R.string.settings_alarm_title),
-                        stringResource(R.string.settings_alarm_info),
-                        viewModel.state.alarm
-                    ){
-                        viewModel.changeAlarmValue(!viewModel.state.alarm)
+                    AlarmSettingsItem { isAlarmEnabled, time ->
+                        viewModel.changeAlarmValue(
+                            value = isAlarmEnabled,
+                            time = time
+                        )
                     }
 
                     GenericSpacer(
@@ -154,10 +136,8 @@ fun Settings(
                             )
                         }
                     }
-
                 }
             }
-
         }
     }
 }

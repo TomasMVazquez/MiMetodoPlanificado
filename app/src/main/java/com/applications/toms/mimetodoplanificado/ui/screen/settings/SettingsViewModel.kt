@@ -24,29 +24,26 @@ class SettingsViewModel : ViewModel() {
         state = state.copy(startDate = date)
     }
 
-    fun changeShowDatePicker(show: Boolean) {
-        state = state.copy(showDatePicker = show)
-    }
-
     fun changePillsBreakDays(days: Int) {
         state = state.copy(pillsBreakDays = days)
     }
 
-    fun changeNotificationValue(value: Boolean) {
-        state = state.copy(notifications = value)
+    fun changeNotificationValue(value: Boolean, time: String) {
+        state = state.copy(notifications = value, notificationTime = time)
     }
 
-    fun changeAlarmValue(value: Boolean) {
-        state = state.copy(alarm = value)
+    fun changeAlarmValue(value: Boolean, time: String) {
+        state = state.copy(alarm = value, alarmTime = time)
     }
 
     data class SettingsState (
         val methodType: Method? = null,
         val loading: Boolean = false,
-        val showDatePicker: Boolean = false,
         val startDate: LocalDate = LocalDate.now(),
         val pillsBreakDays: Int = 5,
-        val notifications: Boolean = true,
-        val alarm: Boolean = true
+        val notifications: Boolean = false,
+        val notificationTime: String = "",
+        val alarm: Boolean = false,
+        val alarmTime: String = ""
     )
 }
