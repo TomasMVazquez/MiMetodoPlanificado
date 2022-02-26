@@ -8,8 +8,8 @@ import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.applications.toms.domain.Method
-import com.applications.toms.domain.UserAction
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.ui.AppState
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs

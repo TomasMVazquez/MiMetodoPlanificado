@@ -12,7 +12,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.applications.toms.domain.Method
+import com.applications.toms.domain.MethodAndStartDate
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsRing
@@ -20,20 +22,28 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.*
 import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
 
 @Composable
 fun Settings(
-    methodChosen: Method?,
+    method: MethodAndStartDate,
     viewModel: SettingsViewModel = viewModel(),
-    onDone: () -> Unit
+    onCancel: () -> Unit,
+    onDone: (MethodChosen) -> Unit
 ) {
-
-    methodChosen?.let { viewModel.setMethodChosen(it) }
+    
+    val state by viewModel.state.collectAsState(SettingsState())
+    viewModel.setMethodChosen(method)
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(dimensionResource(id = R.dimen.padding_xsmall))) {
-        IconButton(onClick = onDone) {
+        .padding(dimensionResource(id = R.dimen.padding_xsmall))
+    ) {
+
+        /**
+         * Cancel Button
+         */
+        IconButton(onClick = onCancel) {
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(R.string.content_description_close),
@@ -50,18 +60,32 @@ fun Settings(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
+            
+            /**
+             * Title
+             */
             Text(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-                text = stringResource(R.string.settings_title),
+                text = stringResource(
+                    R.string.settings_title,
+                    when (method.methodChosen) {
+                        Method.PILLS -> stringResource(R.string.pills)
+                        Method.RING -> stringResource(R.string.ring)
+                        Method.SHOOT -> stringResource(R.string.injection)
+                        Method.PATCH -> stringResource(R.string.patch)
+                        null -> ""
+                    }
+                ),
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.onPrimary
             )
 
             LazyColumn {
+                /**
+                 * Start Date Picker
+                 */
                 item {
-
-                    DatePickerSettingsItem(viewModel.state.startDate) {
+                    DatePickerSettingsItem(state.methodAndStartDate.startDate) {
                         viewModel.changeStartDate(it)
                     }
 
@@ -71,21 +95,25 @@ fun Settings(
                     )
                 }
 
+                /**
+                 * Info about Dates bases on method
+                 */
                 item {
-                    when (methodChosen) {
+                    when (method.methodChosen) {
                         Method.PILLS -> {
                             InfoSettingsPills(
-                                startDate = viewModel.state.startDate,
-                                pillsBreakDays = viewModel.state.pillsBreakDays
+                                startDate = state.methodAndStartDate.startDate,
+                                pillsBreakDays = state.pillsBreakDays
                             ) {
                                 viewModel.changePillsBreakDays(it)
                             }
                         }
                         Method.RING -> {
-                            InfoSettingsRing(startDate = viewModel.state.startDate)
+                            InfoSettingsRing(startDate = state.methodAndStartDate.startDate)
                         }
-                        Method.SHOOT -> TODO()
-                        Method.PATCH -> TODO()
+                        Method.SHOOT -> "" // TODO ADD INFO
+                        Method.PATCH -> "" // TODO ADD INFO
+                        else -> onCancel()
                     }
 
                     GenericSpacer(
@@ -94,6 +122,9 @@ fun Settings(
                     )
                 }
 
+                /**
+                 * Notification & Alarm Time Picker
+                 */
                 item {
                     NotificationSettingsItem { isNotifEnable, time ->
                         viewModel.changeNotificationValue(
@@ -111,22 +142,37 @@ fun Settings(
 
                     GenericSpacer(
                         type = SpacerType.VERTICAL,
-                        padding = dimensionResource(id = R.dimen.padding_small)
+                        padding = dimensionResource(id = R.dimen.padding_xlarge)
                     )
                 }
 
+                /**
+                 * Confirm Button
+                 */
                 item {
-                    AnimatedVisibility(visible = !viewModel.state.loading) {
+                    AnimatedVisibility(visible = !state.loading) {
                         GenericButton(
                             modifier = Modifier.fillMaxWidth(),
                             buttonType = ButtonType.HIGH_EMPHASIS,
                             text = stringResource(R.string.settings_btn_start)
                         ) {
-                            viewModel.changeLoading(!viewModel.state.loading)
+                            viewModel.changeLoading(!state.loading)
+                            with(state) {
+                                onDone(
+                                    MethodChosen(
+                                        methodAndStartDate = methodAndStartDate,
+                                        pillsBreakDays = pillsBreakDays,
+                                        notifications = notifications,
+                                        notificationTime = notificationTime,
+                                        alarm = alarm,
+                                        alarmTime = alarmTime
+                                    )
+                                )
+                            }
                         }
                     }
 
-                    AnimatedVisibility(visible = viewModel.state.loading) {
+                    AnimatedVisibility(visible = state.loading) {
                         Box(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.BottomCenter

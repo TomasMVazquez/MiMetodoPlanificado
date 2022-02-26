@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.applications.toms.domain.MethodCard
-import com.applications.toms.domain.Method
-import com.applications.toms.domain.UserAction
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.enums.UserAction
 
 @ExperimentalMaterialApi
 @Composable

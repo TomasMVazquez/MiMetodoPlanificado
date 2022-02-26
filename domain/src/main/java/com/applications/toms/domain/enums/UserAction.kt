@@ -1,4 +1,4 @@
-package com.applications.toms.domain
+package com.applications.toms.domain.enums
 
 enum class UserAction{
     ABOUT_US,

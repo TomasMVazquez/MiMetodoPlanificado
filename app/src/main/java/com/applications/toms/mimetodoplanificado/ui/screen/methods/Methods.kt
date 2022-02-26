@@ -3,8 +3,8 @@ package com.applications.toms.mimetodoplanificado.ui.screen.methods
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.domain.MethodCard
-import com.applications.toms.domain.Method
-import com.applications.toms.domain.UserAction
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.R
 
 const val TOTAL_CYCLE_DAYS = 28L

@@ -65,7 +65,7 @@
 
     // Settings
     <string name="content_description_close">cerrar</string>
-    <string name="settings_title">Configuración</string>
+    <string name="settings_title">Configuración %s</string>
     <string name="settings_label_start_date">Fecha de inicio</string>
     <string name="content_desc_calendar">Icono calendario</string>
     <string name="settings_text_start_date">Selecciona la fecha con la cual comenzaste o comenzarás a usar este método anticonceptivo</string>
@@ -79,10 +79,10 @@
     <string name="settings_notifications_title">Habilitar Notificaciones</string>
     <string name="settings_notification_info">Al habilitar las notificaciones podremos configurar los avisos necesarios para recordar alguna acción</string>
     <string name="settings_alarm_title">Habilitar Alarmas</string>
-    <string name="settings_alarm_info">Al habilitar la alarma te solicitaremos luego que nos confirmes la hora para no olvidarte</string>
+    <string name="settings_alarm_info">Al habilitar la alarma podremos alertarte para tomar una acción</string>
     <string name="settings_btn_start">COMENZAR</string>
     <string name="done">Listo</string>
-    <string name="settings_config_notif">Se configuró las notificaciones para las %s</string>
-    <string name="settings_config_alarm">Se configuró la alarma para las %s</string>
+    <string name="settings_config_notif">Se configuró las notificaciones para las %s hs</string>
+    <string name="settings_config_alarm">Se configuró la alarma para las %s hs</string>
 
 </resources>

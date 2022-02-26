@@ -7,14 +7,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.applications.toms.domain.Method
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 
 @ExperimentalMaterialApi
 @Composable
@@ -35,8 +35,8 @@ class AppState (
     private val coroutineScope: CoroutineScope,
 ) {
 
-    private val _state = MutableStateFlow(MethodState())
-    val state: SharedFlow<MethodState> = _state.asStateFlow()
+    private val _state = MutableStateFlow(MethodAndStartDate())
+    val state: SharedFlow<MethodAndStartDate> = _state.asStateFlow()
 
     private val context: Context
         @Composable get() = LocalContext.current
@@ -59,14 +59,9 @@ class AppState (
     }
 
     fun setMethodChosen(method: Method) {
-        _state.value = MethodState(
+        _state.value = MethodAndStartDate(
             methodChosen = method
         )
     }
-
-    data class MethodState(
-        val methodChosen: Method? = null,
-        val startDate: LocalDate = LocalDate.now()
-    )
 
 }

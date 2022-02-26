@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
-import com.applications.toms.domain.MethodState
+import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
@@ -25,12 +25,12 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
-    var methodState by remember { mutableStateOf(MethodState()) }
+    var methodState by remember { mutableStateOf(MethodAndStartDate()) }
 
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(lifecycleOwner) {
         appState.state.collect {
-            methodState = MethodState(
+            methodState = MethodAndStartDate(
                 methodChosen = it.methodChosen,
                 startDate = it.startDate
             )
@@ -41,9 +41,13 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
         ModalBottomSheetLayout(
             sheetContent = {
-                Settings(methodState.methodChosen) {
-                    appState.hideModalSheet()
-                }
+                Settings(
+                    method = methodState,
+                    onCancel = { appState.hideModalSheet() },
+                    onDone = {
+                        appState.hideModalSheet()
+                    }
+                )
             },
             sheetState = appState.modalBottomSheetState,
             sheetShape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_bottom_sheet))

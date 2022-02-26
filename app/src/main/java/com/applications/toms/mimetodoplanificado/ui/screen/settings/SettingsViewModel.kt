@@ -1,45 +1,48 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.settings
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.applications.toms.domain.Method
+import com.applications.toms.domain.MethodAndStartDate
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 
 class SettingsViewModel : ViewModel() {
 
-    var state by mutableStateOf(SettingsState())
-        private set
+    private val _state = MutableStateFlow(SettingsState())
+    val state: SharedFlow<SettingsState> = _state.asStateFlow()
 
     fun changeLoading(show: Boolean) {
-        state = state.copy(loading = show)
+        _state.value = _state.value.copy(loading = show)
     }
 
-    fun setMethodChosen(methodChosen: Method) {
-        state = state.copy(methodType = methodChosen)
+    fun setMethodChosen(methodChosen: MethodAndStartDate) {
+        _state.value = _state.value.copy(methodAndStartDate = methodChosen)
     }
 
     fun changeStartDate(date: LocalDate) {
-        state = state.copy(startDate = date)
+        _state.value = _state.value.copy(
+            methodAndStartDate = _state.value.methodAndStartDate.copy(
+                startDate = date
+            )
+        )
     }
 
     fun changePillsBreakDays(days: Int) {
-        state = state.copy(pillsBreakDays = days)
+        _state.value = _state.value.copy(pillsBreakDays = days)
     }
 
     fun changeNotificationValue(value: Boolean, time: String) {
-        state = state.copy(notifications = value, notificationTime = time)
+        _state.value = _state.value.copy(notifications = value, notificationTime = time)
     }
 
     fun changeAlarmValue(value: Boolean, time: String) {
-        state = state.copy(alarm = value, alarmTime = time)
+        _state.value = _state.value.copy(alarm = value, alarmTime = time)
     }
 
     data class SettingsState (
-        val methodType: Method? = null,
+        val methodAndStartDate: MethodAndStartDate = MethodAndStartDate(),
         val loading: Boolean = false,
-        val startDate: LocalDate = LocalDate.now(),
         val pillsBreakDays: Int = 5,
         val notifications: Boolean = false,
         val notificationTime: String = "",
