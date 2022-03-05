@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.screen.methods
+package com.applications.toms.mimetodoplanificado.ui.utils.methods
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource

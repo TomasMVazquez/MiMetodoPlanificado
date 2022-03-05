@@ -20,7 +20,7 @@ import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CardButton
-import com.applications.toms.mimetodoplanificado.ui.screen.methods.methods
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.methods
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi

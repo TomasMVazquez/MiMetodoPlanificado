@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.applications.toms.data.EitherState
 import com.applications.toms.domain.MethodAndStartDate
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun Settings(
     method: MethodAndStartDate,
-    viewModel: SettingsViewModel = viewModel(),
+    viewModel: SettingsViewModel = hiltViewModel(),
     onCancel: () -> Unit,
     onDone: () -> Unit
 ) {

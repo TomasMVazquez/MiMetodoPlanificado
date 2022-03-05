@@ -8,6 +8,7 @@ import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.usecases.SaveChosenMethodUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -16,8 +17,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import javax.inject.Inject
 
-class SettingsViewModel(
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
     private val saveChosenMethodUseCase: SaveChosenMethodUseCase
 ) : ViewModel() {
 
@@ -57,14 +60,13 @@ class SettingsViewModel(
 
     fun onSaveMethodChosen(methodChosen: MethodChosen) {
         viewModelScope.launch {
-            saveChosenMethodUseCase.prepare(methodChosen).collect { result ->
-                result.onSuccess {
+            saveChosenMethodUseCase.execute(methodChosen)
+                .onSuccess {
                     _event.emit(Event.Continue(state = it))
                 }
-                result.onFailure {
+                .onFailure {
                     _event.emit(Event.Continue(state = it))
                 }
-            }
         }
     }
 

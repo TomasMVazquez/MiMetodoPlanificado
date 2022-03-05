@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'kotlin-android'
     id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -76,6 +77,10 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.2"
     annotationProcessor "androidx.room:room-compiler:2.4.2"
     kapt "androidx.room:room-compiler:2.4.2"
+    // DI Hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
 
     // TESTING
     testImplementation 'junit:junit:4.13.2'

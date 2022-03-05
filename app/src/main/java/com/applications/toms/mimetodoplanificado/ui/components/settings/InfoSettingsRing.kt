@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.screen.methods.RING_CYCLE
-import com.applications.toms.mimetodoplanificado.ui.screen.methods.TOTAL_CYCLE_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.RING_CYCLE
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import java.time.LocalDate
 

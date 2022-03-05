@@ -8,17 +8,16 @@ import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.data.repository.ChosenMethodRepository
 import com.applications.toms.domain.MethodChosen
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class SaveChosenMethodUseCase(
     private val chosenMethodRepository: ChosenMethodRepository
-): FlowUseCase<MethodChosen, Either<EitherState, EitherState>>() {
+): UseCase<MethodChosen, EitherState>() {
 
-    override fun prepareFlow(input: MethodChosen): Flow<Either<EitherState, EitherState>> = flow {
-        chosenMethodRepository.saveChosenMethod()
+
+    override suspend fun buildUseCase(input: MethodChosen): Either<EitherState, EitherState> =
+        chosenMethodRepository.saveChosenMethod(input)
             .onSuccess { eitherSuccess(EitherState.SUCCESS) }
             .onFailure { eitherFailure(EitherState.FAILURE) }
-    }
+
 
 }

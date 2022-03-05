@@ -2,7 +2,7 @@ package com.applications.toms.mimetodoplanificado.data.mapper
 
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.data.model.ChosenMethod
-import com.applications.toms.mimetodoplanificado.ui.screen.methods.TOTAL_CYCLE_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 
 fun MethodChosen.toDatabaseModel(): ChosenMethod? =

@@ -3,6 +3,7 @@
     package="com.applications.toms.mimetodoplanificado">
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_app_launcher"
         android:label="@string/app_name"
