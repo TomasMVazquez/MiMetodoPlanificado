@@ -9,9 +9,11 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.applications.toms.data.EitherState
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.MethodChosen
@@ -23,15 +25,26 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSet
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
+import kotlinx.coroutines.flow.collect
 
 @Composable
 fun Settings(
     method: MethodAndStartDate,
     viewModel: SettingsViewModel = viewModel(),
     onCancel: () -> Unit,
-    onDone: (MethodChosen) -> Unit
+    onDone: () -> Unit
 ) {
-    
+
+    LaunchedEffect(key1 = viewModel.event) {
+        viewModel.event.collect {
+            when(it) {
+                is Event.Continue -> {
+                    if (it.state == EitherState.SUCCESS) onDone() //else onCancel()
+                }
+            }
+        }
+    }
+
     val state by viewModel.state.collectAsState(SettingsState())
     viewModel.setMethodChosen(method)
 
@@ -60,7 +73,7 @@ fun Settings(
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            
+
             /**
              * Title
              */
@@ -158,7 +171,7 @@ fun Settings(
                         ) {
                             viewModel.changeLoading(!state.loading)
                             with(state) {
-                                onDone(
+                                viewModel.onSaveMethodChosen(
                                     MethodChosen(
                                         methodAndStartDate = methodAndStartDate,
                                         pillsBreakDays = pillsBreakDays,
