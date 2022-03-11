@@ -8,6 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import com.applications.toms.domain.MethodAndStartDate
@@ -15,6 +16,7 @@ import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.utils.onMethodHasBeenSaved
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
 
@@ -27,7 +29,9 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
     var methodState by remember { mutableStateOf(MethodAndStartDate()) }
 
+    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+
     LaunchedEffect(lifecycleOwner) {
         appState.state.collect {
             methodState = MethodAndStartDate(
@@ -45,8 +49,8 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
                     method = methodState,
                     onCancel = { appState.hideModalSheet() },
                     onDone = {
-                        appState.hideModalSheet()
-                        //TODO GO TO FOLLOWING PAGE
+                        onMethodHasBeenSaved(context)
+                        appState.goToMyMethodHome()
                     }
                 )
             },

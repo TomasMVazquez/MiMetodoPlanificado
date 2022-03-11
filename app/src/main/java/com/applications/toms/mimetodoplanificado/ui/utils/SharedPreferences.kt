@@ -10,6 +10,7 @@ fun getSharedPreferences(context: Context): SharedPreferences{
 
 object SharedPreferencesKeys {
     const val ON_BOARDING = "onBoarding"
+    const val ON_METHOD_SAVED = "onMethodSaved"
 }
 
 /**
@@ -21,4 +22,15 @@ fun onBoardingHasFinished(context: Context) {
 
 fun hasOnBoardingAlreadyShown(context: Context): Boolean {
     return getSharedPreferences(context).getBoolean(SharedPreferencesKeys.ON_BOARDING,false)
+}
+
+/**
+ * To check if a method is saved or not
+ */
+fun onMethodHasBeenSaved(context: Context) {
+    getSharedPreferences(context).edit{ putBoolean(SharedPreferencesKeys.ON_METHOD_SAVED,true) }
+}
+
+fun isMethodSaved(context: Context): Boolean {
+    return getSharedPreferences(context).getBoolean(SharedPreferencesKeys.ON_METHOD_SAVED,false)
 }

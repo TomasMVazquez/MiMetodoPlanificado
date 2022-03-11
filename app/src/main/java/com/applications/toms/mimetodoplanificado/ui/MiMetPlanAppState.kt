@@ -9,7 +9,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.MethodAndStartDate
+import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand
+import com.applications.toms.mimetodoplanificado.ui.navigation.NavFeature
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
+import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -44,6 +47,9 @@ class AppState (
     val showOnBoarding: Boolean
         @Composable get() = !hasOnBoardingAlreadyShown(context)
 
+    val isMethodSaved: Boolean
+        @Composable get() = isMethodSaved(context)
+
     val currentRoute: String
         @Composable
         get() = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
@@ -62,6 +68,11 @@ class AppState (
         _state.value = MethodAndStartDate(
             methodChosen = method
         )
+    }
+
+    fun goToMyMethodHome() {
+        navController.navigate(NavCommand.ContentType(NavFeature.MY_METHOD).route)
+        hideModalSheet()
     }
 
 }
