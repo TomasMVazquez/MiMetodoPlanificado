@@ -23,7 +23,6 @@ fun CustomCalendarView(onDateSelected: (LocalDate) -> Unit) {
             CalendarView(ContextThemeWrapper(context, R.style.CalenderViewCustom))
         },
         update = { view ->
-
             view.setOnDateChangeListener { _, year, month, dayOfMonth ->
                 onDateSelected(
                     LocalDate

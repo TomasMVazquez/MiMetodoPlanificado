@@ -85,4 +85,8 @@
     <string name="settings_config_notif">Se configuró las notificaciones para las %s hs</string>
     <string name="settings_config_alarm">Se configuró la alarma para las %s hs</string>
 
+    <string name="state_descr_selected">Selected</string>
+    <string name="state_descr_not_selected">Not selected</string>
+    <string name="cd_back">Back</string>
+    <string name="click_label_select">select</string>
 </resources>
