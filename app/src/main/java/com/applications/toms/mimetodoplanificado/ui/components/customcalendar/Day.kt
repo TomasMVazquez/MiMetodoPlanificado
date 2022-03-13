@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.applications.toms.domain.CalendarDay
 import com.applications.toms.domain.enums.DaySelectedStatus
 import com.applications.toms.mimetodoplanificado.ui.theme.VividRaspberry
@@ -39,14 +40,15 @@ fun Day(
                         .fillMaxSize()
                         .wrapContentSize(Alignment.Center)
                         .border(
-                            width = 2.dp,
+                            width = 1.dp,
                             color = MaterialTheme.colors.primaryVariant,
                             shape = CircleShape
                         )
-                        .padding(8.dp)
+                        .padding(2.dp)
                 ,
                 text = day.value,
-                color = if (day.status.isMarked()) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onPrimary
+                color = if (day.status.isMarked()) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onPrimary,
+                fontSize = 12.sp
             )
         }
     }

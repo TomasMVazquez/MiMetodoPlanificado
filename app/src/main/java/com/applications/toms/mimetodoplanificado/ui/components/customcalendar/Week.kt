@@ -30,7 +30,7 @@ fun Week(
     Row(modifier = modifier) {
         val spaceModifiers = Modifier
             .weight(1f)
-            .heightIn(max = 48.dp)
+            .heightIn(max = 24.dp)
         Surface(modifier = spaceModifiers, color = leftFillColor) {
             Spacer(Modifier.fillMaxHeight())
         }

@@ -21,11 +21,11 @@ fun MyMethod() {
     val calendarYear = if (monthFrom.monthNumber == monthTo.monthNumber)
         listOf(monthFrom) else listOf(monthFrom, monthTo)
 
-    MyMethodContent(calendarYear,from,to)
+    MyMethodContent(calendarYear, from, to)
 }
 
 @Composable
-fun MyMethodContent(caledarYear: List<CalendarMonth>, from: LocalDate, to: LocalDate) {
+fun MyMethodContent(calendarYear: List<CalendarMonth>, from: LocalDate, to: LocalDate) {
     Column {
 
         GenericSpacer(
@@ -33,8 +33,9 @@ fun MyMethodContent(caledarYear: List<CalendarMonth>, from: LocalDate, to: Local
             padding = 2.dp,
             backgroundColor = VividRaspberry
         )
+
         Calendar(
-            calendarYear = caledarYear,
+            calendarYear = calendarYear,
             from = from,
             to = to
         )

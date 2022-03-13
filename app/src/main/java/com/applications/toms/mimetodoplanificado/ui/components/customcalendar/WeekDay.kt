@@ -31,7 +31,7 @@ fun DayContainer(
     content: @Composable () -> Unit
 ) {
     Surface(
-        modifier = modifier.size(width = 48.dp, height = 48.dp),
+        modifier = modifier.size(width = 24.dp, height = 24.dp),
         color = backgroundColor
     ) {
         content()

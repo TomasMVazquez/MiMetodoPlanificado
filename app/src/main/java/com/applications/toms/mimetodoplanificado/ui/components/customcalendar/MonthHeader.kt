@@ -12,9 +12,9 @@ import androidx.compose.ui.semantics.clearAndSetSemantics
 fun MonthHeader(modifier: Modifier = Modifier, month: String, year: String) {
     Row(modifier = modifier.clearAndSetSemantics { }) {
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier,
             text = month,
-            style = MaterialTheme.typography.h6
+            style = MaterialTheme.typography.body2
         )
         Text(
             modifier = Modifier.align(Alignment.CenterVertically),
