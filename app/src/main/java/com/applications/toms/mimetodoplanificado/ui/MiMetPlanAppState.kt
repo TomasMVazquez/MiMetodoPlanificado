@@ -22,17 +22,15 @@ import kotlinx.coroutines.launch
 @ExperimentalMaterialApi
 @Composable
 fun rememberAppState(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     navController: NavHostController = rememberNavController(),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
-): AppState = remember(scaffoldState, navController, coroutineScope) {
-    AppState(scaffoldState, modalBottomSheetState, navController, coroutineScope)
+): AppState = remember(navController, coroutineScope) {
+    AppState(modalBottomSheetState, navController, coroutineScope)
 }
 
 @ExperimentalMaterialApi
 class AppState (
-    val scaffoldState: ScaffoldState,
     val modalBottomSheetState: ModalBottomSheetState,
     val navController: NavHostController,
     private val coroutineScope: CoroutineScope,
@@ -40,19 +38,6 @@ class AppState (
 
     private val _state = MutableStateFlow(MethodAndStartDate())
     val state: SharedFlow<MethodAndStartDate> = _state.asStateFlow()
-
-    private val context: Context
-        @Composable get() = LocalContext.current
-
-    val showOnBoarding: Boolean
-        @Composable get() = !hasOnBoardingAlreadyShown(context)
-
-    val isMethodSaved: Boolean
-        @Composable get() = isMethodSaved(context)
-
-    val currentRoute: String
-        @Composable
-        get() = navController.currentBackStackEntryAsState().value?.destination?.route ?: ""
 
     fun hideModalSheet() {
         coroutineScope.launch { modalBottomSheetState.hide() }
@@ -68,11 +53,6 @@ class AppState (
         _state.value = MethodAndStartDate(
             methodChosen = method
         )
-    }
-
-    fun goToMyMethodHome() {
-        navController.navigate(NavCommand.ContentType(NavFeature.MY_METHOD).route)
-        hideModalSheet()
     }
 
 }

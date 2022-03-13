@@ -23,18 +23,48 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
-fun Navigation(appState: AppState) {
-
-    NavHost(
-        navController = appState.navController,
-        startDestination = NavFeature.HOME.route
-    ) {
-        nav(navController = appState.navController, appState){
-            appState.setMethodChosen(it)
-            appState.showModalSheet()
+fun Navigation(
+    navController: NavHostController,
+    shouldShowOnBoarding: Boolean,
+    isMethodSaved: Boolean,
+    onFinishOnBoarding: () -> Unit,
+    goToSettings: (Method) -> Unit
+) {
+    if (shouldShowOnBoarding){
+        NavHost(
+            navController = navController,
+            startDestination = NavFeature.ON_BOARDING.route
+        ) {
+            onBoardingNav(onFinishOnBoarding)
+        }
+    } else {
+        NavHost(
+            navController = navController,
+            startDestination = NavFeature.HOME.route
+        ) {
+            nav(navController = navController, isMethodSaved, goToSettings)
         }
     }
+}
 
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
+private fun NavGraphBuilder.onBoardingNav (
+    onFinishOnBoarding: () -> Unit
+) {
+    navigation(
+        startDestination = ContentType(NavFeature.ON_BOARDING).route,
+        route = NavFeature.ON_BOARDING.route
+    ){
+        composable(navCommand = ContentType(NavFeature.ON_BOARDING)) {
+            OnBoarding(
+                onGettingStartedClick = { onFinishOnBoarding() },
+                onSkipClicked = { onFinishOnBoarding() }
+            )
+        }
+    }
 }
 
 @ExperimentalMaterialApi
@@ -43,28 +73,24 @@ fun Navigation(appState: AppState) {
 @ExperimentalFoundationApi
 private fun NavGraphBuilder.nav (
     navController: NavController,
-    appState: AppState,
+    isMethodSaved: Boolean,
     goToSettings: (Method) -> Unit
 ) {
-    navigation(
-        startDestination = ContentType(NavFeature.ON_BOARDING).route,
-        route = NavFeature.HOME.route
-    ){
-        composable(navCommand = ContentType(NavFeature.ON_BOARDING)) {
-            if (appState.showOnBoarding) {
-                OnBoarding(
-                    onGettingStartedClick = { onFinishOnBoarding(navController) },
-                    onSkipClicked = { onFinishOnBoarding(navController) }
-                )
-            } else {
-                onFinishOnBoarding(navController)
+    if (isMethodSaved) {
+        navigation(
+            startDestination = ContentType(NavFeature.MY_METHOD).route,
+            route = NavFeature.MY_METHOD.route
+        ){
+            composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
+                MyMethod()
             }
         }
-
-        composable(navCommand = ContentType(NavFeature.HOME)){
-            if (appState.isMethodSaved) {
-                goToMyMethodHome(navController)
-            } else {
+    } else {
+        navigation(
+            startDestination = ContentType(NavFeature.HOME).route,
+            route = NavFeature.HOME.route
+        ){
+            composable(navCommand = ContentType(NavFeature.HOME)){
                 Home { method, userAction ->
                     when (userAction) {
                         UserAction.ABOUT_US -> {
@@ -74,34 +100,13 @@ private fun NavGraphBuilder.nav (
                     }
                 }
             }
-        }
 
-        composable(navCommand = ContentType(NavFeature.ABOUT_US)) {
-            AboutUs {
-                navController.popBackStack()
+            composable(navCommand = ContentType(NavFeature.ABOUT_US)) {
+                AboutUs {
+                    navController.popBackStack()
+                }
             }
         }
-
-        composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
-            MyMethod()
-        }
-    }
-
-}
-
-private fun onFinishOnBoarding(navController: NavController) {
-    navController.navigate(
-        ContentType(NavFeature.HOME).route
-    ) {
-        launchSingleTop = true
-    }
-}
-
-private fun goToMyMethodHome(navController: NavController) {
-    navController.navigate(
-        ContentType(NavFeature.MY_METHOD).route
-    ) {
-        launchSingleTop = true
     }
 }
 
