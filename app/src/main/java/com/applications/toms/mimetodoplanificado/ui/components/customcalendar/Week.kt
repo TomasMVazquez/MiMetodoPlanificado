@@ -9,10 +9,11 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
 import com.applications.toms.domain.CalendarMonth
 import com.applications.toms.domain.CalendarWeek
 import com.applications.toms.domain.enums.DaySelectedStatus
+import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.utils.isMarked
 import java.time.LocalDate
 
@@ -30,7 +31,7 @@ fun Week(
     Row(modifier = modifier) {
         val spaceModifiers = Modifier
             .weight(1f)
-            .heightIn(max = 24.dp)
+            .heightIn(max = dimensionResource(id = R.dimen.calendar_day_size))
         Surface(modifier = spaceModifiers, color = leftFillColor) {
             Spacer(Modifier.fillMaxHeight())
         }

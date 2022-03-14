@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.dimensionResource
+import com.applications.toms.mimetodoplanificado.R
 
 @Composable
 fun WeekDay(name: String) {
@@ -31,7 +32,10 @@ fun DayContainer(
     content: @Composable () -> Unit
 ) {
     Surface(
-        modifier = modifier.size(width = 24.dp, height = 24.dp),
+        modifier = modifier.size(
+            width = dimensionResource(id = R.dimen.calendar_day_size),
+            height = dimensionResource(id = R.dimen.calendar_day_size)
+        ),
         color = backgroundColor
     ) {
         content()

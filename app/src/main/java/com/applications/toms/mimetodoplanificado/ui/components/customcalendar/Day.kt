@@ -30,8 +30,7 @@ fun Day(
     ) {
         DayStatusContainer(status = day.status) {
             Text(
-                modifier =
-                if(!isToday)
+                modifier = if (!isToday)
                     Modifier
                         .fillMaxSize()
                         .wrapContentSize(Alignment.Center)
@@ -44,10 +43,10 @@ fun Day(
                             color = MaterialTheme.colors.primaryVariant,
                             shape = CircleShape
                         )
-                        .padding(2.dp)
-                ,
+                        .padding(2.dp),
                 text = day.value,
-                color = if (day.status.isMarked()) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onPrimary,
+                color = if (day.status.isMarked()) MaterialTheme.colors.primaryVariant
+                else MaterialTheme.colors.onPrimary,
                 fontSize = 12.sp
             )
         }
@@ -64,9 +63,15 @@ private fun DayStatusContainer(
             val color = MaterialTheme.colors.secondary
             Circle(color = color)
             if (status == DaySelectedStatus.FirstDay) {
-                SemiRect(color = color, lookingLeft = false)
+                SemiRect(
+                    color = color,
+                    lookingLeft = false
+                )
             } else if (status == DaySelectedStatus.LastDay) {
-                SemiRect(color = color, lookingLeft = true)
+                SemiRect(
+                    color = color,
+                    lookingLeft = true
+                )
             }
             content()
         }

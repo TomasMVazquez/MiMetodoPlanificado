@@ -6,11 +6,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import com.applications.toms.domain.daysOfWeek
 
+private const val FIRST_LETTER_OF_WEEK = 1
+
 @Composable
 fun DaysOfWeek(modifier: Modifier = Modifier) {
     Row(modifier = modifier.clearAndSetSemantics { }) {
         for (day in daysOfWeek()) {
-            WeekDay(name = day.take(1))
+            WeekDay(name = day.take(FIRST_LETTER_OF_WEEK))
         }
     }
 }

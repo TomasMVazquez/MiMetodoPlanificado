@@ -19,4 +19,6 @@
 
     <dimen name="icon_height">144dp</dimen>
     <dimen name="rounded_icon">50dp</dimen>
+
+    <dimen name="calendar_day_size">24dp</dimen>
 </resources>
