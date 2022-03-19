@@ -31,7 +31,7 @@ class MyMethodViewModel @Inject constructor(
                         loading = false,
                         methodChosen = response.first.methodAndStartDate.methodChosen,
                         startDate = response.first.methodAndStartDate.startDate,
-                        endDate = response.first.methodAndStartDate.startDate.plusDays(TOTAL_CYCLE_DAYS),
+                        endDate = response.first.methodAndStartDate.startDate.plusDays(TOTAL_CYCLE_DAYS - 1),
                         nextCycle = response.second,
                         pillsBreakDays = response.first.pillsBreakDays,
                         notifications = response.first.notifications,

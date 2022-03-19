@@ -1,5 +1,6 @@
 package com.applications.toms.mimetodoplanificado.ui.components.customcalendar
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,12 +18,15 @@ import java.time.LocalDate
 
 @Composable
 fun Calendar(
+    modifier: Modifier = Modifier,
     calendarYear: CalendarYear,
     from: LocalDate,
-    to: LocalDate,
-    modifier: Modifier = Modifier
+    to: LocalDate
 ) {
-    LazyRow(modifier) {
+    LazyRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center
+    ) {
         for (month in calendarYear) {
             itemsCalendarMonth(
                 month = month,
@@ -43,9 +47,6 @@ private fun LazyListScope.itemsCalendarMonth(
     }
     item {
         Column {
-            /**
-             * TODO Change headerMonth to show correctly
-             */
             MonthHeader(
                 modifier = Modifier.fillMaxWidth(),
                 month = month.name,
