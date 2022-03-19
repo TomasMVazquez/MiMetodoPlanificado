@@ -43,8 +43,8 @@ fun MyMethodContent(state: State) {
         val calendarYear = if (monthFrom.monthNumber == monthTo.monthNumber)
             listOf(monthFrom) else listOf(monthFrom, monthTo)
 
-        val totalDays = to.compareTo(from).toFloat()
-        val currentDay = LocalDate.now().compareTo(from).toFloat()
+        val totalDays = (from.until(to).days + 1).toFloat()
+        val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
 
         Column(modifier = Modifier.fillMaxSize()) {
 
