@@ -9,16 +9,16 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.applications.toms.data.EitherState
+import com.applications.toms.data.onFailure
+import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsRing
 import com.applications.toms.mimetodoplanificado.ui.components.generics.*
@@ -40,7 +40,16 @@ fun Settings(
         viewModel.event.collect {
             when(it) {
                 is Event.Continue -> {
-                    if (it.state == EitherState.SUCCESS) onDone() //else onCancel()
+                    it.state
+                        .onSuccess {
+                            onDone()
+                        }
+                        .onFailure {
+                            it
+                            /**
+                             * TODO MANAGE ERROR STATES
+                             */
+                        }
                 }
             }
         }
@@ -187,14 +196,7 @@ fun Settings(
                     }
 
                     AnimatedVisibility(visible = state.loading) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.BottomCenter
-                        ){
-                            CircularProgressIndicator(
-                                color = MaterialTheme.colors.secondary
-                            )
-                        }
+                        MyLoadingContent(Modifier.fillMaxWidth(), Alignment.BottomCenter)
                     }
                 }
             }

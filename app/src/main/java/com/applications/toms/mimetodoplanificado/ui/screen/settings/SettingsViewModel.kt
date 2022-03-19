@@ -2,11 +2,15 @@ package com.applications.toms.mimetodoplanificado.ui.screen.settings
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.applications.toms.data.Either
 import com.applications.toms.data.EitherState
+import com.applications.toms.data.eitherFailure
+import com.applications.toms.data.eitherSuccess
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
+import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.usecases.SaveChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -14,7 +18,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -62,10 +65,10 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             saveChosenMethodUseCase.execute(methodChosen)
                 .onSuccess {
-                    _event.emit(Event.Continue(state = it))
+                    _event.emit(Event.Continue(state = eitherSuccess(it)))
                 }
                 .onFailure {
-                    _event.emit(Event.Continue(state = it))
+                    _event.emit(Event.Continue(state = eitherFailure(it)))
                 }
         }
     }
@@ -82,7 +85,7 @@ class SettingsViewModel @Inject constructor(
 
     sealed class Event {
         data class Continue (
-            val state: EitherState
+            val state: Either<EitherState,ErrorStates>
         ) : Event()
     }
 }

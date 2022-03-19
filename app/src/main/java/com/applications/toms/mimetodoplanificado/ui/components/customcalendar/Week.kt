@@ -39,13 +39,23 @@ fun Week(
         }
         for (day in week) {
             Day(
-                when {
-                    day.value.isEmpty() -> day
-                    day.value.toInt() == from.dayOfMonth && month.monthNumber == from.month.value -> day.apply { status = DaySelectedStatus.FirstDay }
-                    (day.value.toInt() > from.dayOfMonth && month.monthNumber == from.month.value) ||
-                            (day.value.toInt() < to.dayOfMonth && month.monthNumber == to.month.value) -> day.apply { status = DaySelectedStatus.Selected }
-                    day.value.toInt() == to.dayOfMonth && month.monthNumber == to.month.value -> day.apply { status = DaySelectedStatus.LastDay }
-                    else -> day
+                if (from.month.value == to.month.value) {
+                    when {
+                        day.value.isEmpty() -> day
+                        day.value.toInt() == from.dayOfMonth -> day.apply { status = DaySelectedStatus.FirstDay }
+                        day.value.toInt() > from.dayOfMonth && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                        day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
+                        else -> day
+                    }
+                } else {
+                    when {
+                        day.value.isEmpty() -> day
+                        month.monthNumber == from.monthValue && day.value.toInt() == from.dayOfMonth -> day.apply { status = DaySelectedStatus.FirstDay }
+                        month.monthNumber == from.monthValue && day.value.toInt() > from.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                        month.monthNumber == to.monthValue && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                        month.monthNumber == to.monthValue && day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
+                        else -> day
+                    }
                 },
                 if (day.value.isNotEmpty()) day.value.toInt() == today.dayOfMonth && today.month.value == month.monthNumber else false
             )
