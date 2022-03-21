@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -32,7 +31,7 @@ fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
 
     /**
      * TODO Add Rest of UI
-     * Change colors on break day
+     * adjust circular progress day
      */
 
     val state by viewModel.state.collectAsState(State())
@@ -57,6 +56,7 @@ fun MyMethodContent(state: State) {
 
         val totalDays = (from.until(to).days + 1).toFloat()
         val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
+        val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() + 1) }
 
         Column(modifier = Modifier.fillMaxSize()) {
 
@@ -64,7 +64,9 @@ fun MyMethodContent(state: State) {
              * Title
              */
             Text(
-                modifier = Modifier.fillMaxWidth().padding(dimensionResource(id = R.dimen.padding_large)),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(dimensionResource(id = R.dimen.padding_large)),
                 text = when (state.methodChosen) {
                     Method.PILLS -> stringResource(R.string.pills)
                     Method.RING -> stringResource(R.string.ring)
@@ -88,10 +90,11 @@ fun MyMethodContent(state: State) {
             CircularDaysProgress(
                 modifier = Modifier
                     .weight(1f)
-                    .wrapContentWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_xlarge)),
+                    .padding(dimensionResource(id = R.dimen.padding_small)),
                 percentage = currentDay.div(totalDays),
-                number = totalDays.toInt()
+                number = totalDays.toInt(),
+                color = if (LocalDate.now() >= breakDayStarts) MaterialTheme.colors.secondaryVariant
+                else MaterialTheme.colors.secondary
             )
 
             GenericSpacer(
