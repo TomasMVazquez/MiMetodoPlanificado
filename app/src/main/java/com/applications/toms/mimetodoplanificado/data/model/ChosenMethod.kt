@@ -10,7 +10,7 @@ data class ChosenMethod(
     @PrimaryKey val methodChosen: Method,
     val startDate: String,
     val nextCycle: String,
-    val pillsBreakDays: Int,
+    val breakDays: Int,
     val notifications: Boolean,
     val notificationTime: String,
     val alarm: Boolean,

@@ -5,12 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
@@ -24,11 +30,17 @@ import java.time.LocalDate
 @Composable
 fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
 
+    /**
+     * TODO Add Rest of UI
+     * Change colors on break day
+     */
+
     val state by viewModel.state.collectAsState(State())
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(dimensionResource(id = R.dimen.padding_small))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.padding_small))
     ) {
         if (!state.loading) MyMethodContent(state)
     }
@@ -48,10 +60,35 @@ fun MyMethodContent(state: State) {
 
         Column(modifier = Modifier.fillMaxSize()) {
 
+            /**
+             * Title
+             */
+            Text(
+                modifier = Modifier.fillMaxWidth().padding(dimensionResource(id = R.dimen.padding_large)),
+                text = when (state.methodChosen) {
+                    Method.PILLS -> stringResource(R.string.pills)
+                    Method.RING -> stringResource(R.string.ring)
+                    Method.SHOOT -> stringResource(R.string.injection)
+                    Method.PATCH -> stringResource(R.string.patch)
+                    null -> ""
+                },
+                style = MaterialTheme.typography.h2,
+                color = MaterialTheme.colors.onPrimary,
+                textAlign = TextAlign.Center
+            )
+
+            GenericSpacer(
+                type = SpacerType.VERTICAL,
+                padding = dimensionResource(id = R.dimen.spacer_medium)
+            )
+
+            /**
+             * Progress Day
+             */
             CircularDaysProgress(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .weight(1f)
+                    .wrapContentWidth()
                     .padding(dimensionResource(id = R.dimen.padding_xlarge)),
                 percentage = currentDay.div(totalDays),
                 number = totalDays.toInt()
@@ -62,11 +99,15 @@ fun MyMethodContent(state: State) {
                 padding = dimensionResource(id = R.dimen.spacer_medium)
             )
 
+            /**
+             * Calendar
+             */
             Calendar(
                 modifier = Modifier.fillMaxWidth(),
                 calendarYear = calendarYear,
                 from = from,
-                to = to
+                to = to,
+                breakDays = state.breakDays ?: 0
             )
 
         }

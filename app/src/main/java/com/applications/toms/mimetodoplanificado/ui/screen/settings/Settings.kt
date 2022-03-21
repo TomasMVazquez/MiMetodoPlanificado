@@ -26,6 +26,8 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSet
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.RING_CYCLE
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import kotlinx.coroutines.flow.collect
 
 @Composable
@@ -126,13 +128,14 @@ fun Settings(
                         Method.PILLS -> {
                             InfoSettingsPills(
                                 startDate = state.methodAndStartDate.startDate,
-                                pillsBreakDays = state.pillsBreakDays
+                                pillsBreakDays = state.breakDays
                             ) {
-                                viewModel.changePillsBreakDays(it)
+                                viewModel.changeBreakDays(it)
                             }
                         }
                         Method.RING -> {
                             InfoSettingsRing(startDate = state.methodAndStartDate.startDate)
+                            viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(RING_CYCLE.toInt()))
                         }
                         Method.SHOOT -> "" // TODO ADD INFO
                         Method.PATCH -> "" // TODO ADD INFO
@@ -184,7 +187,7 @@ fun Settings(
                                 viewModel.onSaveMethodChosen(
                                     MethodChosen(
                                         methodAndStartDate = methodAndStartDate,
-                                        pillsBreakDays = pillsBreakDays,
+                                        breakDays = breakDays,
                                         notifications = notifications,
                                         notificationTime = notificationTime,
                                         alarm = alarm,

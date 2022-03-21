@@ -14,7 +14,7 @@ fun MethodChosen.toDatabaseModel(): ChosenMethod? =
             methodChosen = it,
             startDate = methodAndStartDate.startDate.toFormattedString(),
             nextCycle = methodAndStartDate.startDate.plusDays(TOTAL_CYCLE_DAYS).toFormattedString(),
-            pillsBreakDays = pillsBreakDays,
+            breakDays = breakDays,
             notifications = notifications,
             notificationTime = notificationTime,
             alarm = alarm,
@@ -28,7 +28,7 @@ fun ChosenMethod.toModel(formatter: DateTimeFormatter): MethodChosen =
             methodChosen = this.methodChosen,
             startDate = LocalDate.parse(this.startDate, formatter)
         ),
-        pillsBreakDays = this.pillsBreakDays,
+        breakDays = this.breakDays,
         notifications = this.notifications,
         notificationTime = this.notificationTime,
         alarm = this.alarm,

@@ -16,28 +16,57 @@ fun Week(
     month: CalendarMonth,
     week: CalendarWeek,
     from: LocalDate,
-    to: LocalDate
+    to: LocalDate,
+    breakDays: Int
 ) {
     val today = LocalDate.now()
+    val breakDayStarts = to.minusDays(breakDays.toLong() + 1)
 
-    Row(modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.CenterHorizontally)) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentWidth(Alignment.CenterHorizontally)
+    ) {
         for (day in week) {
             Day(
                 if (from.month.value == to.month.value) {
                     when {
                         day.value.isEmpty() -> day
                         day.value.toInt() == from.dayOfMonth -> day.apply { status = DaySelectedStatus.FirstDay }
-                        day.value.toInt() > from.dayOfMonth && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                        day.value.toInt() < breakDayStarts.dayOfMonth &&
+                                day.value.toInt() > from.dayOfMonth &&
+                                day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                        day.value.toInt() >= breakDayStarts.dayOfMonth &&
+                                day.value.toInt() > from.dayOfMonth &&
+                                day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.BreakDay }
                         day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
                         else -> day
                     }
                 } else {
                     when {
                         day.value.isEmpty() -> day
-                        month.monthNumber == from.monthValue && day.value.toInt() == from.dayOfMonth -> day.apply { status = DaySelectedStatus.FirstDay }
-                        month.monthNumber == from.monthValue && day.value.toInt() > from.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
-                        month.monthNumber == to.monthValue && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
-                        month.monthNumber == to.monthValue && day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
+                        month.monthNumber == from.monthValue -> {
+                            when {
+                                day.value.toInt() == from.dayOfMonth -> day.apply { status = DaySelectedStatus.FirstDay }
+                                month.monthNumber == breakDayStarts.monthValue &&
+                                        day.value.toInt() >= breakDayStarts.dayOfMonth -> day.apply {
+                                    status = DaySelectedStatus.BreakDay
+                                }
+                                day.value.toInt() > from.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                                else -> day
+                            }
+                        }
+                        month.monthNumber == to.monthValue -> {
+                            when {
+                                day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
+                                month.monthNumber == breakDayStarts.monthValue && day.value.toInt() >= breakDayStarts.dayOfMonth
+                                        && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.BreakDay }
+                                month.monthNumber != breakDayStarts.monthValue
+                                        && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.BreakDay }
+                                day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.Selected }
+                                else -> day
+                            }
+                        }
                         else -> day
                     }
                 },

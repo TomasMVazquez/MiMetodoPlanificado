@@ -18,16 +18,18 @@ fun LocalDate.toFormattedString(): String = format(DateTimeFormatter.ofPattern(F
 
 fun DaySelectedStatus.color(theme: Colors): Color = when (this) {
     DaySelectedStatus.Selected -> theme.secondary
+    DaySelectedStatus.BreakDay -> theme.secondaryVariant
     else -> Color.Transparent
 }
 
 fun DaySelectedStatus.isMarked(): Boolean = when (this) {
-        DaySelectedStatus.Selected -> true
-        DaySelectedStatus.FirstDay -> true
-        DaySelectedStatus.LastDay -> true
-        DaySelectedStatus.FirstLastDay -> true
-        else -> false
-    }
+    DaySelectedStatus.Selected -> true
+    DaySelectedStatus.FirstDay -> true
+    DaySelectedStatus.LastDay -> true
+    DaySelectedStatus.FirstLastDay -> true
+    DaySelectedStatus.BreakDay -> true
+    else -> false
+}
 
 fun LocalDate.toCalendarMonth(): CalendarMonth =
     CalendarMonth(
@@ -35,9 +37,9 @@ fun LocalDate.toCalendarMonth(): CalendarMonth =
         year = Year.now().toString(),
         numDays = this.month.length(Year.isLeap(this.year.toLong())),
         monthNumber = this.monthValue,
-        startDayOfWeek = getFirstDayOfMonth(YearMonth.of(this.year,this.month))
+        startDayOfWeek = getFirstDayOfMonth(YearMonth.of(this.year, this.month))
     )
 
-inline fun <T1: Any, T2: Any, R: Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2)->R?): R? {
+inline fun <T1 : Any, T2 : Any, R : Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
     return if (p1 != null && p2 != null) block(p1, p2) else null
 }

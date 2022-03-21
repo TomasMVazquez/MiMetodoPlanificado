@@ -49,8 +49,8 @@ class SettingsViewModel @Inject constructor(
         )
     }
 
-    fun changePillsBreakDays(days: Int) {
-        _state.value = _state.value.copy(pillsBreakDays = days)
+    fun changeBreakDays(days: Int) {
+        _state.value = _state.value.copy(breakDays = days)
     }
 
     fun changeNotificationValue(value: Boolean, time: String) {
@@ -76,7 +76,7 @@ class SettingsViewModel @Inject constructor(
     data class SettingsState (
         val methodAndStartDate: MethodAndStartDate = MethodAndStartDate(),
         val loading: Boolean = false,
-        val pillsBreakDays: Int = 5,
+        val breakDays: Int = 5,
         val notifications: Boolean = false,
         val notificationTime: String = "",
         val alarm: Boolean = false,

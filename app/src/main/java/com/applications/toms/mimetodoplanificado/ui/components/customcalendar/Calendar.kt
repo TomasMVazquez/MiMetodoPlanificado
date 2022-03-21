@@ -21,7 +21,8 @@ fun Calendar(
     modifier: Modifier = Modifier,
     calendarYear: CalendarYear,
     from: LocalDate,
-    to: LocalDate
+    to: LocalDate,
+    breakDays: Int
 ) {
     LazyRow(
         modifier = modifier,
@@ -31,7 +32,8 @@ fun Calendar(
             itemsCalendarMonth(
                 month = month,
                 from = from,
-                to = to
+                to = to,
+                breakDays = breakDays
             )
         }
     }
@@ -40,7 +42,8 @@ fun Calendar(
 private fun LazyListScope.itemsCalendarMonth(
     month: CalendarMonth,
     from: LocalDate,
-    to: LocalDate
+    to: LocalDate,
+    breakDays: Int
 ) {
     item {
         Spacer(Modifier.width(dimensionResource(id = R.dimen.spacer_small)))
@@ -60,7 +63,8 @@ private fun LazyListScope.itemsCalendarMonth(
                     week = week,
                     month = month,
                     from = from,
-                    to = to
+                    to = to,
+                    breakDays = breakDays
                 )
                 Spacer(Modifier.height(dimensionResource(id = R.dimen.spacer_small)))
             }
