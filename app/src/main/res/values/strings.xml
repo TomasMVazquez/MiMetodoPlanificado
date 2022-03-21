@@ -87,4 +87,6 @@
 
     // MyMethodHome
     <string name="current_day">Día\n%d</string>
+    <string name="info_calendar_cycle">Ciclo</string>
+    <string name="info_calendar_break">Descanso</string>
 </resources>

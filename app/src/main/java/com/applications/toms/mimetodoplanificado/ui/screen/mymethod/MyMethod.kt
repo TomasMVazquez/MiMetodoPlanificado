@@ -19,6 +19,7 @@ import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
+import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.State
@@ -112,6 +113,8 @@ fun MyMethodContent(state: State) {
                 to = to,
                 breakDays = state.breakDays ?: 0
             )
+            
+            InfoCalendar()
 
         }
     }
