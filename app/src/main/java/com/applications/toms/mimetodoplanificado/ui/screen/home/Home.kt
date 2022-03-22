@@ -35,7 +35,7 @@ fun Home(onUserAction: (Method?, UserAction) -> Unit){
                     start = dimensionResource(id = R.dimen.padding_large),
                     top = dimensionResource(id = R.dimen.no_padding),
                     end = dimensionResource(id = R.dimen.no_padding),
-                    bottom = dimensionResource(id = R.dimen.padding_small)
+                    bottom = dimensionResource(id = R.dimen.padding_medium)
                 ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.End

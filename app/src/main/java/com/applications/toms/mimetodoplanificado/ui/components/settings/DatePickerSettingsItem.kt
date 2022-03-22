@@ -28,7 +28,7 @@ fun DatePickerSettingsItem(date: LocalDate, onDateChange: (LocalDate) -> Unit) {
         Text(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(dimensionResource(id = R.dimen.padding_small)),
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
             text = stringResource(R.string.settings_text_start_date),
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.onPrimary

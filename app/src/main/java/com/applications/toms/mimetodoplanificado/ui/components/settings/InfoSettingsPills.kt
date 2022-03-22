@@ -21,8 +21,8 @@ fun InfoSettingsPills(startDate: LocalDate, pillsBreakDays: Int, pillsBreakDaysC
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = dimensionResource(id = R.dimen.padding_small),
-                start = dimensionResource(id = R.dimen.padding_small)
+                top = dimensionResource(id = R.dimen.padding_medium),
+                start = dimensionResource(id = R.dimen.padding_medium)
             ),
         text = stringResource(
             id = R.string.settings_pills_start_date_text,
@@ -34,7 +34,7 @@ fun InfoSettingsPills(startDate: LocalDate, pillsBreakDays: Int, pillsBreakDaysC
 
     Text(
         modifier = Modifier.fillMaxWidth()
-            .padding(start = dimensionResource(id = R.dimen.padding_small)),
+            .padding(start = dimensionResource(id = R.dimen.padding_medium)),
         text = stringResource(R.string.settings_pills_subtitle_break),
         style = MaterialTheme.typography.caption,
         color = MaterialTheme.colors.onPrimary
@@ -43,7 +43,7 @@ fun InfoSettingsPills(startDate: LocalDate, pillsBreakDays: Int, pillsBreakDaysC
 
     Text(
         modifier = Modifier.fillMaxWidth()
-            .padding(start = dimensionResource(id = R.dimen.padding_small)),
+            .padding(start = dimensionResource(id = R.dimen.padding_medium)),
         text = stringResource(
             id = R.string.settings_ring_next_date_text,
             startDate.plusDays(TOTAL_CYCLE_DAYS).toFormattedString()

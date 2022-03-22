@@ -17,7 +17,7 @@ import com.applications.toms.mimetodoplanificado.R
 fun MonthHeader(modifier: Modifier = Modifier, month: String, year: String) {
     Row(modifier = modifier
         .fillMaxWidth()
-        .padding(horizontal = dimensionResource(id = R.dimen.padding_xsmall))
+        .padding(horizontal = dimensionResource(id = R.dimen.padding_small))
     ) {
         Text(
             modifier = Modifier,

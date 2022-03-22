@@ -15,8 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
-import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 
 @Composable
 fun InfoCalendar() {
@@ -32,10 +30,10 @@ fun InfoCalendar() {
             Box(modifier = Modifier
                 .size(dimensionResource(id = R.dimen.spacer_medium))
                 .background(color = MaterialTheme.colors.secondary)
-                .padding(horizontal = dimensionResource(id = R.dimen.padding_xsmall)))
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_small)))
 
             Text(
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_xsmall)),
+                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                 text = stringResource(id = R.string.info_calendar_cycle),
                 style = MaterialTheme.typography.caption
             )
@@ -47,7 +45,7 @@ fun InfoCalendar() {
                 .background(color = MaterialTheme.colors.secondaryVariant))
 
             Text(
-                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_xsmall)),
+                modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                 text = stringResource(id = R.string.info_calendar_break),
                 style = MaterialTheme.typography.caption
             )

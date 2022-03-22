@@ -84,9 +84,15 @@
     <string name="done">Listo</string>
     <string name="settings_config_notif">Se configuró las notificaciones para las %s hs</string>
     <string name="settings_config_alarm">Se configuró la alarma para las %s hs</string>
+    <string name="settings_config_alarm_off">No se configuró ninguna alarma</string>
+    <string name="settings_config_notif_off">No se configuró ninguna notificación</string>
 
     // MyMethodHome
     <string name="current_day">Día\n%d</string>
     <string name="info_calendar_cycle">Ciclo</string>
     <string name="info_calendar_break">Descanso</string>
+    <string name="my_method_settings">Configuración</string>
+    <string name="my_method_change">Cambiar método</string>
+    <string name="my_method_alarm">Alarma</string>
+    <string name="my_method_notif">Notificaciones</string>
 </resources>

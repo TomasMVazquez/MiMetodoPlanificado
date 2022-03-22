@@ -50,7 +50,7 @@ fun NotificationSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
 
         GenericSpacer(
             type = SpacerType.VERTICAL,
-            padding = dimensionResource(id = R.dimen.padding_xsmall)
+            padding = dimensionResource(id = R.dimen.padding_small)
         )
 
         AnimatedVisibility(visible = showTimePicker) {

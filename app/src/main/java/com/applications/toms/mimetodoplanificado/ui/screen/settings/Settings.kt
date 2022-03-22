@@ -62,7 +62,7 @@ fun Settings(
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .padding(dimensionResource(id = R.dimen.padding_xsmall))
+        .padding(dimensionResource(id = R.dimen.padding_small))
     ) {
 
         /**
@@ -144,7 +144,7 @@ fun Settings(
 
                     GenericSpacer(
                         type = SpacerType.VERTICAL,
-                        padding = dimensionResource(id = R.dimen.padding_small)
+                        padding = dimensionResource(id = R.dimen.padding_medium)
                     )
                 }
 

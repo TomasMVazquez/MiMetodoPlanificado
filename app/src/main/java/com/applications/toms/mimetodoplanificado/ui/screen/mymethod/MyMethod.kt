@@ -18,6 +18,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
+import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
+import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
@@ -30,19 +32,15 @@ import java.time.LocalDate
 @Composable
 fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
 
-    /**
-     * TODO Add Rest of UI
-     * adjust circular progress day
-     */
-
     val state by viewModel.state.collectAsState(State())
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(dimensionResource(id = R.dimen.padding_small))
-    ) {
-        if (!state.loading) MyMethodContent(state)
+    Box(modifier = Modifier.fillMaxSize()) {
+        if (!state.loading)
+            Column() {
+                MyMethodCustomToolbar()
+
+                MyMethodContent(state)
+            }
     }
 
 }
@@ -59,7 +57,12 @@ fun MyMethodContent(state: State) {
         val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
         val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() + 1) }
 
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier.fillMaxSize().padding(
+            start = dimensionResource(id = R.dimen.padding_medium),
+            top = dimensionResource(id = R.dimen.no_padding),
+            end = dimensionResource(id = R.dimen.padding_medium),
+            bottom = dimensionResource(id = R.dimen.padding_medium)
+        )) {
 
             /**
              * Title
@@ -67,7 +70,7 @@ fun MyMethodContent(state: State) {
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_large)),
+                    .padding(bottom = dimensionResource(id = R.dimen.padding_medium)),
                 text = when (state.methodChosen) {
                     Method.PILLS -> stringResource(R.string.pills)
                     Method.RING -> stringResource(R.string.ring)
@@ -75,7 +78,7 @@ fun MyMethodContent(state: State) {
                     Method.PATCH -> stringResource(R.string.patch)
                     null -> ""
                 },
-                style = MaterialTheme.typography.h2,
+                style = MaterialTheme.typography.h3,
                 color = MaterialTheme.colors.onPrimary,
                 textAlign = TextAlign.Center
             )
@@ -89,14 +92,21 @@ fun MyMethodContent(state: State) {
              * Progress Day
              */
             CircularDaysProgress(
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(dimensionResource(id = R.dimen.padding_small)),
+                modifier = Modifier.weight(1f),
                 percentage = currentDay.div(totalDays),
                 number = totalDays.toInt(),
                 color = if (LocalDate.now() >= breakDayStarts) MaterialTheme.colors.secondaryVariant
                 else MaterialTheme.colors.secondary
             )
+
+            GenericSpacer(
+                type = SpacerType.VERTICAL,
+                padding = dimensionResource(id = R.dimen.spacer_small)
+            )
+            /**
+             * Info Notif & Alarm
+             */
+            InfoNotificationsAndAlarm(state.alarm, state.alarmTime, state.notifications, state.notificationTime)
 
             GenericSpacer(
                 type = SpacerType.VERTICAL,
@@ -119,4 +129,3 @@ fun MyMethodContent(state: State) {
         }
     }
 }
-

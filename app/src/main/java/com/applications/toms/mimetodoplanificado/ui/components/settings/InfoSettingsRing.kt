@@ -20,8 +20,8 @@ fun InfoSettingsRing(startDate: LocalDate) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(
-                top = dimensionResource(id = R.dimen.padding_small),
-                start = dimensionResource(id = R.dimen.padding_small)
+                top = dimensionResource(id = R.dimen.padding_medium),
+                start = dimensionResource(id = R.dimen.padding_medium)
             ),
         text = stringResource(
             id = R.string.settings_ring_start_date_text,
@@ -33,7 +33,7 @@ fun InfoSettingsRing(startDate: LocalDate) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = dimensionResource(id = R.dimen.padding_small)),
+            .padding(start = dimensionResource(id = R.dimen.padding_medium)),
         text = stringResource(
             id = R.string.settings_ring_break_date_text,
             startDate.plusDays(RING_CYCLE).toFormattedString()
@@ -44,7 +44,7 @@ fun InfoSettingsRing(startDate: LocalDate) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = dimensionResource(id = R.dimen.padding_small)),
+            .padding(start = dimensionResource(id = R.dimen.padding_medium)),
         text = stringResource(
             id = R.string.settings_ring_next_date_text,
             startDate.plusDays(TOTAL_CYCLE_DAYS).toFormattedString()
