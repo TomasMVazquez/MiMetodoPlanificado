@@ -5,11 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
@@ -17,6 +24,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.components.AlertDialogConfirmMethodChange
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
@@ -27,17 +35,40 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerTy
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
+import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @Composable
 fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
 
     val state by viewModel.state.collectAsState(State())
+    var openDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = viewModel.event) {
+        viewModel.event.collect {
+            when(it) {
+                is MyMethodViewModel.Event.ConfirmMethodChange -> {
+                    openDialog = true
+                }
+            }
+        }
+    }
+
+    if (openDialog)
+        AlertDialogConfirmMethodChange(
+            onCancel = { openDialog = false },
+            onConfirm = {
+
+            }
+        )
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (!state.loading)
             Column() {
-                MyMethodCustomToolbar()
+                MyMethodCustomToolbar(
+                    onChangeMethodClick = { viewModel.onMethodChangeClick() },
+                    onGoToSettingsClick = { viewModel.onGoToSettingsClick() }
+                )
 
                 MyMethodContent(state)
             }
@@ -57,13 +88,16 @@ fun MyMethodContent(state: State) {
         val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
         val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() + 1) }
 
-        Column(modifier = Modifier.fillMaxSize().padding(
-            start = dimensionResource(id = R.dimen.padding_medium),
-            top = dimensionResource(id = R.dimen.no_padding),
-            end = dimensionResource(id = R.dimen.padding_medium),
-            bottom = dimensionResource(id = R.dimen.padding_medium)
-        )) {
-
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding_medium),
+                    top = dimensionResource(id = R.dimen.no_padding),
+                    end = dimensionResource(id = R.dimen.padding_medium),
+                    bottom = dimensionResource(id = R.dimen.padding_medium)
+                )
+        ) {
             /**
              * Title
              */
@@ -87,7 +121,6 @@ fun MyMethodContent(state: State) {
                 type = SpacerType.VERTICAL,
                 padding = dimensionResource(id = R.dimen.spacer_medium)
             )
-
             /**
              * Progress Day
              */
@@ -112,7 +145,6 @@ fun MyMethodContent(state: State) {
                 type = SpacerType.VERTICAL,
                 padding = dimensionResource(id = R.dimen.spacer_medium)
             )
-
             /**
              * Calendar
              */
@@ -123,7 +155,7 @@ fun MyMethodContent(state: State) {
                 to = to,
                 breakDays = state.breakDays ?: 0
             )
-            
+
             InfoCalendar()
 
         }

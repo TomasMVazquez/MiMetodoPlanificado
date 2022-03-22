@@ -8,8 +8,10 @@ import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -22,6 +24,9 @@ class MyMethodViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(State())
     val state: SharedFlow<State> = _state.asStateFlow()
+
+    private val _event = MutableSharedFlow<Event>()
+    val event: SharedFlow<Event> = _event.asSharedFlow()
 
     init {
         viewModelScope.launch {
@@ -37,7 +42,7 @@ class MyMethodViewModel @Inject constructor(
                         notifications = response.first.notifications,
                         notificationTime = response.first.notificationTime,
                         alarm = response.first.alarm,
-                        alarmTime =response.first.alarmTime
+                        alarmTime = response.first.alarmTime
                     )
                 }
                 .onFailure {
@@ -47,6 +52,18 @@ class MyMethodViewModel @Inject constructor(
                      */
                 }
         }
+    }
+
+    fun onMethodChangeClick() {
+        viewModelScope.launch {
+            _event.emit(
+                Event.ConfirmMethodChange
+            )
+        }
+    }
+
+    fun onGoToSettingsClick() {
+
     }
 
     data class State(
@@ -62,4 +79,7 @@ class MyMethodViewModel @Inject constructor(
         val alarmTime: String? = null
     )
 
+    sealed class Event {
+        object ConfirmMethodChange: Event()
+    }
 }

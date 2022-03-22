@@ -95,4 +95,9 @@
     <string name="my_method_change">Cambiar método</string>
     <string name="my_method_alarm">Alarma</string>
     <string name="my_method_notif">Notificaciones</string>
+    <string name="change_my_method_title">Cambiar\nMi Método Planificado</string>
+    <string name="change_my_method_description">¿Estás segura que deseas cambiar tú método planificado?</string>
+    <string name="change_my_method_warning">Al cambiar de método se perderán todos los datos actuales</string>
+    <string name="change_my_method_cancel">Cancelar</string>
+    <string name="change_my_method_confirm">Confirmar</string>
 </resources>

@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
 
 @Composable
-fun MyMethodCustomToolbar() {
+fun MyMethodCustomToolbar(onChangeMethodClick: () -> Unit, onGoToSettingsClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +31,7 @@ fun MyMethodCustomToolbar() {
         horizontalArrangement = Arrangement.End
     ) {
         IconButton(
-            onClick = {  }
+            onClick = onChangeMethodClick
         ) {
             Icon(
                 imageVector = Icons.Outlined.ChangeCircle,
@@ -40,7 +40,7 @@ fun MyMethodCustomToolbar() {
         }
 
         IconButton(
-            onClick = {  }
+            onClick = onGoToSettingsClick
         ) {
             Icon(
                 imageVector = Icons.Outlined.Settings,
@@ -48,4 +48,5 @@ fun MyMethodCustomToolbar() {
             )
         }
     }
+
 }
