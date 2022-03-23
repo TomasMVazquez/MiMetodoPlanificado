@@ -37,6 +37,8 @@ fun Settings(
     onCancel: () -> Unit,
     onDone: () -> Unit
 ) {
+    val state by viewModel.state.collectAsState(SettingsState())
+    viewModel.setMethodChosen(method)
 
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
@@ -44,6 +46,7 @@ fun Settings(
                 is Event.Continue -> {
                     it.state
                         .onSuccess {
+                            viewModel.changeLoading(false)
                             onDone()
                         }
                         .onFailure {
@@ -56,9 +59,6 @@ fun Settings(
             }
         }
     }
-
-    val state by viewModel.state.collectAsState(SettingsState())
-    viewModel.setMethodChosen(method)
 
     Box(modifier = Modifier
         .fillMaxSize()

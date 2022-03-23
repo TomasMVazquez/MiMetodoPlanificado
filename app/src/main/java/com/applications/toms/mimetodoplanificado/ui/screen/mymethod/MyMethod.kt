@@ -39,7 +39,7 @@ import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @Composable
-fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
+fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel(), onMethodDeleted: () -> Unit) {
 
     val state by viewModel.state.collectAsState(State())
     var openDialog by remember { mutableStateOf(false) }
@@ -50,6 +50,10 @@ fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
                 is MyMethodViewModel.Event.ConfirmMethodChange -> {
                     openDialog = true
                 }
+                MyMethodViewModel.Event.MethodDeleted -> {
+                    openDialog = false
+                    onMethodDeleted()
+                }
             }
         }
     }
@@ -57,9 +61,7 @@ fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel()) {
     if (openDialog)
         AlertDialogConfirmMethodChange(
             onCancel = { openDialog = false },
-            onConfirm = {
-
-            }
+            onConfirm = { viewModel.onDeleteCurrentMethod() }
         )
 
     Box(modifier = Modifier.fillMaxSize()) {

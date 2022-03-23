@@ -27,8 +27,8 @@ fun hasOnBoardingAlreadyShown(context: Context): Boolean {
 /**
  * To check if a method is saved or not
  */
-fun onMethodHasBeenSaved(context: Context) {
-    getSharedPreferences(context).edit{ putBoolean(SharedPreferencesKeys.ON_METHOD_SAVED,true) }
+fun onMethodHasBeenSaved(context: Context, isSaved: Boolean = true) {
+    getSharedPreferences(context).edit{ putBoolean(SharedPreferencesKeys.ON_METHOD_SAVED,isSaved) }
 }
 
 fun isMethodSaved(context: Context): Boolean {

@@ -76,6 +76,9 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
                         goToSettings = {
                             appState.setMethodChosen(it)
                             appState.showModalSheet()
+                        },
+                        onMethodChanged = {
+                            isMethodSaved = false
                         }
                     )
                 }

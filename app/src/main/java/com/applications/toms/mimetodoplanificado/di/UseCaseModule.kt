@@ -1,6 +1,7 @@
 package com.applications.toms.mimetodoplanificado.di
 
 import com.applications.toms.data.repository.ChosenMethodRepository
+import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import com.applications.toms.usecases.SaveChosenMethodUseCase
 import dagger.Module
@@ -23,4 +24,8 @@ class UseCaseModule {
     fun getChosenMethodUseCase(chosenMethodRepository: ChosenMethodRepository) =
         GetChosenMethodUseCase(chosenMethodRepository)
 
+    @Provides
+    @ViewModelScoped
+    fun deleteChosenMethodUseCase(chosenMethodRepository: ChosenMethodRepository) =
+        DeleteChosenMethodUseCase(chosenMethodRepository)
 }

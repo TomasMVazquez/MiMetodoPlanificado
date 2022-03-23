@@ -40,4 +40,15 @@ class RoomDataSource(db: MyDatabase): LocalDataSource {
                 eitherSuccess(Pair(method.toModel(formatter),LocalDate.parse(method.nextCycle, formatter)))
         }
 
+    override suspend fun deleteChosenMethod(): Either<EitherState, ErrorStates> =
+        withContext(Dispatchers.IO) {
+            val method = dao.getMethod()
+            if (method == null)
+                eitherFailure(ErrorStates.NOT_SAVED)
+            else {
+                val response = dao.deleteMethod(method.methodChosen)
+                if (response > 0) eitherSuccess(EitherState.SUCCESS) else eitherFailure(ErrorStates.GENERIC)
+            }
+        }
+
 }

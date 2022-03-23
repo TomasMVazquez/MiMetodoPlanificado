@@ -4,18 +4,22 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
-import com.applications.toms.mimetodoplanificado.ui.AppState
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
 import com.applications.toms.mimetodoplanificado.ui.screen.home.OnBoarding
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethod
+import com.applications.toms.mimetodoplanificado.ui.utils.onMethodHasBeenSaved
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalMaterialApi
@@ -28,7 +32,8 @@ fun Navigation(
     shouldShowOnBoarding: Boolean,
     isMethodSaved: Boolean,
     onFinishOnBoarding: () -> Unit,
-    goToSettings: (Method) -> Unit
+    goToSettings: (Method) -> Unit,
+    onMethodChanged: () -> Unit
 ) {
     if (shouldShowOnBoarding){
         NavHost(
@@ -42,7 +47,12 @@ fun Navigation(
             navController = navController,
             startDestination = NavFeature.HOME.route
         ) {
-            nav(navController = navController, isMethodSaved, goToSettings)
+            nav(
+                navController = navController,
+                isMethodSaved = isMethodSaved,
+                goToSettings = goToSettings,
+                onMethodChanged = onMethodChanged
+            )
         }
     }
 }
@@ -74,7 +84,8 @@ private fun NavGraphBuilder.onBoardingNav (
 private fun NavGraphBuilder.nav (
     navController: NavController,
     isMethodSaved: Boolean,
-    goToSettings: (Method) -> Unit
+    goToSettings: (Method) -> Unit,
+    onMethodChanged: () -> Unit
 ) {
     if (isMethodSaved) {
         navigation(
@@ -82,7 +93,11 @@ private fun NavGraphBuilder.nav (
             route = NavFeature.MY_METHOD.route
         ){
             composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
-                MyMethod()
+                MyMethod(){
+                    onMethodHasBeenSaved(navController.context,false)
+                    //TODO CHECK NAVIGSTR TO HOME
+                    onMethodChanged()
+                }
             }
         }
     } else {

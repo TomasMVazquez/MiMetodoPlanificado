@@ -6,6 +6,7 @@ import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
+import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -19,7 +20,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyMethodViewModel @Inject constructor(
-    private val getChosenMethodUseCase: GetChosenMethodUseCase
+    private val getChosenMethodUseCase: GetChosenMethodUseCase,
+    private val deleteChosenMethodUseCase: DeleteChosenMethodUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -62,6 +64,22 @@ class MyMethodViewModel @Inject constructor(
         }
     }
 
+    fun onDeleteCurrentMethod() {
+        viewModelScope.launch {
+            deleteChosenMethodUseCase.execute(Unit)
+                .onSuccess {
+                    viewModelScope.launch {
+                        _event.emit(
+                            Event.MethodDeleted
+                        )
+                    }
+                }
+                .onFailure {
+                    it
+                }
+        }
+    }
+
     fun onGoToSettingsClick() {
 
     }
@@ -81,5 +99,6 @@ class MyMethodViewModel @Inject constructor(
 
     sealed class Event {
         object ConfirmMethodChange: Event()
+        object MethodDeleted: Event()
     }
 }
