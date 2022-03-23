@@ -88,7 +88,7 @@ fun MyMethodContent(state: State) {
 
         val totalDays = (from.until(to).days + 1).toFloat()
         val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
-        val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() + 1) }
+        val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() - 1) }
 
         Column(
             modifier = Modifier

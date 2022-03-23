@@ -20,7 +20,7 @@ fun Week(
     breakDays: Int
 ) {
     val today = LocalDate.now()
-    val breakDayStarts = to.minusDays(breakDays.toLong() + 1)
+    val breakDayStarts = to.minusDays(breakDays.toLong() - 1)
 
     Row(
         modifier = Modifier

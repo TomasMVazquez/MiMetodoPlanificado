@@ -9,6 +9,8 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.mimetodoplanificado.data.mapper.toDatabaseModel
 import com.applications.toms.mimetodoplanificado.data.mapper.toModel
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -34,10 +36,22 @@ class RoomDataSource(db: MyDatabase): LocalDataSource {
     override suspend fun getChosenMethod(): Either<Pair<MethodChosen,LocalDate>, ErrorStates> =
         withContext(Dispatchers.IO) {
             val method = dao.getMethod()
-            if (method == null)
-                eitherFailure(ErrorStates.NOT_SAVED)
-            else
-                eitherSuccess(Pair(method.toModel(formatter),LocalDate.parse(method.nextCycle, formatter)))
+            if (method == null) eitherFailure(ErrorStates.NOT_SAVED)
+            else {
+                val nextCycle = LocalDate.parse(method.nextCycle, formatter)
+                if (LocalDate.now().isAfter(nextCycle)){
+                    val updatedMethod = method.copy(
+                        startDate = nextCycle.toFormattedString(),
+                        nextCycle = nextCycle.plusDays(TOTAL_CYCLE_DAYS).toFormattedString()
+                    )
+                    val response = dao.updateMethod(updatedMethod)
+                    if (response > 0)
+                        eitherSuccess(Pair(updatedMethod.toModel(formatter), LocalDate.parse(updatedMethod.nextCycle, formatter)))
+                    else
+                        eitherFailure(ErrorStates.NOT_SAVED)
+                } else
+                    eitherSuccess(Pair(method.toModel(formatter), LocalDate.parse(method.nextCycle, formatter)))
+            }
         }
 
     override suspend fun deleteChosenMethod(): Either<EitherState, ErrorStates> =
