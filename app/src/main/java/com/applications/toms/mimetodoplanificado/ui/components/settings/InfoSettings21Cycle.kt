@@ -9,13 +9,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.RING_CYCLE
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import java.time.LocalDate
 
 @Composable
-fun InfoSettingsRing(startDate: LocalDate) {
+fun InfoSettings21Cycle(startDate: LocalDate) {
     Text(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,7 +36,7 @@ fun InfoSettingsRing(startDate: LocalDate) {
             .padding(start = dimensionResource(id = R.dimen.padding_medium)),
         text = stringResource(
             id = R.string.settings_ring_break_date_text,
-            startDate.plusDays(RING_CYCLE).toFormattedString()
+            startDate.plusDays(CYCLE_21_DAYS).toFormattedString()
         ),
         style = MaterialTheme.typography.caption,
         color = MaterialTheme.colors.onPrimary

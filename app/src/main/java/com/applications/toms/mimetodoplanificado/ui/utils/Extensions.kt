@@ -28,6 +28,7 @@ fun DaySelectedStatus.isMarked(): Boolean = when (this) {
     DaySelectedStatus.LastDay -> true
     DaySelectedStatus.FirstLastDay -> true
     DaySelectedStatus.BreakDay -> true
+    DaySelectedStatus.LastBreakDay -> true
     else -> false
 }
 

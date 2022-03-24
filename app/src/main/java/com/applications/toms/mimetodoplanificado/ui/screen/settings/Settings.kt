@@ -20,13 +20,15 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
-import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsRing
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettings21Cycle
 import com.applications.toms.mimetodoplanificado.ui.components.generics.*
 import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMonthly
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.RING_CYCLE
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import kotlinx.coroutines.flow.collect
 
@@ -46,7 +48,7 @@ fun Settings(
                 is Event.Continue -> {
                     it.state
                         .onSuccess {
-                            viewModel.changeLoading(false)
+                            viewModel.resetState()
                             onDone()
                         }
                         .onFailure {
@@ -68,7 +70,12 @@ fun Settings(
         /**
          * Cancel Button
          */
-        IconButton(onClick = onCancel) {
+        IconButton(
+            onClick = {
+                viewModel.resetState()
+                onCancel()
+            }
+        ) {
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(R.string.content_description_close),
@@ -126,6 +133,7 @@ fun Settings(
                 item {
                     when (method.methodChosen) {
                         Method.PILLS -> {
+                            viewModel.changeEnable(true)
                             InfoSettingsPills(
                                 startDate = state.methodAndStartDate.startDate,
                                 pillsBreakDays = state.breakDays
@@ -134,11 +142,22 @@ fun Settings(
                             }
                         }
                         Method.RING -> {
-                            InfoSettingsRing(startDate = state.methodAndStartDate.startDate)
-                            viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(RING_CYCLE.toInt()))
+                            InfoSettings21Cycle(startDate = state.methodAndStartDate.startDate)
+                            viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(CYCLE_21_DAYS.toInt()))
+                            viewModel.changeEnable(true)
                         }
-                        Method.SHOOT -> "" // TODO ADD INFO
-                        Method.PATCH -> "" // TODO ADD INFO
+                        Method.SHOOT -> {
+                            viewModel.changeBreakDays(0)
+                            InfoSettingsMonthly(startDate = state.methodAndStartDate.startDate) {
+                                viewModel.changeTotalDaysCycle(it)
+                                viewModel.changeEnable(true)
+                            }
+                        }
+                        Method.PATCH -> {
+                            InfoSettings21Cycle(startDate = state.methodAndStartDate.startDate)
+                            viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(CYCLE_21_DAYS.toInt()))
+                            viewModel.changeEnable(true)
+                        }
                         else -> onCancel()
                     }
 
@@ -180,13 +199,15 @@ fun Settings(
                         GenericButton(
                             modifier = Modifier.fillMaxWidth(),
                             buttonType = ButtonType.HIGH_EMPHASIS,
-                            text = stringResource(R.string.settings_btn_start)
+                            text = stringResource(R.string.settings_btn_start),
+                            enable = state.enable
                         ) {
                             viewModel.changeLoading(!state.loading)
                             with(state) {
                                 viewModel.onSaveMethodChosen(
                                     MethodChosen(
                                         methodAndStartDate = methodAndStartDate,
+                                        totalDaysCycle = totalDaysCycle,
                                         breakDays = breakDays,
                                         notifications = notifications,
                                         notificationTime = notificationTime,

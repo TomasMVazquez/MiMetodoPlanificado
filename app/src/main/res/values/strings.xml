@@ -73,6 +73,10 @@
     <string name="settings_ring_break_date_text">El descanso comienza el %1$s y durará 7 días</string>
     <string name="settings_ring_next_date_text">El próximo ciclo comienza el %1$s</string>
     <string name="settings_pills_start_date_text">Comienzo del ciclo de 28 días el %1$s</string>
+    <string name="settings_shoot_monthly_start_date_text">Comienzo del ciclo mensual el %1$s</string>
+    <string name="settings_shoot_monthly">Inyección Mensual</string>
+    <string name="settings_shoot_quarterly">Inyección Trimestral</string>
+    <string name="settings_shoot_quarterly_start_date_text">Comienzo del ciclo trimestral el %1$s</string>
     <string name="settings_pills_subtitle_break">Los días de descanso son:</string>
     <string name="content_description_add">Sumar uno</string>
     <string name="content_description_remove">Restar uno</string>

@@ -39,7 +39,9 @@ fun Week(
                         day.value.toInt() >= breakDayStarts.dayOfMonth &&
                                 day.value.toInt() > from.dayOfMonth &&
                                 day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.BreakDay }
-                        day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
+                        day.value.toInt() == to.dayOfMonth -> day.apply {
+                            status = if (breakDays > 0) DaySelectedStatus.LastBreakDay else DaySelectedStatus.LastDay
+                        }
                         else -> day
                     }
                 } else {
@@ -58,7 +60,9 @@ fun Week(
                         }
                         month.monthNumber == to.monthValue -> {
                             when {
-                                day.value.toInt() == to.dayOfMonth -> day.apply { status = DaySelectedStatus.LastDay }
+                                day.value.toInt() == to.dayOfMonth -> day.apply {
+                                    status = if (breakDays > 0) DaySelectedStatus.LastBreakDay else DaySelectedStatus.LastDay
+                                }
                                 month.monthNumber == breakDayStarts.monthValue && day.value.toInt() >= breakDayStarts.dayOfMonth
                                         && day.value.toInt() < to.dayOfMonth -> day.apply { status = DaySelectedStatus.BreakDay }
                                 month.monthNumber != breakDayStarts.monthValue

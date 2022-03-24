@@ -38,7 +38,7 @@ class MyMethodViewModel @Inject constructor(
                         loading = false,
                         methodChosen = response.first.methodAndStartDate.methodChosen,
                         startDate = response.first.methodAndStartDate.startDate,
-                        endDate = response.first.methodAndStartDate.startDate.plusDays(TOTAL_CYCLE_DAYS - 1),
+                        endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1),
                         nextCycle = response.second,
                         breakDays = response.first.breakDays,
                         notifications = response.first.notifications,
@@ -98,7 +98,7 @@ class MyMethodViewModel @Inject constructor(
     )
 
     sealed class Event {
-        object ConfirmMethodChange: Event()
-        object MethodDeleted: Event()
+        object ConfirmMethodChange : Event()
+        object MethodDeleted : Event()
     }
 }

@@ -63,7 +63,7 @@ private fun DayStatusContainer(
             Circle(
                 color = when (status) {
                     DaySelectedStatus.BreakDay -> MaterialTheme.colors.secondaryVariant
-                    DaySelectedStatus.LastDay -> MaterialTheme.colors.secondaryVariant
+                    DaySelectedStatus.LastBreakDay -> MaterialTheme.colors.secondaryVariant
                     else -> MaterialTheme.colors.secondary
                 }
             )
@@ -73,6 +73,11 @@ private fun DayStatusContainer(
                     lookingLeft = false
                 )
             } else if (status == DaySelectedStatus.LastDay) {
+                SemiRect(
+                    color = MaterialTheme.colors.secondary,
+                    lookingLeft = true
+                )
+            } else if (status == DaySelectedStatus.LastBreakDay) {
                 SemiRect(
                     color = MaterialTheme.colors.secondaryVariant,
                     lookingLeft = true

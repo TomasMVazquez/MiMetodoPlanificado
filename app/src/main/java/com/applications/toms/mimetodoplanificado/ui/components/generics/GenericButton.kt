@@ -31,6 +31,7 @@ fun GenericButton(
     withIcon: Boolean = false,
     icon: ImageVector = Icons.Filled.Favorite,
     contentDesc: String? = null,
+    enable: Boolean = true,
     onClick: () -> Unit
 ){
 
@@ -42,6 +43,7 @@ fun GenericButton(
                 withIcon = withIcon,
                 icon = icon,
                 contentDesc = contentDesc,
+                enable = enable,
                 onClick = onClick
             )
         ButtonType.MEDIUM_EMPHASIS ->
@@ -51,12 +53,14 @@ fun GenericButton(
                 withIcon = withIcon,
                 icon = icon,
                 contentDesc = contentDesc,
+                enable = enable,
                 onClick = onClick
             )
         ButtonType.LOW_EMPHASIS ->
             LowEmphasisButton(
                 modifier = modifier,
                 text = text,
+                enable = enable,
                 onClick = onClick
             )
     }
@@ -69,6 +73,7 @@ fun HighEmphasisButton(
     withIcon: Boolean,
     icon: ImageVector,
     contentDesc: String?,
+    enable: Boolean,
     onClick: () -> Unit
 ){
     Button(
@@ -82,7 +87,8 @@ fun HighEmphasisButton(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.secondary,
             contentColor = MaterialTheme.colors.onSecondary
-        )
+        ),
+        enabled = enable
     ) {
         if (withIcon){
             Icon(
@@ -104,6 +110,7 @@ fun MediumEmphasisButton(
     withIcon: Boolean,
     icon: ImageVector,
     contentDesc: String?,
+    enable: Boolean,
     onClick: () -> Unit
 ){
     OutlinedButton(
@@ -117,7 +124,8 @@ fun MediumEmphasisButton(
         border = BorderStroke(
             1.dp,
             color = MaterialTheme.colors.primary
-        )
+        ),
+        enabled = enable
     ) {
         if (withIcon){
             Icon(
@@ -135,6 +143,7 @@ fun MediumEmphasisButton(
 fun LowEmphasisButton(
     modifier: Modifier,
     text: String,
+    enable: Boolean,
     onClick: () -> Unit
 ){
     TextButton(
@@ -146,7 +155,8 @@ fun LowEmphasisButton(
         ),
         colors = textButtonColors(
             contentColor = VividRaspberry
-        )
+        ),
+        enabled = enable
     ) {
         Text(text)
     }

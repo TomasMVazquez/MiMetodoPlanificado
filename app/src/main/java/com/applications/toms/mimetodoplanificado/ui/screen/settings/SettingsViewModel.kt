@@ -11,6 +11,9 @@ import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_days
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.SaveChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -37,6 +40,10 @@ class SettingsViewModel @Inject constructor(
         _state.value = _state.value.copy(loading = show)
     }
 
+    fun changeEnable(enable: Boolean) {
+        _state.value = _state.value.copy(enable = enable)
+    }
+
     fun setMethodChosen(methodChosen: MethodAndStartDate) {
         _state.value = _state.value.copy(methodAndStartDate = methodChosen)
     }
@@ -47,6 +54,10 @@ class SettingsViewModel @Inject constructor(
                 startDate = date
             )
         )
+    }
+
+    fun changeTotalDaysCycle(days: Int) {
+        _state.value = _state.value.copy(totalDaysCycle = if (days == 30 ) CYCLE_30_days else CYCLE_90_days)
     }
 
     fun changeBreakDays(days: Int) {
@@ -73,9 +84,15 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun resetState() {
+        _state.value = SettingsState()
+    }
+
     data class SettingsState (
         val methodAndStartDate: MethodAndStartDate = MethodAndStartDate(),
         val loading: Boolean = false,
+        val enable: Boolean = false,
+        val totalDaysCycle: Long = TOTAL_CYCLE_DAYS,
         val breakDays: Int = 5,
         val notifications: Boolean = false,
         val notificationTime: String = "",
