@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,6 +27,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSet
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMonthly
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.notification.createNotificationChannel
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
@@ -39,6 +41,8 @@ fun Settings(
     onCancel: () -> Unit,
     onDone: () -> Unit
 ) {
+    val context = LocalContext.current
+
     val state by viewModel.state.collectAsState(SettingsState())
     viewModel.setMethodChosen(method)
 
@@ -48,6 +52,9 @@ fun Settings(
                 is Event.Continue -> {
                     it.state
                         .onSuccess {
+                            if (state.notifications)
+                                createNotificationChannel(context)
+
                             viewModel.resetState()
                             onDone()
                         }
