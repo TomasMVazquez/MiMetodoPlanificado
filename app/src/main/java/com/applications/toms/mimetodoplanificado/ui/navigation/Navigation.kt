@@ -95,7 +95,6 @@ private fun NavGraphBuilder.nav (
             composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
                 MyMethod(){
                     onMethodHasBeenSaved(navController.context,false)
-                    //TODO CHECK NAVIGSTR TO HOME
                     onMethodChanged()
                 }
             }

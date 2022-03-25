@@ -166,7 +166,7 @@ fun LowEmphasisButton(
 @Composable
 fun HighEmphasisButtonPrev(){
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {},
         contentPadding = PaddingValues(
             horizontal = 20.dp,
             vertical = 12.dp
@@ -188,7 +188,7 @@ fun HighEmphasisButtonPrev(){
 @Composable
 fun MediumEmphasisButtonPrev(){
     OutlinedButton(
-        onClick = { /*TODO*/ },
+        onClick = {  },
         contentPadding = PaddingValues(
             horizontal = 20.dp,
             vertical = 12.dp
@@ -213,7 +213,7 @@ fun MediumEmphasisButtonPrev(){
 @Composable
 fun LowEmphasisButtonPrev(){
     TextButton(
-        onClick = { /*TODO*/ },
+        onClick = {  },
         contentPadding = PaddingValues(
             horizontal = 20.dp,
             vertical = 12.dp

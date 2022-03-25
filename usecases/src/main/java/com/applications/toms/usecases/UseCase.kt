@@ -7,7 +7,6 @@ import com.applications.toms.domain.enums.ErrorStates
 abstract class UseCase<T, R> protected constructor(
 ) {
 
-    //TODO CHANGE ERROR RETURN FOR A MORE DETAIL ONE
     protected abstract suspend fun buildUseCase(input: T): Either<R, ErrorStates>
 
     suspend fun execute(input: T) =
