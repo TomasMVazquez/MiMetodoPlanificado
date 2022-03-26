@@ -79,7 +79,9 @@ class SettingsViewModel @Inject constructor(
                     _event.emit(Event.Continue(
                         saveMethodState = eitherSuccess(it.eitherState),
                         notificationsState = it.notificationsState,
-                        alarmState = it.alarmState
+                        notificationTimeInMillis = it.notificationTimeInMillis,
+                        alarmState = it.alarmState,
+                        alarmTimeInMillis = it.alarmTimeInMillis
                     ))
                 }
                 .onFailure {
@@ -108,7 +110,9 @@ class SettingsViewModel @Inject constructor(
         data class Continue (
             val saveMethodState: Either<EitherState,ErrorStates>,
             val notificationsState: Boolean? = null,
-            val alarmState: Boolean? = null
+            val notificationTimeInMillis: Long = 0L,
+            val alarmState: Boolean? = null,
+            val alarmTimeInMillis: Long = 0L,
         ) : Event()
     }
 }

@@ -104,6 +104,11 @@
     <string name="change_my_method_warning">Al cambiar de método se perderán todos los datos actuales</string>
     <string name="change_my_method_cancel">Cancelar</string>
     <string name="change_my_method_confirm">Confirmar</string>
+    <string name="info_config_notif">Notificación a las %s hs</string>
+    <string name="info_config_alarm">Alarma a las %s hs</string>
+
+    // Notification
     <string name="notification_channel_name">Notificaciones</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    <string name="notification_desc_generic">No te olvides de de tu método anticonceptivo</string>
 </resources>

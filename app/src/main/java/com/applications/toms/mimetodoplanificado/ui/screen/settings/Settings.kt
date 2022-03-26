@@ -1,6 +1,8 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.settings
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
@@ -28,11 +30,16 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePick
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMonthly
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.notification.createNotificationChannel
+import com.applications.toms.mimetodoplanificado.ui.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
+import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
 
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @Composable
 fun Settings(
     method: MethodAndStartDate,
@@ -51,8 +58,14 @@ fun Settings(
                 is Event.Continue -> {
                     event.saveMethodState
                         .onSuccess {
-                            if (event.notificationsState == true)
+                            if (event.notificationsState == true) {
                                 createNotificationChannel(context)
+                                createRepeatingNotification(
+                                    context = context,
+                                    timeInMillis = event.notificationTimeInMillis,
+                                    method = Method.PILLS
+                                )
+                            }
 
                             viewModel.resetState()
                             onDone()

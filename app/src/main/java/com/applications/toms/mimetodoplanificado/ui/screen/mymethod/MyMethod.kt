@@ -1,7 +1,5 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.mymethod
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +15,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -32,17 +29,12 @@ import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Ca
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
-import com.applications.toms.mimetodoplanificado.ui.notification.createNotificationToShow
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
-import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
-@ExperimentalPagerApi
-@ExperimentalAnimationApi
-@ExperimentalFoundationApi
 @Composable
 fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel(), onMethodDeleted: () -> Unit) {
 

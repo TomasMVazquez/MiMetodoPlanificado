@@ -11,6 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.applications.toms.mimetodoplanificado.MainActivity
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.notification.RequestNotificationCode.*
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -18,23 +19,23 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @OptIn(ExperimentalMaterialApi::class)
-fun createNotificationToShow(context: Context) {
-    val notificationId = 1
+fun createNotificationToShow(context: Context, title: String, text: String) {
+
     val intent = Intent(context, MainActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     }
-    val pendingIntent = PendingIntent.getActivity(context,notificationId,intent,PendingIntent.FLAG_UPDATE_CURRENT)
+    val pendingIntent = PendingIntent.getActivity(context, DAILY_NOTIFICATION_CODE.code, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setContentIntent(pendingIntent)
         .setSmallIcon(R.drawable.ic_icono)
         .setColor(Purple.toArgb()) //TODO CHANGE COLOR IF WE ARE ON DARK THEME?
-        .setContentTitle("TITULO")
-        .setContentText("Texto descriptivo")
+        .setContentTitle(title)
+        .setContentText(text)
         .setAutoCancel(true)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
 
     with(NotificationManagerCompat.from(context)) {
-        notify(notificationId, builder.build())
+        notify(DAILY_NOTIFICATION_CODE.code, builder.build())
     }
 }

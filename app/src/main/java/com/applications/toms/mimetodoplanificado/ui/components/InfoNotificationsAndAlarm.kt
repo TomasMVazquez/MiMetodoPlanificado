@@ -1,12 +1,9 @@
 package com.applications.toms.mimetodoplanificado.ui.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -45,7 +42,7 @@ fun InfoNotificationsAndAlarm(alarm: Boolean?, alarmTime: String?, notifications
                 Text(
                     modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                     text = if (it) stringResource(
-                        id = R.string.settings_config_alarm,
+                        id = R.string.info_config_alarm,
                         alarmTime ?: ""
                     ) else stringResource(id = R.string.settings_config_alarm_off),
                     style = MaterialTheme.typography.caption,
@@ -68,7 +65,7 @@ fun InfoNotificationsAndAlarm(alarm: Boolean?, alarmTime: String?, notifications
                 Text(
                     modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                     text = if (it) stringResource(
-                        id = R.string.settings_config_notif,
+                        id = R.string.info_config_notif,
                         notificationTime ?: ""
                     ) else stringResource(id = R.string.settings_config_notif_off),
                     style = MaterialTheme.typography.caption,
