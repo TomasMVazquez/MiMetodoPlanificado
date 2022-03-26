@@ -5,7 +5,9 @@ import android.content.Context
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.notification.NotificationBundle.NOTIFICATION_BUNDLE_KEY
 import com.google.accompanist.pager.ExperimentalPagerApi
 
 @ExperimentalPagerApi
@@ -14,10 +16,17 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 class NotificationReceiver : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-
+        val bundle = intent.extras
         var title = context.getString(R.string.app_name)
         var text = context.getString(R.string.notification_desc_generic)
-
+        //TODO Add different titles and desc
+        when (bundle?.get(NOTIFICATION_BUNDLE_KEY.key)) {
+            Method.PILLS.name -> {
+                title = context.getString(R.string.pills)
+                text = context.getString(R.string.notification_desc_pills)
+            }
+            else -> {}
+        }
         createNotificationToShow(context, title, text)
     }
 

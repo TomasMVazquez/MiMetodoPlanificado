@@ -111,4 +111,5 @@
     <string name="notification_channel_name">Notificaciones</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
     <string name="notification_desc_generic">No te olvides de de tu método anticonceptivo</string>
+    <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
 </resources>

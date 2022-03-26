@@ -8,6 +8,7 @@ import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import com.applications.toms.domain.enums.Method
+import com.applications.toms.mimetodoplanificado.ui.notification.NotificationBundle.NOTIFICATION_BUNDLE_KEY
 import com.applications.toms.mimetodoplanificado.ui.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -17,7 +18,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 fun createRepeatingNotification(context: Context, timeInMillis: Long, method: Method) {
 
     val intent = Intent(context, NotificationReceiver::class.java)
-    //intent.putExtra("method", method.name)
+    intent.putExtra(NOTIFICATION_BUNDLE_KEY.key, method.name)
     val pendingIntent =
         PendingIntent.getBroadcast(context, DAILY_NOTIFICATION_CODE.code, intent, PendingIntent.FLAG_UPDATE_CURRENT)
     val myAlarmManager: AlarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
