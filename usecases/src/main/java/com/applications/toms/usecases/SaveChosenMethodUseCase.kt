@@ -12,13 +12,29 @@ import com.applications.toms.domain.enums.ErrorStates
 
 class SaveChosenMethodUseCase(
     private val chosenMethodRepository: ChosenMethodRepository
-): UseCase<MethodChosen, EitherState>() {
+): UseCase<MethodChosen, SaveChosenMethodUseCase.Result>() {
 
 
-    override suspend fun buildUseCase(input: MethodChosen): Either<EitherState, ErrorStates> =
-        chosenMethodRepository.saveChosenMethod(input)
-            .onSuccess { eitherSuccess(EitherState.SUCCESS) }
-            .onFailure { eitherFailure(ErrorStates.GENERIC) }
+    override suspend fun buildUseCase(input: MethodChosen): Either<Result, ErrorStates> =
+        when(chosenMethodRepository.saveChosenMethod(input)) {
+            is Either.Success -> {
+                eitherSuccess(
+                    Result(
+                        EitherState.SUCCESS,
+                        input.notifications,
+                        input.alarm
+                    )
+                )
+            }
+            is Either.Failure -> {
+                eitherFailure(ErrorStates.NOT_SAVED)
+            }
+        }
 
+    data class Result(
+        val eitherState: EitherState,
+        val notificationsState: Boolean,
+        val alarmState: Boolean
+    )
 
 }

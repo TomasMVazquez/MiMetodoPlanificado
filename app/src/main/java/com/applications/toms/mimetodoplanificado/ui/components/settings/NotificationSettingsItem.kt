@@ -46,6 +46,7 @@ fun NotificationSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
         ) {
             isNotificationEnable = it
             showTimePicker = it
+            onTimeSelected(isNotificationEnable, timePicked)
         }
 
         GenericSpacer(

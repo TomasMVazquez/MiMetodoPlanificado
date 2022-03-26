@@ -46,6 +46,7 @@ fun AlarmSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
         ){
             isAlarmEnable = it
             showTimePicker = it
+            onTimeSelected(isAlarmEnable, timePicked)
         }
 
         GenericSpacer(

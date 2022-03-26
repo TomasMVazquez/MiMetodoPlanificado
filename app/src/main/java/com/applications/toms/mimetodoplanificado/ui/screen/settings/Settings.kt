@@ -30,7 +30,6 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.Notifica
 import com.applications.toms.mimetodoplanificado.ui.notification.createNotificationChannel
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import kotlinx.coroutines.flow.collect
 
@@ -47,22 +46,23 @@ fun Settings(
     viewModel.setMethodChosen(method)
 
     LaunchedEffect(key1 = viewModel.event) {
-        viewModel.event.collect {
-            when(it) {
+        viewModel.event.collect { event ->
+            when(event) {
                 is Event.Continue -> {
-                    it.state
+                    event.saveMethodState
                         .onSuccess {
-                            if (state.notifications)
+                            if (event.notificationsState == true)
                                 createNotificationChannel(context)
 
                             viewModel.resetState()
                             onDone()
                         }
                         .onFailure {
-                            it
                             /**
-                             * TODO MANAGE ERROR STATES
+                             * TODO ADD SNACK BAR ERROR
                              */
+                            viewModel.resetState()
+                            onCancel()
                         }
                 }
             }

@@ -76,10 +76,14 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             saveChosenMethodUseCase.execute(methodChosen)
                 .onSuccess {
-                    _event.emit(Event.Continue(state = eitherSuccess(it)))
+                    _event.emit(Event.Continue(
+                        saveMethodState = eitherSuccess(it.eitherState),
+                        notificationsState = it.notificationsState,
+                        alarmState = it.alarmState
+                    ))
                 }
                 .onFailure {
-                    _event.emit(Event.Continue(state = eitherFailure(it)))
+                    _event.emit(Event.Continue(saveMethodState = eitherFailure(it)))
                 }
         }
     }
@@ -102,7 +106,9 @@ class SettingsViewModel @Inject constructor(
 
     sealed class Event {
         data class Continue (
-            val state: Either<EitherState,ErrorStates>
+            val saveMethodState: Either<EitherState,ErrorStates>,
+            val notificationsState: Boolean? = null,
+            val alarmState: Boolean? = null
         ) : Event()
     }
 }
