@@ -20,7 +20,13 @@ fun createRepeatingNotification(context: Context, timeInMillis: Long, method: Me
     val intent = Intent(context, NotificationReceiver::class.java)
     intent.putExtra(NOTIFICATION_BUNDLE_KEY.key, method.name)
     val pendingIntent =
-        PendingIntent.getBroadcast(context, DAILY_NOTIFICATION_CODE.code, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        PendingIntent.getBroadcast(
+            context,
+            DAILY_NOTIFICATION_CODE.code,
+            intent,
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE
+            else PendingIntent.FLAG_UPDATE_CURRENT
+        )
     val myAlarmManager: AlarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
 
     myAlarmManager.setRepeating(AlarmManager.RTC_WAKEUP, timeInMillis, AlarmManager.INTERVAL_DAY, pendingIntent)

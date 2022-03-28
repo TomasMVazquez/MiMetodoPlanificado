@@ -19,7 +19,8 @@ fun WeekDay(name: String) {
         Text(
             modifier = Modifier.wrapContentSize(Alignment.Center),
             text = name,
-            style = MaterialTheme.typography.caption.copy(Color.Black.copy(alpha = 0.6f))
+            color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
+            style = MaterialTheme.typography.caption
         )
     }
 }
