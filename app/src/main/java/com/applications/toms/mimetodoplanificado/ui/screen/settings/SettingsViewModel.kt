@@ -11,6 +11,8 @@ import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
@@ -78,10 +80,12 @@ class SettingsViewModel @Inject constructor(
                 .onSuccess {
                     _event.emit(Event.Continue(
                         saveMethodState = eitherSuccess(it.eitherState),
+                        method = methodChosen.methodAndStartDate.methodChosen,
+                        totalDaysCycle = methodChosen.totalDaysCycle.toInt(),
                         notificationsState = it.notificationsState,
-                        notificationTimeInMillis = it.notificationTimeInMillis,
+                        notificationTimeInMillis = it.notificationTimeInMillis?.convertToTimeInMills() ?: 0L,
                         alarmState = it.alarmState,
-                        alarmTimeInMillis = it.alarmTimeInMillis
+                        alarmTimeInMillis = it.alarmTimeInMillis?.convertToTimeInMills() ?: 0L
                     ))
                 }
                 .onFailure {
@@ -109,6 +113,8 @@ class SettingsViewModel @Inject constructor(
     sealed class Event {
         data class Continue (
             val saveMethodState: Either<EitherState,ErrorStates>,
+            val method: Method? = null,
+            val totalDaysCycle: Int = -1,
             val notificationsState: Boolean? = null,
             val notificationTimeInMillis: Long = 0L,
             val alarmState: Boolean? = null,

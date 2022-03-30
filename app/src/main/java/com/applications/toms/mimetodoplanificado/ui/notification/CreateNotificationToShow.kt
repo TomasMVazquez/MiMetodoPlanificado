@@ -24,7 +24,13 @@ fun createNotificationToShow(context: Context, title: String, text: String) {
     val intent = Intent(context, MainActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
     }
-    val pendingIntent = PendingIntent.getActivity(context, DAILY_NOTIFICATION_CODE.code, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val pendingIntent = PendingIntent.getActivity(
+        context,
+        DAILY_NOTIFICATION_CODE.code,
+        intent,
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) PendingIntent.FLAG_IMMUTABLE
+        else PendingIntent.FLAG_ONE_SHOT
+    )
 
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setContentIntent(pendingIntent)

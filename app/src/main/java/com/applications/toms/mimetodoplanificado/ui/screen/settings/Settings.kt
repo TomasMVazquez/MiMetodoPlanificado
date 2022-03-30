@@ -58,16 +58,15 @@ fun Settings(
                 is Event.Continue -> {
                     event.saveMethodState
                         .onSuccess {
-                            if (event.notificationsState == true) {
-                                createNotificationChannel(context)
+                            viewModel.resetState()
+                            if (event.notificationsState == true && event.method != null) {
                                 createRepeatingNotification(
                                     context = context,
                                     timeInMillis = event.notificationTimeInMillis,
-                                    method = Method.PILLS
+                                    method = event.method,
+                                    totalDaysCycle = event.totalDaysCycle
                                 )
                             }
-
-                            viewModel.resetState()
                             onDone()
                         }
                         .onFailure {
