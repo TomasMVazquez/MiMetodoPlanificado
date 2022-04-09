@@ -16,8 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
-import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 
@@ -60,7 +58,7 @@ fun AlarmSettingsContent(goBack: () -> Unit) {
             item {
                 AlarmSettingsItem(
                     isEnable = true,
-                    timeSet = "9:19"
+                    timeSet = "14:33"
                 ) { isAlarmEnabled, time ->
                     /*viewModel.changeAlarmValue(
                         value = isAlarmEnabled,

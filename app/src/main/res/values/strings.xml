@@ -107,6 +107,9 @@
     <string name="info_config_notif">Notificación a las %s hs</string>
     <string name="info_config_alarm">Alarma a las %s hs</string>
 
+    // AlarmSettings
+    <string name="content_description_expand">Expandir</string>
+
     // Notification
     <string name="notification_channel_name">Notificaciones</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>

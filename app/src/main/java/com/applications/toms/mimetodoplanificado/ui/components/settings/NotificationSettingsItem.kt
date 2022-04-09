@@ -5,9 +5,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,7 +41,7 @@ fun NotificationSettingsItem(
     timeSet: String? = null,
     onTimeSelected: (Boolean, String) -> Unit
 ) {
-    var showTimePicker by rememberSaveable { mutableStateOf(isEnable) }
+    var showTimePicker by rememberSaveable { mutableStateOf(false) }
     var isNotificationEnable by rememberSaveable { mutableStateOf(isEnable) }
     var timePicked by rememberSaveable {
         mutableStateOf(
@@ -83,13 +90,27 @@ fun NotificationSettingsItem(
         AnimatedVisibility(visible = !showTimePicker && isNotificationEnable) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
+
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = stringResource(id = R.string.settings_config_notif, timePicked),
-                    color = MaterialTheme.colors.secondary
+                    color = MaterialTheme.colors.secondary,
+                    style = MaterialTheme.typography.body1
                 )
+
+                IconButton(
+                    modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_tiny)),
+                    onClick = {showTimePicker = !showTimePicker}
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ExpandMore,
+                        contentDescription = stringResource(R.string.content_description_expand),
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                }
             }
         }
 
