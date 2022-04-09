@@ -8,12 +8,16 @@ import com.applications.toms.mimetodoplanificado.R
 const val CHANNEL_ID = "notification_channel_id"
 
 fun createNotificationChannel(context: Context) {
+    val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+    if (notificationManager.getNotificationChannel(CHANNEL_ID) != null) return
+
     val name = context.getString(R.string.notification_channel_name)
     val descriptionText = context.getString(R.string.notification_channel_description)
     val importance = NotificationManager.IMPORTANCE_HIGH
     val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
         description = descriptionText
     }
-    val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
     notificationManager.createNotificationChannel(channel)
 }

@@ -29,12 +29,19 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerTy
 import java.time.LocalDateTime
 
 @Composable
-fun NotificationSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
-    var showTimePicker by rememberSaveable { mutableStateOf(false) }
-    var isNotificationEnable by rememberSaveable { mutableStateOf(false) }
+fun NotificationSettingsItem(
+    isEnable: Boolean = false,
+    timeSet: String? = null,
+    onTimeSelected: (Boolean, String) -> Unit
+) {
+    var showTimePicker by rememberSaveable { mutableStateOf(isEnable) }
+    var isNotificationEnable by rememberSaveable { mutableStateOf(isEnable) }
     var timePicked by rememberSaveable {
         mutableStateOf(
-            "${decimalFormat.format(LocalDateTime.now().hour)}:00"
+            if (isEnable && timeSet != null)
+                timeSet
+            else
+                "${decimalFormat.format(LocalDateTime.now().hour)}:00"
         )
     }
 
@@ -59,7 +66,7 @@ fun NotificationSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
                 modifier = Modifier.width(300.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                CustomTimePicker {
+                CustomTimePicker(timeSet = timeSet) {
                     timePicked = it
                     onTimeSelected(isNotificationEnable, it)
                 }

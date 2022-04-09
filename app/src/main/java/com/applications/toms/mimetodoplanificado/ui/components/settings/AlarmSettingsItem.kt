@@ -29,12 +29,19 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerTy
 import java.time.LocalDateTime
 
 @Composable
-fun AlarmSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
-    var showTimePicker by rememberSaveable { mutableStateOf(false) }
-    var isAlarmEnable by rememberSaveable { mutableStateOf(false) }
+fun AlarmSettingsItem(
+    isEnable: Boolean = false,
+    timeSet: String? = null,
+    onTimeSelected: (Boolean, String) -> Unit
+) {
+    var showTimePicker by rememberSaveable { mutableStateOf(isEnable) }
+    var isAlarmEnable by rememberSaveable { mutableStateOf(isEnable) }
     var timePicked by rememberSaveable {
         mutableStateOf(
-            "${decimalFormat.format(LocalDateTime.now().hour)}:00"
+            if (isEnable && timeSet != null)
+                timeSet
+            else
+                "${decimalFormat.format(LocalDateTime.now().hour)}:00"
         )
     }
 
@@ -59,7 +66,7 @@ fun AlarmSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
                 modifier = Modifier.width(300.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                CustomTimePicker {
+                CustomTimePicker(timeSet = timeSet) {
                     timePicked = it
                     onTimeSelected(isAlarmEnable, it)
                 }

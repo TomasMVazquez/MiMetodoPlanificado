@@ -16,6 +16,7 @@ import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
+import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSettings
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
 import com.applications.toms.mimetodoplanificado.ui.screen.home.OnBoarding
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethod
@@ -93,9 +94,19 @@ private fun NavGraphBuilder.nav (
             route = NavFeature.MY_METHOD.route
         ){
             composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
-                MyMethod(){
-                    onMethodHasBeenSaved(navController.context,false)
-                    onMethodChanged()
+                MyMethod(
+                    onMethodDeleted = {
+                        onMethodHasBeenSaved(navController.context,false)
+                        onMethodChanged()
+                    },
+                    goToAlarmSettings = {
+                        navController.navigate(ContentType(NavFeature.ALARM_SETTINGS).route)
+                    }
+                )
+            }
+            composable(navCommand = ContentType(NavFeature.ALARM_SETTINGS)){
+                AlarmSettings {
+                    navController.popBackStack()
                 }
             }
         }

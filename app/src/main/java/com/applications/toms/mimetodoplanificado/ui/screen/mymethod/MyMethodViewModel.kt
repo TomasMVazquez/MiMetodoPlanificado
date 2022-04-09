@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.enums.Method
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -80,8 +79,12 @@ class MyMethodViewModel @Inject constructor(
         }
     }
 
-    fun onGoToSettingsClick() {
-
+    fun onGoToAlarmSettingsClick() {
+        viewModelScope.launch {
+            _event.emit(
+                Event.GoToAlarmSettings
+            )
+        }
     }
 
     data class State(
@@ -100,5 +103,6 @@ class MyMethodViewModel @Inject constructor(
     sealed class Event {
         object ConfirmMethodChange : Event()
         object MethodDeleted : Event()
+        object GoToAlarmSettings : Event()
     }
 }
