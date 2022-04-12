@@ -11,6 +11,8 @@ import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
@@ -23,6 +25,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,7 +61,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun changeTotalDaysCycle(days: Int) {
-        _state.value = _state.value.copy(totalDaysCycle = if (days == 30 ) CYCLE_30_days else CYCLE_90_days)
+        _state.value = _state.value.copy(totalDaysCycle = if (days == 30) CYCLE_30_days else CYCLE_90_days)
     }
 
     fun changeBreakDays(days: Int) {
@@ -76,13 +80,18 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             saveChosenMethodUseCase.execute(methodChosen)
                 .onSuccess {
-                    _event.emit(Event.Continue(
-                        saveMethodState = eitherSuccess(it.eitherState),
-                        notificationsState = it.notificationsState,
-                        notificationTimeInMillis = it.notificationTimeInMillis,
-                        alarmState = it.alarmState,
-                        alarmTimeInMillis = it.alarmTimeInMillis
-                    ))
+                    _event.emit(
+                        Event.Continue(
+                            saveMethodState = eitherSuccess(it.eitherState),
+                            method = methodChosen.methodAndStartDate.methodChosen,
+                            totalDaysCycle = methodChosen.totalDaysCycle.toInt(),
+                            notificationsState = it.notificationsState,
+                            notificationTimeInMillis = it.notificationTimeInMillis?.convertToTimeInMills() ?: 0L,
+                            alarmState = it.alarmState,
+                            alarmTimeInMillis = it.alarmTimeInMillis?.convertToTimeInMills() ?: 0L,
+                            daysFromStart = methodChosen.methodAndStartDate.startDate.until(LocalDate.now(), ChronoUnit.DAYS)
+                        )
+                    )
                 }
                 .onFailure {
                     _event.emit(Event.Continue(saveMethodState = eitherFailure(it)))
@@ -94,7 +103,7 @@ class SettingsViewModel @Inject constructor(
         _state.value = SettingsState()
     }
 
-    data class SettingsState (
+    data class SettingsState(
         val methodAndStartDate: MethodAndStartDate = MethodAndStartDate(),
         val loading: Boolean = false,
         val enable: Boolean = false,
@@ -107,12 +116,15 @@ class SettingsViewModel @Inject constructor(
     )
 
     sealed class Event {
-        data class Continue (
-            val saveMethodState: Either<EitherState,ErrorStates>,
+        data class Continue(
+            val saveMethodState: Either<EitherState, ErrorStates>,
+            val method: Method? = null,
+            val totalDaysCycle: Int = -1,
             val notificationsState: Boolean? = null,
             val notificationTimeInMillis: Long = 0L,
             val alarmState: Boolean? = null,
             val alarmTimeInMillis: Long = 0L,
+            val daysFromStart: Long = 0L
         ) : Event()
     }
 }

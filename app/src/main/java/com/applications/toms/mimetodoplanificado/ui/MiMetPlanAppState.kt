@@ -1,18 +1,11 @@
 package com.applications.toms.mimetodoplanificado.ui
 
-import android.content.Context
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.MethodAndStartDate
-import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand
-import com.applications.toms.mimetodoplanificado.ui.navigation.NavFeature
-import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
-import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow

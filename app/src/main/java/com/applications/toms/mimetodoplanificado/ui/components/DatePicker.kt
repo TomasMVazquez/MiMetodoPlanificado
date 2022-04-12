@@ -37,14 +37,19 @@ fun CustomCalendarView(onDateSelected: (LocalDate) -> Unit) {
 }
 
 @Composable
-fun CustomTimePicker(onTimeSelected: (String) -> Unit) {
+fun CustomTimePicker(timeSet: String? = null,onTimeSelected: (String) -> Unit) {
     AndroidView(
         factory = { context ->
             TimePicker(
                 ContextThemeWrapper(context, R.style.CalenderViewCustom)
             ).apply {
                 setIs24HourView(true)
-                minute = 0
+                if (timeSet != null){
+                    hour = timeSet.split(":").first().toInt()
+                    minute = timeSet.split(":")[1].toInt()
+                } else {
+                    minute = 0
+                }
             }
         },
         modifier = Modifier.wrapContentSize(),

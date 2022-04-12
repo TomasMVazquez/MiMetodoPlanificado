@@ -5,9 +5,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,12 +34,19 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerTy
 import java.time.LocalDateTime
 
 @Composable
-fun AlarmSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
+fun AlarmSettingsItem(
+    isEnable: Boolean = false,
+    timeSet: String? = null,
+    onTimeSelected: (Boolean, String) -> Unit
+) {
     var showTimePicker by rememberSaveable { mutableStateOf(false) }
-    var isAlarmEnable by rememberSaveable { mutableStateOf(false) }
+    var isAlarmEnable by rememberSaveable { mutableStateOf(isEnable) }
     var timePicked by rememberSaveable {
         mutableStateOf(
-            "${decimalFormat.format(LocalDateTime.now().hour)}:00"
+            if (isEnable && timeSet != null)
+                timeSet
+            else
+                "${decimalFormat.format(LocalDateTime.now().hour)}:00"
         )
     }
 
@@ -59,7 +71,7 @@ fun AlarmSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
                 modifier = Modifier.width(300.dp),
                 horizontalAlignment = Alignment.End
             ) {
-                CustomTimePicker {
+                CustomTimePicker(timeSet = timeSet) {
                     timePicked = it
                     onTimeSelected(isAlarmEnable, it)
                 }
@@ -76,13 +88,26 @@ fun AlarmSettingsItem(onTimeSelected: (Boolean, String) -> Unit) {
         AnimatedVisibility(visible = !showTimePicker && isAlarmEnable) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
+                    modifier = Modifier.weight(1f),
                     text = stringResource(id = R.string.settings_config_alarm, timePicked),
-                    color = MaterialTheme.colors.secondary
+                    color = MaterialTheme.colors.secondary,
+                    style = MaterialTheme.typography.body1
                 )
+
+                IconButton(
+                    modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_tiny)),
+                    onClick = {showTimePicker = !showTimePicker}
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.ExpandMore,
+                        contentDescription = stringResource(R.string.content_description_expand),
+                        tint = MaterialTheme.colors.onBackground
+                    )
+                }
             }
         }
 

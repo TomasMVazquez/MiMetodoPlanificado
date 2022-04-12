@@ -7,15 +7,30 @@ import com.applications.toms.domain.enums.DaySelectedStatus
 import com.applications.toms.domain.getFirstDayOfMonth
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.Year
 import java.time.YearMonth
 import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
+import java.util.Calendar
 import java.util.Locale
 
 const val FORMATTED_DATE_PATTERN = "dd/MM/yy"
+const val FORMATTED_TIME_PATTERN = "HH:mm"
 
 fun LocalDate.toFormattedString(): String = format(DateTimeFormatter.ofPattern(FORMATTED_DATE_PATTERN))
+
+fun String.convertToTimeInMills(): Long =
+    try {
+        val myTime = LocalTime.parse(this, DateTimeFormatter.ofPattern(FORMATTED_TIME_PATTERN))
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, myTime.hour)
+        calendar.set(Calendar.MINUTE, myTime.minute)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.timeInMillis
+    } catch (t: Throwable) {
+        0L
+    }
 
 fun DaySelectedStatus.color(theme: Colors): Color = when (this) {
     DaySelectedStatus.Selected -> theme.secondary

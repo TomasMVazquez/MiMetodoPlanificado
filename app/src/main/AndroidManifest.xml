@@ -3,6 +3,7 @@
     package="com.applications.toms.mimetodoplanificado">
 
     <uses-permission android:name="android.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"/>
 
     <application
         android:name=".App"

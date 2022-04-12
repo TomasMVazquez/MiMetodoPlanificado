@@ -11,7 +11,10 @@ typealias CalendarWeek = List<CalendarDay>
 fun daysOfWeek(): List<String> = DateFormatSymbols().weekdays.filterNot { it.isEmpty() }.map { it.uppercase() }
 
 fun getFirstDayOfMonth(yearMonth: YearMonth): String {
-    val firstDay = yearMonth.atDay(1).dayOfWeek.ordinal + 1
+    val firstDay = when (val day = yearMonth.atDay(1).dayOfWeek.ordinal) {
+        in 1..6 -> day
+        else -> 0
+    }
     return daysOfWeek()[firstDay]
 }
 

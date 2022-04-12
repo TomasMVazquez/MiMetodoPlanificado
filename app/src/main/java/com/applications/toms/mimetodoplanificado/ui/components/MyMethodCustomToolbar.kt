@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
 
 @Composable
-fun MyMethodCustomToolbar(onChangeMethodClick: () -> Unit, onGoToSettingsClick: () -> Unit) {
+fun MyMethodCustomToolbar(onChangeMethodClick: () -> Unit, onGoToAlarmSettingsClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -40,7 +40,7 @@ fun MyMethodCustomToolbar(onChangeMethodClick: () -> Unit, onGoToSettingsClick: 
         }
 
         IconButton(
-            onClick = onGoToSettingsClick
+            onClick = onGoToAlarmSettingsClick
         ) {
             Icon(
                 imageVector = Icons.Outlined.Settings,

@@ -36,7 +36,11 @@ import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @Composable
-fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel(), onMethodDeleted: () -> Unit) {
+fun MyMethod(
+    viewModel: MyMethodViewModel = hiltViewModel(),
+    onMethodDeleted: () -> Unit,
+    goToAlarmSettings: () -> Unit
+) {
 
     val state by viewModel.state.collectAsState(State())
     var openDialog by remember { mutableStateOf(false) }
@@ -44,12 +48,15 @@ fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel(), onMethodDeleted: ()
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
             when(it) {
-                is MyMethodViewModel.Event.ConfirmMethodChange -> {
+                MyMethodViewModel.Event.ConfirmMethodChange -> {
                     openDialog = true
                 }
                 MyMethodViewModel.Event.MethodDeleted -> {
                     openDialog = false
                     onMethodDeleted()
+                }
+                MyMethodViewModel.Event.GoToAlarmSettings -> {
+                    goToAlarmSettings()
                 }
             }
         }
@@ -66,7 +73,7 @@ fun MyMethod(viewModel: MyMethodViewModel = hiltViewModel(), onMethodDeleted: ()
             Column() {
                 MyMethodCustomToolbar(
                     onChangeMethodClick = { viewModel.onMethodChangeClick() },
-                    onGoToSettingsClick = { viewModel.onGoToSettingsClick() }
+                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
                 )
 
                 MyMethodContent(state)
