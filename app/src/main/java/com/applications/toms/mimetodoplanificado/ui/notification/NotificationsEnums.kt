@@ -6,6 +6,5 @@ enum class RequestNotificationCode(val code: Int) {
 
 enum class NotificationBundle(val key: String) {
     NOTIFICATION_METHOD_KEY("method"),
-    NOTIFICATION_PERIODICITY_KEY("periodicity"),
-    NOTIFICATION_TIME_KEY("time")
+    NOTIFICATION_CYCLE_KEY("cycle"),
 }

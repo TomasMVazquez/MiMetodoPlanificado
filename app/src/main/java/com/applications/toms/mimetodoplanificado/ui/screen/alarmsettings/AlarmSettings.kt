@@ -21,7 +21,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.Notifica
 
 @Composable
 fun AlarmSettings(goBack: () -> Unit) {
-
+    //TODO ARGUMENTS TO GET alarms and notific and add viewmodel to save new config
     AlarmSettingsContent(goBack = goBack)
 }
 

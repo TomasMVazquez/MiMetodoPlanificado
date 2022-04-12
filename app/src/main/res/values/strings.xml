@@ -117,5 +117,5 @@
     <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
     <string name="notification_desc_ring">No te olvides de sacar/poner el anillo</string>
     <string name="notification_desc_path">No te olvides de sacar/poner el parche</string>
-    <string name="notification_desc_shoot">No te olvides de ir a ponerte la injección</string>
+    <string name="notification_desc_shoot">No te olvides de la inyección</string>
 </resources>

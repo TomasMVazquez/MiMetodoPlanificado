@@ -64,7 +64,8 @@ fun Settings(
                                     context = context,
                                     timeInMillis = event.notificationTimeInMillis,
                                     method = event.method,
-                                    totalDaysCycle = event.totalDaysCycle
+                                    totalDaysCycle = event.totalDaysCycle,
+                                    daysFromStart = event.daysFromStart
                                 )
                             }
                             onDone()
