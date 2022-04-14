@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.notification
+package com.applications.toms.mimetodoplanificado.notification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -10,8 +10,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.core.os.bundleOf
 import com.applications.toms.domain.enums.Method
-import com.applications.toms.mimetodoplanificado.ui.notification.NotificationBundle.*
-import com.applications.toms.mimetodoplanificado.ui.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
+import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.*
+import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.concurrent.TimeUnit

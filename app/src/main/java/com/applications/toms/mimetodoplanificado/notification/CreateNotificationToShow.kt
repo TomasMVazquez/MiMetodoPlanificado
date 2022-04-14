@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.notification
+package com.applications.toms.mimetodoplanificado.notification
 
 import android.app.PendingIntent
 import android.content.Context
@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.applications.toms.mimetodoplanificado.MainActivity
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.notification.RequestNotificationCode.*
+import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.*
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.google.accompanist.pager.ExperimentalPagerApi
 

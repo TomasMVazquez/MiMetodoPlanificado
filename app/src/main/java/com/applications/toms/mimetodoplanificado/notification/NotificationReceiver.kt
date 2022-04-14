@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.notification
+package com.applications.toms.mimetodoplanificado.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,7 +7,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.notification.NotificationBundle.*
+import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.*
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.concurrent.TimeUnit

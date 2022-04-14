@@ -29,8 +29,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSet
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMonthly
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
-import com.applications.toms.mimetodoplanificado.ui.notification.createNotificationChannel
-import com.applications.toms.mimetodoplanificado.ui.notification.createRepeatingNotification
+import com.applications.toms.mimetodoplanificado.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.*
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
