@@ -112,7 +112,9 @@
 
     // Notification
     <string name="notification_channel_name">Notificaciones</string>
+    <string name="alarm_channel_name">Alarma</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    <string name="alarm_channel_description">Estas notificaciones sonoras y con vibraciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
     <string name="notification_desc_generic">No te olvides de tu método anticonceptivo</string>
     <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
     <string name="notification_desc_ring">No te olvides de sacar/poner el anillo</string>

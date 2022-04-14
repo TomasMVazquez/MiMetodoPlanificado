@@ -21,6 +21,7 @@ import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.alarm.createRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettings21Cycle
@@ -53,7 +54,7 @@ fun Settings(
 
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect { event ->
-            when(event) {
+            when (event) {
                 is Event.Continue -> {
                     event.saveMethodState
                         .onSuccess {
@@ -62,6 +63,15 @@ fun Settings(
                                 createRepeatingNotification(
                                     context = context,
                                     timeInMillis = event.notificationTimeInMillis,
+                                    method = event.method,
+                                    totalDaysCycle = event.totalDaysCycle,
+                                    daysFromStart = event.daysFromStart
+                                )
+                            }
+                            if (event.alarmState == true && event.method != null) {
+                                createRepeatingAlarm(
+                                    context = context,
+                                    timeInMillis = event.alarmTimeInMillis,
                                     method = event.method,
                                     totalDaysCycle = event.totalDaysCycle,
                                     daysFromStart = event.daysFromStart
@@ -81,9 +91,10 @@ fun Settings(
         }
     }
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(dimensionResource(id = R.dimen.padding_small))
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.padding_small))
     ) {
 
         /**

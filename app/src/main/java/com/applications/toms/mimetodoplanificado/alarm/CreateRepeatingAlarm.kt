@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.notification
+package com.applications.toms.mimetodoplanificado.alarm
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -12,6 +12,7 @@ import androidx.core.os.bundleOf
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.*
 import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
+import com.applications.toms.mimetodoplanificado.notification.createNotificationChannel
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.concurrent.TimeUnit
@@ -19,7 +20,7 @@ import java.util.concurrent.TimeUnit
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-fun createRepeatingNotification(
+fun createRepeatingAlarm(
     context: Context,
     timeInMillis: Long,
     method: Method,
@@ -27,9 +28,9 @@ fun createRepeatingNotification(
     daysFromStart: Long = 0
 ) {
     var time = timeInMillis
-    createNotificationChannel(context)
+    createAlarmChannel(context)
 
-    val intent = Intent(context, NotificationReceiver::class.java)
+    val intent = Intent(context, AlarmReceiver::class.java)
     val bundle = bundleOf(
         NOTIFICATION_METHOD_KEY.key to method.name,
         NOTIFICATION_CYCLE_KEY.key to when (method) {
@@ -60,5 +61,5 @@ fun createRepeatingNotification(
 
     val myAlarmManager: AlarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
 
-    myAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+    myAlarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time, pendingIntent), pendingIntent)
 }

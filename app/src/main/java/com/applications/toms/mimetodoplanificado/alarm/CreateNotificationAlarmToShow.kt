@@ -1,8 +1,10 @@
-package com.applications.toms.mimetodoplanificado.notification
+package com.applications.toms.mimetodoplanificado.alarm
 
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.net.Uri
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -11,7 +13,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.applications.toms.mimetodoplanificado.MainActivity
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.*
+import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -19,7 +21,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @OptIn(ExperimentalMaterialApi::class)
-fun createNotificationToShow(
+fun createNotificationAlarmToShow(
     context: Context,
     title: String,
     text: String
@@ -42,7 +44,6 @@ fun createNotificationToShow(
         .setColor(Purple.toArgb()) //TODO CHANGE COLOR IF WE ARE ON DARK THEME?
         .setContentTitle(title)
         .setContentText(text)
-        .setAutoCancel(true)
         .setPriority(NotificationCompat.PRIORITY_HIGH)
 
     with(NotificationManagerCompat.from(context)) {
