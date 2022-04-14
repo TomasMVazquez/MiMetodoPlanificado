@@ -1,7 +1,8 @@
 package com.applications.toms.mimetodoplanificado.notification
 
 enum class RequestNotificationCode(val code: Int) {
-    DAILY_NOTIFICATION_CODE(100)
+    DAILY_NOTIFICATION_CODE(100),
+    ALARM_CODE(200)
 }
 
 enum class NotificationBundle(val key: String) {

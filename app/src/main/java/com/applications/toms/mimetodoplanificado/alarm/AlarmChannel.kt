@@ -10,12 +10,12 @@ import android.net.Uri
 import com.applications.toms.mimetodoplanificado.R
 
 
-const val CHANNEL_ID = "alarm_channel_id"
+const val ALARM_CHANNEL_ID = "alarm_channel_id"
 
 fun createAlarmChannel(context: Context) {
     val notificationManager: NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-    if (notificationManager.getNotificationChannel(CHANNEL_ID) != null) return
+    if (notificationManager.getNotificationChannel(ALARM_CHANNEL_ID) != null) return
 
     val name = context.getString(R.string.alarm_channel_name)
     val descriptionText = context.getString(R.string.alarm_channel_description)
@@ -27,7 +27,7 @@ fun createAlarmChannel(context: Context) {
     val vibratorPattern = longArrayOf(100, 500, 1000)
     val soundUri: Uri = RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM)
 
-    val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+    val channel = NotificationChannel(ALARM_CHANNEL_ID, name, importance).apply {
         description = descriptionText
         enableLights(true)
         enableVibration(true)

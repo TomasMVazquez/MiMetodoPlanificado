@@ -86,7 +86,9 @@ class SettingsViewModel @Inject constructor(
                             method = methodChosen.methodAndStartDate.methodChosen,
                             totalDaysCycle = methodChosen.totalDaysCycle.toInt(),
                             notificationsState = it.notificationsState,
-                            notificationTimeInMillis = it.notificationTimeInMillis?.convertToTimeInMills() ?: 0L,
+                            notificationTimeInMillis = it.notificationTimeInMillis?.convertToTimeInMills(
+                                it.notificationTimeInMillis == it.alarmTimeInMillis
+                            ) ?: 0L,
                             alarmState = it.alarmState,
                             alarmTimeInMillis = it.alarmTimeInMillis?.convertToTimeInMills() ?: 0L,
                             daysFromStart = methodChosen.methodAndStartDate.startDate.until(LocalDate.now(), ChronoUnit.DAYS)

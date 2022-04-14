@@ -20,13 +20,18 @@ const val FORMATTED_TIME_PATTERN = "HH:mm"
 
 fun LocalDate.toFormattedString(): String = format(DateTimeFormatter.ofPattern(FORMATTED_DATE_PATTERN))
 
-fun String.convertToTimeInMills(): Long =
+fun String.convertToTimeInMills(delayFiveSeconds: Boolean = false): Long =
     try {
         val myTime = LocalTime.parse(this, DateTimeFormatter.ofPattern(FORMATTED_TIME_PATTERN))
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, myTime.hour)
-        calendar.set(Calendar.MINUTE, myTime.minute)
-        calendar.set(Calendar.SECOND, 0)
+        if (delayFiveSeconds) {
+            calendar.set(Calendar.MINUTE, myTime.minute.minus(1))
+            calendar.set(Calendar.SECOND, 55)
+        } else {
+            calendar.set(Calendar.MINUTE, myTime.minute)
+            calendar.set(Calendar.SECOND, 0)
+        }
         calendar.timeInMillis
     } catch (t: Throwable) {
         0L
