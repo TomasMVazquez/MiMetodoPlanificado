@@ -27,6 +27,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
+import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -83,6 +85,10 @@ fun AlertDialogOkCancel(
                             style = MaterialTheme.typography.overline,
                         )
                     }
+                    GenericSpacer(
+                        type = SpacerType.VERTICAL,
+                        padding = dimensionResource(id = R.dimen.spacer_small)
+                    )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Center,
