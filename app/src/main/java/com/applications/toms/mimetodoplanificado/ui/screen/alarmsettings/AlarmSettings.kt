@@ -67,7 +67,7 @@ fun AlarmSettings(
             errorTitle = stringResource(id = R.string.error_dialog_title),
             errorDescription = stringResource(id = R.string.error_dialog_desc)
         ) {
-            alarmSettingsViewModel.onDismissError()
+            goBack()
         }
 
         AlertDialogSuccess(

@@ -90,10 +90,6 @@ class AlarmSettingsViewModel @Inject constructor(
         }
     }
 
-    fun onDismissError() {
-        _state.value = _state.value.copy(error = false)
-    }
-
     data class AlarmSettingsState(
         val dataRetrieved: Boolean = false,
         val error: Boolean = false,
