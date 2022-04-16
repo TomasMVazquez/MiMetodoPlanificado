@@ -4,9 +4,14 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
-import androidx.compose.material.ButtonDefaults.buttonColors
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.ButtonDefaults.textButtonColors
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.OutlinedButton
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.Composable
@@ -31,6 +36,7 @@ fun GenericButton(
     withIcon: Boolean = false,
     icon: ImageVector = Icons.Filled.Favorite,
     contentDesc: String? = null,
+    enable: Boolean = true,
     onClick: () -> Unit
 ){
 
@@ -42,6 +48,7 @@ fun GenericButton(
                 withIcon = withIcon,
                 icon = icon,
                 contentDesc = contentDesc,
+                enable = enable,
                 onClick = onClick
             )
         ButtonType.MEDIUM_EMPHASIS ->
@@ -51,12 +58,14 @@ fun GenericButton(
                 withIcon = withIcon,
                 icon = icon,
                 contentDesc = contentDesc,
+                enable = enable,
                 onClick = onClick
             )
         ButtonType.LOW_EMPHASIS ->
             LowEmphasisButton(
                 modifier = modifier,
                 text = text,
+                enable = enable,
                 onClick = onClick
             )
     }
@@ -69,6 +78,7 @@ fun HighEmphasisButton(
     withIcon: Boolean,
     icon: ImageVector,
     contentDesc: String?,
+    enable: Boolean,
     onClick: () -> Unit
 ){
     Button(
@@ -82,7 +92,8 @@ fun HighEmphasisButton(
         colors = ButtonDefaults.buttonColors(
             backgroundColor = MaterialTheme.colors.secondary,
             contentColor = MaterialTheme.colors.onSecondary
-        )
+        ),
+        enabled = enable
     ) {
         if (withIcon){
             Icon(
@@ -104,6 +115,7 @@ fun MediumEmphasisButton(
     withIcon: Boolean,
     icon: ImageVector,
     contentDesc: String?,
+    enable: Boolean,
     onClick: () -> Unit
 ){
     OutlinedButton(
@@ -117,7 +129,8 @@ fun MediumEmphasisButton(
         border = BorderStroke(
             1.dp,
             color = MaterialTheme.colors.primary
-        )
+        ),
+        enabled = enable
     ) {
         if (withIcon){
             Icon(
@@ -135,6 +148,7 @@ fun MediumEmphasisButton(
 fun LowEmphasisButton(
     modifier: Modifier,
     text: String,
+    enable: Boolean,
     onClick: () -> Unit
 ){
     TextButton(
@@ -146,7 +160,8 @@ fun LowEmphasisButton(
         ),
         colors = textButtonColors(
             contentColor = VividRaspberry
-        )
+        ),
+        enabled = enable
     ) {
         Text(text)
     }
@@ -156,7 +171,7 @@ fun LowEmphasisButton(
 @Composable
 fun HighEmphasisButtonPrev(){
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {},
         contentPadding = PaddingValues(
             horizontal = 20.dp,
             vertical = 12.dp
@@ -178,7 +193,7 @@ fun HighEmphasisButtonPrev(){
 @Composable
 fun MediumEmphasisButtonPrev(){
     OutlinedButton(
-        onClick = { /*TODO*/ },
+        onClick = {  },
         contentPadding = PaddingValues(
             horizontal = 20.dp,
             vertical = 12.dp
@@ -203,7 +218,7 @@ fun MediumEmphasisButtonPrev(){
 @Composable
 fun LowEmphasisButtonPrev(){
     TextButton(
-        onClick = { /*TODO*/ },
+        onClick = {  },
         contentPadding = PaddingValues(
             horizontal = 20.dp,
             vertical = 12.dp

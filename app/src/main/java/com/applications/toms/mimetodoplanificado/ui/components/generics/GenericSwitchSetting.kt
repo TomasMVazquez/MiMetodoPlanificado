@@ -31,7 +31,7 @@ fun GenericSwitchSetting(
         ) {
             Text(
                 modifier = Modifier.weight(1f),
-                text = title //stringResource(R.string.settings_notifications_title)
+                text = title
             )
             Switch(
                 checked = input,

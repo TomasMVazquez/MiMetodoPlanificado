@@ -1,11 +1,19 @@
-package com.applications.toms.mimetodoplanificado.ui.screen.home
+package com.applications.toms.mimetodoplanificado.ui.screen.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +30,10 @@ import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.applications.toms.mimetodoplanificado.ui.theme.VividRaspberry
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
 import com.applications.toms.mimetodoplanificado.ui.utils.onBoardingHasFinished
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi

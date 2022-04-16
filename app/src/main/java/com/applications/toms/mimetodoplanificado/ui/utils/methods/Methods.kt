@@ -1,14 +1,16 @@
-package com.applications.toms.mimetodoplanificado.ui.screen.methods
+package com.applications.toms.mimetodoplanificado.ui.utils.methods
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.domain.MethodCard
-import com.applications.toms.domain.Method
-import com.applications.toms.domain.UserAction
+import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.R
 
 const val TOTAL_CYCLE_DAYS = 28L
-const val RING_CYCLE = 21L
+const val CYCLE_21_DAYS = 21L
+const val CYCLE_30_days = 30L
+const val CYCLE_90_days = 90L
 
 val methods: List<MethodCard>
     @Composable get() = listOf(

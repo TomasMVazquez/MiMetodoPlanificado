@@ -1,40 +1,126 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.settings
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.applications.toms.domain.Method
-import com.applications.toms.domain.UserAction
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.applications.toms.data.onFailure
+import com.applications.toms.data.onSuccess
+import com.applications.toms.domain.MethodAndStartDate
+import com.applications.toms.domain.MethodChosen
+import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.ClickableOutlineTextField
-import com.applications.toms.mimetodoplanificado.ui.components.CustomCalendarView
-import com.applications.toms.mimetodoplanificado.ui.components.InfoSettingsPills
-import com.applications.toms.mimetodoplanificado.ui.components.InfoSettingsRing
-import com.applications.toms.mimetodoplanificado.ui.components.generics.*
-import java.time.format.DateTimeFormatter
+import com.applications.toms.mimetodoplanificado.alarm.createRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.notification.createRepeatingNotification
+import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
+import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
+import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
+import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
+import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
+import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettings21Cycle
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMonthly
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
+import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.Event
+import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.SettingsState
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
+import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.flow.collect
 
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @Composable
 fun Settings(
-    methodChosen: Method?,
-    viewModel: SettingsViewModel = viewModel(),
+    method: MethodAndStartDate,
+    viewModel: SettingsViewModel = hiltViewModel(),
+    onCancel: () -> Unit,
     onDone: () -> Unit
 ) {
+    val context = LocalContext.current
 
-    methodChosen?.let { viewModel.setMethodChosen(it) }
+    val state by viewModel.state.collectAsState(SettingsState())
+    viewModel.setMethodChosen(method)
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(dimensionResource(id = R.dimen.padding_xsmall))) {
-        IconButton(onClick = onDone) {
+    LaunchedEffect(key1 = viewModel.event) {
+        viewModel.event.collect { event ->
+            when (event) {
+                is Event.Continue -> {
+                    event.saveMethodState
+                        .onSuccess {
+                            viewModel.resetState()
+                            if (event.notificationsState == true && event.method != null) {
+                                createRepeatingNotification(
+                                    context = context,
+                                    timeInMillis = event.notificationTimeInMillis,
+                                    method = event.method,
+                                    totalDaysCycle = event.totalDaysCycle,
+                                    daysFromStart = event.daysFromStart
+                                )
+                            }
+                            if (event.alarmState == true && event.method != null) {
+                                createRepeatingAlarm(
+                                    context = context,
+                                    timeInMillis = event.alarmTimeInMillis,
+                                    method = event.method,
+                                    totalDaysCycle = event.totalDaysCycle,
+                                    daysFromStart = event.daysFromStart
+                                )
+                            }
+                            onDone()
+                        }
+                        .onFailure {
+                            /**
+                             * TODO ADD SNACK BAR ERROR
+                             */
+                            viewModel.resetState()
+                            onCancel()
+                        }
+                }
+            }
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(dimensionResource(id = R.dimen.padding_small))
+    ) {
+
+        /**
+         * Cancel Button
+         */
+        IconButton(
+            onClick = {
+                viewModel.resetState()
+                onCancel()
+            }
+        ) {
             Icon(
                 imageVector = Icons.Default.Close,
                 contentDescription = stringResource(R.string.content_description_close),
@@ -52,33 +138,32 @@ fun Settings(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
+            /**
+             * Title
+             */
             Text(
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
-                text = stringResource(R.string.settings_title),
+                text = stringResource(
+                    R.string.settings_title,
+                    when (method.methodChosen) {
+                        Method.PILLS -> stringResource(R.string.pills)
+                        Method.RING -> stringResource(R.string.ring)
+                        Method.SHOOT -> stringResource(R.string.injection)
+                        Method.PATCH -> stringResource(R.string.patch)
+                        null -> ""
+                    }
+                ),
                 style = MaterialTheme.typography.h5,
                 color = MaterialTheme.colors.onPrimary
             )
 
             LazyColumn {
+                /**
+                 * Start Date Picker
+                 */
                 item {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(dimensionResource(id = R.dimen.padding_small)),
-                        text = stringResource(R.string.settings_text_start_date),
-                        style = MaterialTheme.typography.subtitle1,
-                        color = MaterialTheme.colors.onPrimary
-                    )
-
-                    ClickableOutlineTextField(input = viewModel.state.startDate.format(DateTimeFormatter.ofPattern("dd/MM/yy"))) {
-                        viewModel.changeShowDatePicker(!viewModel.state.showDatePicker)
-                    }
-
-                    AnimatedVisibility(visible = viewModel.state.showDatePicker) {
-                        CustomCalendarView {
-                            viewModel.changeStartDate(it)
-                            viewModel.changeShowDatePicker(!viewModel.state.showDatePicker)
-                        }
+                    DatePickerSettingsItem(state.methodAndStartDate.startDate) {
+                        viewModel.changeStartDate(it)
                     }
 
                     GenericSpacer(
@@ -87,77 +172,103 @@ fun Settings(
                     )
                 }
 
+                /**
+                 * Info about Dates bases on method
+                 */
                 item {
-                    when (methodChosen) {
+                    when (method.methodChosen) {
                         Method.PILLS -> {
+                            viewModel.changeEnable(true)
                             InfoSettingsPills(
-                                startDate = viewModel.state.startDate,
-                                pillsBreakDays = viewModel.state.pillsBreakDays
+                                startDate = state.methodAndStartDate.startDate,
+                                pillsBreakDays = state.breakDays
                             ) {
-                                viewModel.changePillsBreakDays(it)
+                                viewModel.changeBreakDays(it)
                             }
                         }
                         Method.RING -> {
-                            InfoSettingsRing(startDate = viewModel.state.startDate)
+                            InfoSettings21Cycle(startDate = state.methodAndStartDate.startDate)
+                            viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(CYCLE_21_DAYS.toInt()))
+                            viewModel.changeEnable(true)
                         }
-                        Method.SHOOT -> TODO()
-                        Method.PATCH -> TODO()
+                        Method.SHOOT -> {
+                            viewModel.changeBreakDays(0)
+                            InfoSettingsMonthly(startDate = state.methodAndStartDate.startDate) {
+                                viewModel.changeTotalDaysCycle(it)
+                                viewModel.changeEnable(true)
+                            }
+                        }
+                        Method.PATCH -> {
+                            InfoSettings21Cycle(startDate = state.methodAndStartDate.startDate)
+                            viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(CYCLE_21_DAYS.toInt()))
+                            viewModel.changeEnable(true)
+                        }
+                        else -> onCancel()
                     }
 
                     GenericSpacer(
                         type = SpacerType.VERTICAL,
-                        padding = dimensionResource(id = R.dimen.padding_small)
+                        padding = dimensionResource(id = R.dimen.padding_medium)
                     )
                 }
 
+                /**
+                 * Notification & Alarm Time Picker
+                 */
                 item {
-                    GenericSwitchSetting(
-                        stringResource(R.string.settings_notifications_title),
-                        stringResource(R.string.settings_notification_info),
-                        viewModel.state.notifications
-                    ){
-                        viewModel.changeNotificationValue(!viewModel.state.notifications)
+                    NotificationSettingsItem { isNotifEnable, time ->
+                        viewModel.changeNotificationValue(
+                            value = isNotifEnable,
+                            time = time
+                        )
                     }
 
-                    GenericSwitchSetting(
-                        stringResource(R.string.settings_alarm_title),
-                        stringResource(R.string.settings_alarm_info),
-                        viewModel.state.alarm
-                    ){
-                        viewModel.changeAlarmValue(!viewModel.state.alarm)
+                    AlarmSettingsItem { isAlarmEnabled, time ->
+                        viewModel.changeAlarmValue(
+                            value = isAlarmEnabled,
+                            time = time
+                        )
                     }
 
                     GenericSpacer(
                         type = SpacerType.VERTICAL,
-                        padding = dimensionResource(id = R.dimen.padding_small)
+                        padding = dimensionResource(id = R.dimen.padding_xlarge)
                     )
                 }
 
+                /**
+                 * Confirm Button
+                 */
                 item {
-                    AnimatedVisibility(visible = !viewModel.state.loading) {
+                    AnimatedVisibility(visible = !state.loading) {
                         GenericButton(
                             modifier = Modifier.fillMaxWidth(),
                             buttonType = ButtonType.HIGH_EMPHASIS,
-                            text = stringResource(R.string.settings_btn_start)
+                            text = stringResource(R.string.settings_btn_start),
+                            enable = state.enable
                         ) {
-                            viewModel.changeLoading(!viewModel.state.loading)
+                            viewModel.changeLoading(!state.loading)
+                            with(state) {
+                                viewModel.onSaveMethodChosen(
+                                    MethodChosen(
+                                        methodAndStartDate = methodAndStartDate,
+                                        totalDaysCycle = totalDaysCycle,
+                                        breakDays = breakDays,
+                                        notifications = notifications,
+                                        notificationTime = notificationTime,
+                                        alarm = alarm,
+                                        alarmTime = alarmTime
+                                    )
+                                )
+                            }
                         }
                     }
 
-                    AnimatedVisibility(visible = viewModel.state.loading) {
-                        Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.BottomCenter
-                        ){
-                            CircularProgressIndicator(
-                                color = MaterialTheme.colors.secondary
-                            )
-                        }
+                    AnimatedVisibility(visible = state.loading) {
+                        MyLoadingContent(Modifier.fillMaxWidth(), Alignment.BottomCenter)
                     }
-
                 }
             }
-
         }
     }
 }

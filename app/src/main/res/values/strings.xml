@@ -65,7 +65,7 @@
 
     // Settings
     <string name="content_description_close">cerrar</string>
-    <string name="settings_title">Configuración</string>
+    <string name="settings_title">Configuración %s</string>
     <string name="settings_label_start_date">Fecha de inicio</string>
     <string name="content_desc_calendar">Icono calendario</string>
     <string name="settings_text_start_date">Selecciona la fecha con la cual comenzaste o comenzarás a usar este método anticonceptivo</string>
@@ -73,12 +73,62 @@
     <string name="settings_ring_break_date_text">El descanso comienza el %1$s y durará 7 días</string>
     <string name="settings_ring_next_date_text">El próximo ciclo comienza el %1$s</string>
     <string name="settings_pills_start_date_text">Comienzo del ciclo de 28 días el %1$s</string>
+    <string name="settings_shoot_monthly_start_date_text">Comienzo del ciclo mensual el %1$s</string>
+    <string name="settings_shoot_monthly">Inyección Mensual</string>
+    <string name="settings_shoot_quarterly">Inyección Trimestral</string>
+    <string name="settings_shoot_quarterly_start_date_text">Comienzo del ciclo trimestral el %1$s</string>
     <string name="settings_pills_subtitle_break">Los días de descanso son:</string>
     <string name="content_description_add">Sumar uno</string>
     <string name="content_description_remove">Restar uno</string>
-    <string name="settings_notifications_title">Habilitar Notificaciones</string>
+    <string name="settings_notifications_title">Notificaciones</string>
     <string name="settings_notification_info">Al habilitar las notificaciones podremos configurar los avisos necesarios para recordar alguna acción</string>
-    <string name="settings_alarm_title">Habilitar Alarmas</string>
-    <string name="settings_alarm_info">Al habilitar la alarma te solicitaremos luego que nos confirmes la hora para no olvidarte</string>
+    <string name="settings_alarm_title">Alarmas</string>
+    <string name="settings_alarm_info">Al habilitar la alarma podremos alertarte para tomar una acción</string>
     <string name="settings_btn_start">COMENZAR</string>
+    <string name="done">Listo</string>
+    <string name="settings_config_notif">Se configuró las notificaciones para las %s hs</string>
+    <string name="settings_config_alarm">Se configuró la alarma para las %s hs</string>
+    <string name="settings_config_alarm_off">No se configuró ninguna alarma</string>
+    <string name="settings_config_notif_off">No se configuró ninguna notificación</string>
+
+    // MyMethodHome
+    <string name="current_day">Día\n%d</string>
+    <string name="info_calendar_cycle">Ciclo</string>
+    <string name="info_calendar_break">Descanso</string>
+    <string name="my_method_settings">Configuración</string>
+    <string name="my_method_change">Cambiar método</string>
+    <string name="my_method_alarm">Alarma</string>
+    <string name="my_method_notif">Notificaciones</string>
+    <string name="change_my_method_title">Cambiar\nMi Método Planificado</string>
+    <string name="change_my_method_description">¿Estás segura que deseas cambiar tú método planificado?</string>
+    <string name="change_my_method_warning">Al cambiar de método se perderán todos los datos actuales</string>
+    <string name="change_my_method_cancel">Cancelar</string>
+    <string name="change_my_method_confirm">Confirmar</string>
+    <string name="info_config_notif">Notificación a las %s hs</string>
+    <string name="info_config_alarm">Alarma a las %s hs</string>
+
+    // AlarmSettings
+    <string name="content_description_expand">Expandir</string>
+    <string name="settings_btn_save">GUARDAR</string>
+
+    // Dialogs
+    <string name="error_dialog_btn">Aceptar</string>
+    <string name="error_dialog_title">Error</string>
+    <string name="error_dialog_desc">Ha ocurrido un error al intentar realizar esta operación.\n \nIntentalo más tarde y si el error persiste conctante con el desarrollador</string>
+    <string name="success_dialog_title">¡Está hecho!</string>
+    <string name="success_dialog_desc">La operación finalizó exitosamente.</string>
+    <string name="ok_cancel_dialog_title">Salir sin guardar</string>
+    <string name="ok_cancel_dialog_warning">Al salir se perderán los cambios realizados</string>
+    <string name="ok_cancel_dialog_desc">¿Estás segura que deseas salir sin guardar?</string>
+
+    // Notification
+    <string name="notification_channel_name">Notificaciones</string>
+    <string name="alarm_channel_name">Alarma</string>
+    <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    <string name="alarm_channel_description">Estas notificaciones sonoras y con vibraciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    <string name="notification_desc_generic">No te olvides de tu método anticonceptivo</string>
+    <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
+    <string name="notification_desc_ring">No te olvides de sacar/poner el anillo</string>
+    <string name="notification_desc_path">No te olvides de sacar/poner el parche</string>
+    <string name="notification_desc_shoot">No te olvides de la inyección</string>
 </resources>

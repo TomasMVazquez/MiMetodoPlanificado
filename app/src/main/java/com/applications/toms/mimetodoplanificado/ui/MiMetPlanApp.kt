@@ -5,16 +5,30 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
-import com.applications.toms.domain.MethodState
+import com.applications.toms.domain.MethodAndStartDate
+import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
-import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
+import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
+import com.applications.toms.mimetodoplanificado.ui.utils.onMethodHasBeenSaved
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
 
@@ -25,12 +39,16 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
-    var methodState by remember { mutableStateOf(MethodState()) }
-
+    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
+    var methodState by remember { mutableStateOf(MethodAndStartDate()) }
+    var shouldShowOnBoarding by rememberSaveable { mutableStateOf(!hasOnBoardingAlreadyShown(context)) }
+    var isMethodSaved by rememberSaveable { mutableStateOf(isMethodSaved(context)) }
+
+
     LaunchedEffect(lifecycleOwner) {
         appState.state.collect {
-            methodState = MethodState(
+            methodState = MethodAndStartDate(
                 methodChosen = it.methodChosen,
                 startDate = it.startDate
             )
@@ -41,9 +59,15 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
         ModalBottomSheetLayout(
             sheetContent = {
-                Settings(methodState.methodChosen) {
-                    appState.hideModalSheet()
-                }
+                Settings(
+                    method = methodState,
+                    onCancel = { appState.hideModalSheet() },
+                    onDone = {
+                        onMethodHasBeenSaved(context)
+                        isMethodSaved = true
+                        appState.hideModalSheet()
+                    }
+                )
             },
             sheetState = appState.modalBottomSheetState,
             sheetShape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_bottom_sheet))
@@ -52,7 +76,19 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
                 Box(modifier = Modifier.padding(paddingValues)) {
                     Navigation(
-                        appState = appState
+                        appState.navController,
+                        shouldShowOnBoarding,
+                        isMethodSaved,
+                        onFinishOnBoarding = {
+                             shouldShowOnBoarding = false
+                        },
+                        goToSettings = {
+                            appState.setMethodChosen(it)
+                            appState.showModalSheet()
+                        },
+                        onMethodChanged = {
+                            isMethodSaved = false
+                        }
                     )
                 }
 
