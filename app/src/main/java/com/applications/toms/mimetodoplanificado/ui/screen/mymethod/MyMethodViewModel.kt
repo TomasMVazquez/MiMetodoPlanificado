@@ -40,9 +40,9 @@ class MyMethodViewModel @Inject constructor(
                         endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1),
                         nextCycle = response.second,
                         breakDays = response.first.breakDays,
-                        notifications = response.first.notifications,
+                        isNotificationEnable = response.first.notifications,
                         notificationTime = response.first.notificationTime,
-                        alarm = response.first.alarm,
+                        isAlarmEnable = response.first.alarm,
                         alarmTime = response.first.alarmTime
                     )
                 }
@@ -94,9 +94,9 @@ class MyMethodViewModel @Inject constructor(
         val endDate: LocalDate? = null,
         val nextCycle: LocalDate? = null,
         val breakDays: Int? = null,
-        val notifications: Boolean? = null,
+        val isNotificationEnable: Boolean? = null,
         val notificationTime: String? = null,
-        val alarm: Boolean? = null,
+        val isAlarmEnable: Boolean? = null,
         val alarmTime: String? = null
     )
 

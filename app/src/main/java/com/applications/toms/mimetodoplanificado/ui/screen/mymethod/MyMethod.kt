@@ -38,7 +38,7 @@ import java.time.LocalDate
 @Composable
 fun MyMethod(
     viewModel: MyMethodViewModel = hiltViewModel(),
-    onMethodDeleted: () -> Unit,
+    onMethodDeleted: (Boolean, Boolean) -> Unit,
     goToAlarmSettings: () -> Unit
 ) {
 
@@ -53,7 +53,7 @@ fun MyMethod(
                 }
                 MyMethodViewModel.Event.MethodDeleted -> {
                     openDialog = false
-                    onMethodDeleted()
+                    onMethodDeleted(state.isNotificationEnable ?: false, state.isAlarmEnable ?: false)
                 }
                 MyMethodViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
@@ -145,7 +145,7 @@ fun MyMethodContent(state: State) {
             /**
              * Info Notif & Alarm
              */
-            InfoNotificationsAndAlarm(state.alarm, state.alarmTime, state.notifications, state.notificationTime)
+            InfoNotificationsAndAlarm(state.isAlarmEnable, state.alarmTime, state.isNotificationEnable, state.notificationTime)
 
             GenericSpacer(
                 type = SpacerType.VERTICAL,

@@ -13,6 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
+import com.applications.toms.mimetodoplanificado.alarm.cancelRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.notification.cancelRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.ContentType
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSettings
@@ -94,8 +96,10 @@ private fun NavGraphBuilder.nav (
         ){
             composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
                 MyMethod(
-                    onMethodDeleted = {
+                    onMethodDeleted = { wasNotificationEnable, wasAlarmEnable ->
                         onMethodHasBeenSaved(navController.context,false)
+                        if (wasNotificationEnable) cancelRepeatingNotification(navController.context)
+                        if (wasAlarmEnable) cancelRepeatingAlarm(navController.context)
                         onMethodChanged()
                     },
                     goToAlarmSettings = {
