@@ -12,8 +12,6 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -58,6 +56,7 @@ fun NotificationSettingsItem(
             info = stringResource(R.string.settings_notification_info),
             input = isNotificationEnable
         ) {
+            if (!it) timePicked = ""
             isNotificationEnable = it
             showTimePicker = it
             onTimeSelected(isNotificationEnable, timePicked)

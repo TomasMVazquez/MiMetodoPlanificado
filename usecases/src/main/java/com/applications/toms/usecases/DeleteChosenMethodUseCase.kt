@@ -7,9 +7,7 @@ import com.applications.toms.data.eitherSuccess
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.data.repository.ChosenMethodRepository
-import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
-import java.time.LocalDate
 
 class DeleteChosenMethodUseCase(
     private val chosenMethodRepository: ChosenMethodRepository

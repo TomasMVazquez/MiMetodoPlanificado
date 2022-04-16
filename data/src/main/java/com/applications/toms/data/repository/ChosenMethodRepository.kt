@@ -19,4 +19,7 @@ class ChosenMethodRepository(
 
     suspend fun deleteChosenMethod(): Either<EitherState,ErrorStates> =
         localDataSource.deleteChosenMethod()
+
+    suspend fun updateChosenMethod(chosenMethod: MethodChosen): Either<MethodChosen, ErrorStates> =
+        localDataSource.updateChosenMethod(chosenMethod = chosenMethod)
 }

@@ -1,7 +1,12 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.aboutus
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -19,9 +24,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.LinkText
 import com.applications.toms.mimetodoplanificado.ui.components.LinkTextData
+import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 
 @Composable

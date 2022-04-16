@@ -4,22 +4,21 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.navigation.*
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
-import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.*
+import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.ContentType
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSettings
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
-import com.applications.toms.mimetodoplanificado.ui.screen.home.OnBoarding
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethod
+import com.applications.toms.mimetodoplanificado.ui.screen.onboarding.OnBoarding
 import com.applications.toms.mimetodoplanificado.ui.utils.onMethodHasBeenSaved
 import com.google.accompanist.pager.ExperimentalPagerApi
 
@@ -105,9 +104,14 @@ private fun NavGraphBuilder.nav (
                 )
             }
             composable(navCommand = ContentType(NavFeature.ALARM_SETTINGS)){
-                AlarmSettings {
-                    navController.popBackStack()
-                }
+                AlarmSettings(
+                    onSave = {
+                        navController.navigate(ContentType(NavFeature.MY_METHOD).route)
+                    },
+                    goBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
         }
     } else {

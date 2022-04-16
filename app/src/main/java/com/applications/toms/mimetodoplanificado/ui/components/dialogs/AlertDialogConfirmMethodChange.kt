@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.components
+package com.applications.toms.mimetodoplanificado.ui.components.dialogs
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -46,7 +46,9 @@ fun AlertDialogConfirmMethodChange(onCancel: () -> Unit, onConfirm: () -> Unit) 
                 colorFilter = ColorFilter.tint(
                     color = MaterialTheme.colors.secondary
                 ),
-                modifier = Modifier.height(70.dp).fillMaxWidth()
+                modifier = Modifier
+                    .height(70.dp)
+                    .fillMaxWidth()
             )
         },
         text = {
@@ -62,7 +64,9 @@ fun AlertDialogConfirmMethodChange(onCancel: () -> Unit, onConfirm: () -> Unit) 
                     style = MaterialTheme.typography.h6
                 )
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(vertical = dimensionResource(id = R.dimen.spacer_small)),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = dimensionResource(id = R.dimen.spacer_small)),
                     text = stringResource(R.string.change_my_method_warning),
                     style = MaterialTheme.typography.overline,
                 )

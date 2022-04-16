@@ -13,4 +13,6 @@ interface LocalDataSource {
     suspend fun getChosenMethod(): Either<Pair<MethodChosen, LocalDate>, ErrorStates>
 
     suspend fun deleteChosenMethod(): Either<EitherState, ErrorStates>
+
+    suspend fun updateChosenMethod(chosenMethod: MethodChosen): Either<MethodChosen, ErrorStates>
 }

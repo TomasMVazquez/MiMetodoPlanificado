@@ -10,7 +10,8 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.core.os.bundleOf
 import com.applications.toms.domain.enums.Method
-import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.*
+import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_CYCLE_KEY
+import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
 import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -61,4 +62,24 @@ fun createRepeatingNotification(
     val myAlarmManager: AlarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
 
     myAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
+}
+
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
+fun cancelRepeatingNotification(
+    context: Context
+) {
+    val pendingIntent =
+        PendingIntent.getBroadcast(
+            context,
+            DAILY_NOTIFICATION_CODE.code,
+            Intent(context, NotificationReceiver::class.java),
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE
+            else PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+    val myAlarmManager: AlarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
+
+    myAlarmManager.cancel(pendingIntent)
 }

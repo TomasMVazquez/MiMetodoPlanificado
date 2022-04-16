@@ -4,6 +4,7 @@ import com.applications.toms.data.repository.ChosenMethodRepository
 import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import com.applications.toms.usecases.SaveChosenMethodUseCase
+import com.applications.toms.usecases.UpdateChosenMethodUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +29,9 @@ class UseCaseModule {
     @ViewModelScoped
     fun deleteChosenMethodUseCase(chosenMethodRepository: ChosenMethodRepository) =
         DeleteChosenMethodUseCase(chosenMethodRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun updateChosenMethodUseCase(chosenMethodRepository: ChosenMethodRepository) =
+        UpdateChosenMethodUseCase(chosenMethodRepository)
 }

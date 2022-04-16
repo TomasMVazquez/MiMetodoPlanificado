@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter
 
 class RoomDataSource(db: MyDatabase): LocalDataSource {
 
-    val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
+    private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 
     private val dao = db.databaseDao()
 
@@ -62,6 +62,20 @@ class RoomDataSource(db: MyDatabase): LocalDataSource {
             else {
                 val response = dao.deleteMethod(method.methodChosen)
                 if (response > 0) eitherSuccess(EitherState.SUCCESS) else eitherFailure(ErrorStates.GENERIC)
+            }
+        }
+
+    override suspend fun updateChosenMethod(chosenMethod: MethodChosen): Either<MethodChosen, ErrorStates> =
+        withContext(Dispatchers.IO) {
+            val dbModel = chosenMethod.toDatabaseModel()
+            if (dbModel == null) {
+                eitherFailure(ErrorStates.EMPTY)
+            } else {
+                val response = dao.updateMethod(dbModel)
+                if (response > 0)
+                    eitherSuccess(chosenMethod)
+                else
+                    eitherFailure(ErrorStates.NOT_SAVED)
             }
         }
 

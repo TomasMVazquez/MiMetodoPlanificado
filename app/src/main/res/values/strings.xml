@@ -109,6 +109,17 @@
 
     // AlarmSettings
     <string name="content_description_expand">Expandir</string>
+    <string name="settings_btn_save">GUARDAR</string>
+
+    // Dialogs
+    <string name="error_dialog_btn">Aceptar</string>
+    <string name="error_dialog_title">Error</string>
+    <string name="error_dialog_desc">Ha ocurrido un error al intentar realizar esta operación.\n \nIntentalo más tarde y si el error persiste conctante con el desarrollador</string>
+    <string name="success_dialog_title">¡Está hecho!</string>
+    <string name="success_dialog_desc">La operación finalizó exitosamente.</string>
+    <string name="ok_cancel_dialog_title">Salir sin guardar</string>
+    <string name="ok_cancel_dialog_warning">Al salir se perderán los cambios realizados</string>
+    <string name="ok_cancel_dialog_desc">¿Estás segura que deseas salir sin guardar?</string>
 
     // Notification
     <string name="notification_channel_name">Notificaciones</string>

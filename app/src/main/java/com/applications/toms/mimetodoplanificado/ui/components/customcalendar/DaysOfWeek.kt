@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.semantics.clearAndSetSemantics
 import com.applications.toms.domain.daysOfWeek
 
 private const val FIRST_LETTER_OF_WEEK = 1

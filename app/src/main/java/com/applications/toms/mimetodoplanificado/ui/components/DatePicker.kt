@@ -3,7 +3,7 @@ package com.applications.toms.mimetodoplanificado.ui.components
 import android.view.ContextThemeWrapper
 import android.widget.CalendarView
 import android.widget.TimePicker
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
@@ -11,7 +11,6 @@ import com.applications.toms.mimetodoplanificado.R
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.time.LocalDate
-import java.util.*
 
 val decimalFormat: NumberFormat = DecimalFormat("00")
 

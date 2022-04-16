@@ -3,7 +3,6 @@ package com.applications.toms.mimetodoplanificado.data.mapper
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.data.model.ChosenMethod
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

@@ -7,9 +7,6 @@ import com.applications.toms.data.eitherSuccess
 import com.applications.toms.data.repository.ChosenMethodRepository
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
-import java.util.Calendar
 
 class SaveChosenMethodUseCase(
     private val chosenMethodRepository: ChosenMethodRepository
