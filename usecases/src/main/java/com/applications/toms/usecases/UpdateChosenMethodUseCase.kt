@@ -12,9 +12,9 @@ class UpdateChosenMethodUseCase(
 
     override suspend fun buildUseCase(input: Input): Either<MethodChosen, ErrorStates> {
         val updatedMethod = input.methodChosen.copy(
-            notifications = input.notificationsState,
+            isNotificationEnable = input.notificationsState,
             notificationTime = input.notificationTime,
-            alarm = input.alarmState,
+            isAlarmEnable = input.alarmState,
             alarmTime = input.alarmTime
         )
         return chosenMethodRepository.updateChosenMethod(updatedMethod)

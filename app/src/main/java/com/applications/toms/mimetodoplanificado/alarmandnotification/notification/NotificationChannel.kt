@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.notification
+package com.applications.toms.mimetodoplanificado.alarmandnotification.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

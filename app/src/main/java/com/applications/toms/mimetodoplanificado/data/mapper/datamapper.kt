@@ -15,9 +15,9 @@ fun MethodChosen.toDatabaseModel(): ChosenMethod? =
             nextCycle = methodAndStartDate.startDate.plusDays(totalDaysCycle).toFormattedString(),
             totalDaysCycle = totalDaysCycle,
             breakDays = breakDays,
-            notifications = notifications,
+            notifications = isNotificationEnable,
             notificationTime = notificationTime,
-            alarm = alarm,
+            alarm = isAlarmEnable,
             alarmTime = alarmTime
         )
     }
@@ -30,8 +30,8 @@ fun ChosenMethod.toModel(formatter: DateTimeFormatter): MethodChosen =
         ),
         totalDaysCycle = this.totalDaysCycle,
         breakDays = this.breakDays,
-        notifications = this.notifications,
+        isNotificationEnable = this.notifications,
         notificationTime = this.notificationTime,
-        alarm = this.alarm,
+        isAlarmEnable = this.alarm,
         alarmTime = this.alarmTime
     )

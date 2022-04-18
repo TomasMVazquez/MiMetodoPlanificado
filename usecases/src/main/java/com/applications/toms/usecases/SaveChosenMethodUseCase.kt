@@ -19,9 +19,9 @@ class SaveChosenMethodUseCase(
                 eitherSuccess(
                     Result(
                         eitherState = EitherState.SUCCESS,
-                        notificationsState = input.notifications,
+                        notificationsState = input.isNotificationEnable,
                         notificationTimeInMillis = input.notificationTime,
-                        alarmState = input.alarm,
+                        alarmState = input.isAlarmEnable,
                         alarmTimeInMillis = input.alarmTime
                     )
                 )

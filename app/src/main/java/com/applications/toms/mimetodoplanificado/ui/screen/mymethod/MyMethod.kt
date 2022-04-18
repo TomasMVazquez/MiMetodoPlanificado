@@ -1,5 +1,8 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.mymethod
 
+import android.content.Context
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,39 +18,55 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogConfirmMethodChange
+import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogSuccess
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.State
+import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
+import com.applications.toms.mimetodoplanificado.ui.utils.hasBeenReboot
+import com.applications.toms.mimetodoplanificado.ui.utils.onRebooted
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
+import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @Composable
 fun MyMethod(
     viewModel: MyMethodViewModel = hiltViewModel(),
     onMethodDeleted: (Boolean, Boolean) -> Unit,
     goToAlarmSettings: () -> Unit
 ) {
+    val context = LocalContext.current
 
     val state by viewModel.state.collectAsState(State())
     var openDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
-            when(it) {
+            when (it) {
                 MyMethodViewModel.Event.ConfirmMethodChange -> {
                     openDialog = true
                 }
@@ -69,7 +88,7 @@ fun MyMethod(
         )
 
     Box(modifier = Modifier.fillMaxSize()) {
-        if (!state.loading)
+        if (!state.loading) {
             Column() {
                 MyMethodCustomToolbar(
                     onChangeMethodClick = { viewModel.onMethodChangeClick() },
@@ -77,7 +96,11 @@ fun MyMethod(
                 )
 
                 MyMethodContent(state)
+
+                state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(context), context, it) }
+
             }
+        }
     }
 
 }
@@ -111,7 +134,7 @@ fun MyMethodContent(state: State) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = dimensionResource(id = R.dimen.padding_medium)),
-                text = when (state.methodChosen) {
+                text = when (state.methodChosen?.methodAndStartDate?.methodChosen) {
                     Method.PILLS -> stringResource(R.string.pills)
                     Method.RING -> stringResource(R.string.ring)
                     Method.SHOOT -> stringResource(R.string.injection)
@@ -165,5 +188,51 @@ fun MyMethodContent(state: State) {
             InfoCalendar()
 
         }
+    }
+}
+
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
+@Composable
+fun ConfirmRebootSettings(open: Boolean, context: Context, methodChosen: MethodChosen) {
+    onRebooted(context, false)
+    var openConfirmDialog by remember { mutableStateOf(open) }
+
+    AlertDialogSuccess(
+        show = openConfirmDialog,
+        successTitle = stringResource(id = R.string.success_dialog_title),
+        successDescription = stringResource(id = R.string.success_reboot_dialog_desc),
+    ) {
+        methodChosen.methodAndStartDate.methodChosen?.let {
+            val daysCycle = methodChosen.totalDaysCycle.toInt()
+            val fromStart = methodChosen.methodAndStartDate.startDate.until(
+                LocalDate.now(),
+                ChronoUnit.DAYS
+            )
+
+            if (methodChosen.isNotificationEnable)
+                createRepeatingNotification(
+                    context = context,
+                    timeInMillis = methodChosen.notificationTime.convertToTimeInMills(),
+                    method = it,
+                    totalDaysCycle = daysCycle,
+                    daysFromStart = fromStart
+                )
+            else
+                cancelRepeatingNotification(context)
+
+            if (methodChosen.isAlarmEnable)
+                createRepeatingAlarm(
+                    context = context,
+                    timeInMillis = methodChosen.alarmTime.convertToTimeInMills(),
+                    method = it,
+                    totalDaysCycle = daysCycle,
+                    daysFromStart = fromStart
+                )
+            else
+                cancelRepeatingAlarm(context)
+        }
+        openConfirmDialog = false
     }
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
-import com.applications.toms.domain.enums.Method
+import com.applications.toms.domain.MethodChosen
 import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -35,14 +35,14 @@ class MyMethodViewModel @Inject constructor(
                 .onSuccess { response ->
                     _state.value = State(
                         loading = false,
-                        methodChosen = response.first.methodAndStartDate.methodChosen,
+                        methodChosen = response.first,
                         startDate = response.first.methodAndStartDate.startDate,
                         endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1),
                         nextCycle = response.second,
                         breakDays = response.first.breakDays,
-                        isNotificationEnable = response.first.notifications,
+                        isNotificationEnable = response.first.isNotificationEnable,
                         notificationTime = response.first.notificationTime,
-                        isAlarmEnable = response.first.alarm,
+                        isAlarmEnable = response.first.isAlarmEnable,
                         alarmTime = response.first.alarmTime
                     )
                 }
@@ -89,7 +89,7 @@ class MyMethodViewModel @Inject constructor(
 
     data class State(
         val loading: Boolean = true,
-        val methodChosen: Method? = null,
+        val methodChosen: MethodChosen? = null,
         val startDate: LocalDate? = null,
         val endDate: LocalDate? = null,
         val nextCycle: LocalDate? = null,

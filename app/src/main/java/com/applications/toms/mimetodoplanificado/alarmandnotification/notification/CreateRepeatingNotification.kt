@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.alarm
+package com.applications.toms.mimetodoplanificado.alarmandnotification.notification
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -10,9 +10,9 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.core.os.bundleOf
 import com.applications.toms.domain.enums.Method
-import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_CYCLE_KEY
-import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
-import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.NotificationBundle.NOTIFICATION_CYCLE_KEY
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_7_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-fun createRepeatingAlarm(
+fun createRepeatingNotification(
     context: Context,
     timeInMillis: Long,
     method: Method,
@@ -31,9 +31,9 @@ fun createRepeatingAlarm(
 ) {
 
     var time = timeInMillis
-    createAlarmChannel(context)
+    createNotificationChannel(context)
 
-    val intent = Intent(context, AlarmReceiver::class.java)
+    val intent = Intent(context, NotificationReceiver::class.java)
     val bundle = bundleOf(
         NOTIFICATION_METHOD_KEY.key to method.name,
         NOTIFICATION_CYCLE_KEY.key to when (method) {
@@ -72,20 +72,20 @@ fun createRepeatingAlarm(
 
     val myAlarmManager: AlarmManager = context.getSystemService(ALARM_SERVICE) as AlarmManager
 
-    myAlarmManager.setAlarmClock(AlarmManager.AlarmClockInfo(time, pendingIntent), pendingIntent)
+    myAlarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, time, pendingIntent)
 }
 
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-fun cancelRepeatingAlarm(
+fun cancelRepeatingNotification(
     context: Context
 ) {
     val pendingIntent =
         PendingIntent.getBroadcast(
             context,
             DAILY_NOTIFICATION_CODE.code,
-            Intent(context, AlarmReceiver::class.java),
+            Intent(context, NotificationReceiver::class.java),
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE
             else PendingIntent.FLAG_UPDATE_CURRENT
         )
