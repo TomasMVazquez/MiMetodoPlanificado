@@ -9,6 +9,7 @@ import com.applications.toms.mimetodoplanificado.R
 
 const val TOTAL_CYCLE_DAYS = 28L
 const val CYCLE_21_DAYS = 21L
+const val CYCLE_7_DAYS = 7L
 const val CYCLE_30_days = 30L
 const val CYCLE_90_days = 90L
 

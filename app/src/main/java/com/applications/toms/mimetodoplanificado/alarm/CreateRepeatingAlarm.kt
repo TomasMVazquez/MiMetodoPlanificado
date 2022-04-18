@@ -14,6 +14,8 @@ import com.applications.toms.mimetodoplanificado.notification.NotificationBundle
 import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
 import com.applications.toms.mimetodoplanificado.notification.RequestNotificationCode.DAILY_NOTIFICATION_CODE
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_7_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.concurrent.TimeUnit
 
@@ -42,8 +44,13 @@ fun createRepeatingAlarm(
             Method.RING,
             Method.SHOOT -> {
                 if (totalDaysCycle == 28) {
-                    time = timeInMillis + TimeUnit.DAYS.toMillis(CYCLE_21_DAYS - daysFromStart)
-                    CYCLE_21_DAYS
+                    if (daysFromStart < CYCLE_21_DAYS) {
+                        time = timeInMillis + TimeUnit.DAYS.toMillis(CYCLE_21_DAYS - daysFromStart)
+                        CYCLE_21_DAYS
+                    }else{
+                        time = timeInMillis + TimeUnit.DAYS.toMillis(TOTAL_CYCLE_DAYS - daysFromStart)
+                        CYCLE_7_DAYS
+                    }
                 } else totalDaysCycle
             }
             Method.PATCH -> {
