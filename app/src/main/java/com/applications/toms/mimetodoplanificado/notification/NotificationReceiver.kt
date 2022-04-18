@@ -27,7 +27,7 @@ class NotificationReceiver : BroadcastReceiver() {
         var delay: Long? = null
         var method: Method? = null
         val currentTime: Long = System.currentTimeMillis()
-        var daysOfDelay: Long = 1L
+        var daysOfDelay = 1L
 
         when (bundle?.get(NOTIFICATION_METHOD_KEY.key)) {
             Method.PILLS.name -> {

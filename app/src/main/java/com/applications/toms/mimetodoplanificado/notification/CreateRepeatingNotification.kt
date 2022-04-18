@@ -27,6 +27,7 @@ fun createRepeatingNotification(
     totalDaysCycle: Int,
     daysFromStart: Long = 0
 ) {
+
     var time = timeInMillis
     createNotificationChannel(context)
 
@@ -34,7 +35,10 @@ fun createRepeatingNotification(
     val bundle = bundleOf(
         NOTIFICATION_METHOD_KEY.key to method.name,
         NOTIFICATION_CYCLE_KEY.key to when (method) {
-            Method.PILLS -> totalDaysCycle
+            Method.PILLS -> {
+                if (System.currentTimeMillis() - timeInMillis > 0) time = timeInMillis + TimeUnit.HOURS.toMillis(24L)
+                totalDaysCycle
+            }
             Method.RING,
             Method.SHOOT -> {
                 if (totalDaysCycle == 28) {
