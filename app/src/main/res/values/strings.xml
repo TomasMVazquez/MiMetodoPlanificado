@@ -117,6 +117,7 @@
     <string name="error_dialog_desc">Ha ocurrido un error al intentar realizar esta operación.\n \nIntentalo más tarde y si el error persiste conctante con el desarrollador</string>
     <string name="success_dialog_title">¡Está hecho!</string>
     <string name="success_dialog_desc">La operación finalizó exitosamente.</string>
+    <string name="success_reboot_dialog_desc">Se confirmó correctamente las notificaciones y alarmas.</string>
     <string name="ok_cancel_dialog_title">Salir sin guardar</string>
     <string name="ok_cancel_dialog_warning">Al salir se perderán los cambios realizados</string>
     <string name="ok_cancel_dialog_desc">¿Estás segura que deseas salir sin guardar?</string>
@@ -131,4 +132,6 @@
     <string name="notification_desc_ring">No te olvides de sacar/poner el anillo</string>
     <string name="notification_desc_path">No te olvides de sacar/poner el parche</string>
     <string name="notification_desc_shoot">No te olvides de la inyección</string>
+    <string name="notification_title_reboot">Has reiniciado/apagado tu dispositivo</string>
+    <string name="notification_desc_reboot">Ingresa a la app para confirmar que las notificaciones y alarmas están correctamente configuradas!</string>
 </resources>

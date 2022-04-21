@@ -39,7 +39,7 @@ class RoomDataSource(db: MyDatabase): LocalDataSource {
             if (method == null) eitherFailure(ErrorStates.NOT_SAVED)
             else {
                 val nextCycle = LocalDate.parse(method.nextCycle, formatter)
-                if (LocalDate.now().isAfter(nextCycle)){
+                if (LocalDate.now().isAfter(nextCycle) || LocalDate.now().isEqual(nextCycle)){
                     val updatedMethod = method.copy(
                         startDate = nextCycle.toFormattedString(),
                         nextCycle = nextCycle.plusDays(TOTAL_CYCLE_DAYS).toFormattedString()

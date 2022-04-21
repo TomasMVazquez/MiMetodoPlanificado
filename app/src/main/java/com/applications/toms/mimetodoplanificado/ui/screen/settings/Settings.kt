@@ -32,8 +32,8 @@ import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.alarm.createRepeatingAlarm
-import com.applications.toms.mimetodoplanificado.notification.createRepeatingNotification
+import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
@@ -254,9 +254,9 @@ fun Settings(
                                         methodAndStartDate = methodAndStartDate,
                                         totalDaysCycle = totalDaysCycle,
                                         breakDays = breakDays,
-                                        notifications = notifications,
+                                        isNotificationEnable = notifications,
                                         notificationTime = notificationTime,
-                                        alarm = alarm,
+                                        isAlarmEnable = alarm,
                                         alarmTime = alarmTime
                                     )
                                 )

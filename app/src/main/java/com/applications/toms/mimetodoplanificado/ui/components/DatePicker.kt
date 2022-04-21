@@ -11,6 +11,7 @@ import com.applications.toms.mimetodoplanificado.R
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.time.LocalDate
+import java.util.Calendar
 
 val decimalFormat: NumberFormat = DecimalFormat("00")
 
@@ -22,6 +23,7 @@ fun CustomCalendarView(onDateSelected: (LocalDate) -> Unit) {
             CalendarView(ContextThemeWrapper(context, R.style.CalenderViewCustom))
         },
         update = { view ->
+            view.minDate = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, -27) }.timeInMillis
             view.setOnDateChangeListener { _, year, month, dayOfMonth ->
                 onDateSelected(
                     LocalDate

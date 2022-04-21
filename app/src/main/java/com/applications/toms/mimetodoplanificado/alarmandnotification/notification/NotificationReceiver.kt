@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.notification
+package com.applications.toms.mimetodoplanificado.alarmandnotification.notification
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -7,8 +7,10 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_CYCLE_KEY
-import com.applications.toms.mimetodoplanificado.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.NotificationBundle.NOTIFICATION_CYCLE_KEY
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_7_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.concurrent.TimeUnit
@@ -27,7 +29,7 @@ class NotificationReceiver : BroadcastReceiver() {
         var delay: Long? = null
         var method: Method? = null
         val currentTime: Long = System.currentTimeMillis()
-        var daysOfDelay: Long = 1L
+        var daysOfDelay = 1L
 
         when (bundle?.get(NOTIFICATION_METHOD_KEY.key)) {
             Method.PILLS.name -> {
@@ -40,14 +42,14 @@ class NotificationReceiver : BroadcastReceiver() {
                 title = context.getString(R.string.ring)
                 text = context.getString(R.string.notification_desc_ring)
                 method = Method.RING
-                daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) 7L else 21L
+                daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
                 delay = currentTime + TimeUnit.DAYS.toMillis(daysOfDelay)
             }
             Method.PATCH.name -> {
                 title = context.getString(R.string.patch)
                 text = context.getString(R.string.notification_desc_path)
                 method = Method.PATCH
-                daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) 7L else 21L
+                daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
                 delay = currentTime + TimeUnit.HOURS.toMillis(daysOfDelay)
             }
             Method.SHOOT.name -> {

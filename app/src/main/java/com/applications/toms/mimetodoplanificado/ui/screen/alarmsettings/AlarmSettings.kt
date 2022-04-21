@@ -28,10 +28,10 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.alarm.cancelRepeatingAlarm
-import com.applications.toms.mimetodoplanificado.alarm.createRepeatingAlarm
-import com.applications.toms.mimetodoplanificado.notification.cancelRepeatingNotification
-import com.applications.toms.mimetodoplanificado.notification.createRepeatingNotification
+import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogError
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogOkCancel
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogSuccess

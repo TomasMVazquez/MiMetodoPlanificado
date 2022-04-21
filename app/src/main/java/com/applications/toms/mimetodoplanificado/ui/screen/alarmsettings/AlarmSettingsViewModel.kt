@@ -32,9 +32,9 @@ class AlarmSettingsViewModel @Inject constructor(
                     methodChosen = it.first
                     _state.value = _state.value.copy(
                         dataRetrieved = true,
-                        isNotificationEnable = it.first.notifications,
+                        isNotificationEnable = it.first.isNotificationEnable,
                         notificationTime = it.first.notificationTime,
-                        isAlarmEnable = it.first.alarm,
+                        isAlarmEnable = it.first.isAlarmEnable,
                         alarmTime = it.first.alarmTime
                     )
                 }

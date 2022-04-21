@@ -13,8 +13,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
-import com.applications.toms.mimetodoplanificado.alarm.cancelRepeatingAlarm
-import com.applications.toms.mimetodoplanificado.notification.cancelRepeatingNotification
+import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.ContentType
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSettings
