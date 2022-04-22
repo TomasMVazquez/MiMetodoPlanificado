@@ -5,7 +5,7 @@ data class MethodChosen(
     val totalDaysCycle: Long,
     val breakDays: Int,
     val isNotificationEnable: Boolean,
-    val notificationTime: String,
+    val notificationTime: String?,
     val isAlarmEnable: Boolean,
-    val alarmTime: String
+    val alarmTime: String?
 )

@@ -44,7 +44,7 @@ class AlarmSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeNotificationValue(enable: Boolean, time: String) {
+    fun changeNotificationValue(enable: Boolean, time: String?) {
         _state.value = _state.value.copy(
             changeStateNotSaved = true,
             hasNotificationChange = true,
@@ -53,7 +53,7 @@ class AlarmSettingsViewModel @Inject constructor(
         )
     }
 
-    fun changeAlarmValue(enable: Boolean, time: String) {
+    fun changeAlarmValue(enable: Boolean, time: String?) {
         _state.value = _state.value.copy(
             changeStateNotSaved = true,
             hasAlarmChange = true,
@@ -64,9 +64,9 @@ class AlarmSettingsViewModel @Inject constructor(
 
     fun onSaveMethodChosen(
         notificationsState: Boolean,
-        notificationTime: String,
+        notificationTime: String?,
         alarmState: Boolean,
-        alarmTime: String
+        alarmTime: String?
     ) {
         viewModelScope.launch {
             updateChosenMethodUseCase.execute(
@@ -97,9 +97,9 @@ class AlarmSettingsViewModel @Inject constructor(
         val changesSaved: Boolean = false,
         val hasNotificationChange: Boolean = false,
         val isNotificationEnable: Boolean = false,
-        val notificationTime: String = "",
+        val notificationTime: String? = null,
         val hasAlarmChange: Boolean = false,
         val isAlarmEnable: Boolean = false,
-        val alarmTime: String = ""
+        val alarmTime: String? = null
     )
 }

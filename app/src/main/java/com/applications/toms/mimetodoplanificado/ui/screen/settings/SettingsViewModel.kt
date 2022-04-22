@@ -67,12 +67,12 @@ class SettingsViewModel @Inject constructor(
         _state.value = _state.value.copy(breakDays = days)
     }
 
-    fun changeNotificationValue(value: Boolean, time: String) {
-        _state.value = _state.value.copy(notifications = value, notificationTime = time)
+    fun changeNotificationValue(value: Boolean, time: String?) {
+        _state.value = _state.value.copy(isNotificationEnable = value, notificationTime = time)
     }
 
-    fun changeAlarmValue(value: Boolean, time: String) {
-        _state.value = _state.value.copy(alarm = value, alarmTime = time)
+    fun changeAlarmValue(value: Boolean, time: String?) {
+        _state.value = _state.value.copy(isAlarmEnable = value, alarmTime = time)
     }
 
     fun onSaveMethodChosen(methodChosen: MethodChosen) {
@@ -110,10 +110,10 @@ class SettingsViewModel @Inject constructor(
         val enable: Boolean = false,
         val totalDaysCycle: Long = TOTAL_CYCLE_DAYS,
         val breakDays: Int = 5,
-        val notifications: Boolean = false,
-        val notificationTime: String = "",
-        val alarm: Boolean = false,
-        val alarmTime: String = ""
+        val isNotificationEnable: Boolean = false,
+        val notificationTime: String? = null,
+        val isAlarmEnable: Boolean = false,
+        val alarmTime: String? = null
     )
 
     sealed class Event {
