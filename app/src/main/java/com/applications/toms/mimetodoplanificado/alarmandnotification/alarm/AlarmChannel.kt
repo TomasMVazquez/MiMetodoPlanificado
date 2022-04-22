@@ -24,7 +24,9 @@ fun createAlarmChannel(context: Context) {
         setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
         setUsage(AudioAttributes.USAGE_NOTIFICATION)
     }.build()
-    val vibratorPattern = longArrayOf(100, 500, 1000)
+
+    val vibratorPattern = longArrayOf(0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500)
+
     val soundUri: Uri = RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM)
 
     val channel = NotificationChannel(ALARM_CHANNEL_ID, name, importance).apply {
