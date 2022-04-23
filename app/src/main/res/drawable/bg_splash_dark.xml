@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item>
-        <color android:color="@color/cottage"/>
+        <color android:color="@color/light_black"/>
     </item>
     <item
-        android:drawable="@drawable/ic_icono_splash"
+        android:drawable="@drawable/ic_icono_splash_dark"
         android:gravity="center"/>
 </layer-list>
