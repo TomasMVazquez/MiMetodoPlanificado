@@ -41,7 +41,7 @@ Mi Método Planificado App incluye las siguientes características:
 * [Play Store](https://play.google.com/store/apps/developer?id=Tomás+M.+Vazquez)
 
 ### Contenido de libre disposición
-Esta aplicación no hubiese sido posible sin el uso de ciertos elementos de libre disposición como los iconos e imagenes gratuitas, códogos libres, entre otros. 
+Esta aplicación no hubiese sido posible sin el uso de ciertos elementos de libre disposición como los iconos e imagenes gratuitas, códigos libres, entre otros. 
 Es por ello que queremos agradecerles y reconocerlos aquí, brindando su información, para que usuarios y programadores puedan saber sobre ellos:
 * Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/)
 * Icons made by [AbtoCreative](https://www.flaticon.com/authors/abtocreative) from [www.flaticon.com](https://www.flaticon.com/)
