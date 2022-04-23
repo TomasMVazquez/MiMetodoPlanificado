@@ -37,7 +37,7 @@ import java.time.LocalDateTime
 fun NotificationSettingsItem(
     isEnable: Boolean = false,
     timeSet: String? = null,
-    onTimeSelected: (Boolean, String) -> Unit
+    onTimeSelected: (Boolean, String?) -> Unit
 ) {
     var showTimePicker by rememberSaveable { mutableStateOf(false) }
     var isNotificationEnable by rememberSaveable { mutableStateOf(isEnable) }
@@ -56,10 +56,9 @@ fun NotificationSettingsItem(
             info = stringResource(R.string.settings_notification_info),
             input = isNotificationEnable
         ) {
-            if (!it) timePicked = ""
             isNotificationEnable = it
             showTimePicker = it
-            onTimeSelected(isNotificationEnable, timePicked)
+            onTimeSelected(isNotificationEnable, if (it) timePicked else null)
         }
 
         GenericSpacer(
@@ -81,6 +80,7 @@ fun NotificationSettingsItem(
                     text = stringResource(R.string.done)
                 ) {
                     showTimePicker = !showTimePicker
+                    onTimeSelected(isNotificationEnable, if (isNotificationEnable) timePicked else null)
                 }
             }
         }

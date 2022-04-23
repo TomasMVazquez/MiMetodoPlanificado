@@ -83,25 +83,29 @@ fun AlarmSettings(
                 )
                 if (state.hasNotificationChange) {
                     if (state.isNotificationEnable)
-                        createRepeatingNotification(
-                            context = context,
-                            timeInMillis = state.notificationTime.convertToTimeInMills(),
-                            method = it,
-                            totalDaysCycle = daysCycle,
-                            daysFromStart = fromStart
-                        )
+                        state.notificationTime?.let { notificationTime ->
+                            createRepeatingNotification(
+                                context = context,
+                                timeInMillis = notificationTime.convertToTimeInMills(),
+                                method = it,
+                                totalDaysCycle = daysCycle,
+                                daysFromStart = fromStart
+                            )
+                        }
                     else
                         cancelRepeatingNotification(context)
                 }
                 if (state.hasAlarmChange) {
                     if (state.isAlarmEnable)
-                        createRepeatingAlarm(
-                            context = context,
-                            timeInMillis = state.alarmTime.convertToTimeInMills(),
-                            method = it,
-                            totalDaysCycle = daysCycle,
-                            daysFromStart = fromStart
-                        )
+                        state.alarmTime?.let { alarmTime ->
+                            createRepeatingAlarm(
+                                context = context,
+                                timeInMillis = alarmTime.convertToTimeInMills(),
+                                method = it,
+                                totalDaysCycle = daysCycle,
+                                daysFromStart = fromStart
+                            )
+                        }
                     else
                         cancelRepeatingAlarm(context)
                 }
@@ -161,8 +165,8 @@ fun AlarmSettingsContent(
     notificationTime: String?,
     alarmState: Boolean,
     alarmTime: String?,
-    onUpdateNotif: (Boolean, String) -> Unit,
-    onUpdateAlarm: (Boolean, String) -> Unit,
+    onUpdateNotif: (Boolean, String?) -> Unit,
+    onUpdateAlarm: (Boolean, String?) -> Unit,
     onSaveChanges: () -> Unit,
     goBack: () -> Unit
 ) {

@@ -37,7 +37,7 @@ import java.time.LocalDateTime
 fun AlarmSettingsItem(
     isEnable: Boolean = false,
     timeSet: String? = null,
-    onTimeSelected: (Boolean, String) -> Unit
+    onTimeSelected: (Boolean, String?) -> Unit
 ) {
     var showTimePicker by rememberSaveable { mutableStateOf(false) }
     var isAlarmEnable by rememberSaveable { mutableStateOf(isEnable) }
@@ -58,7 +58,7 @@ fun AlarmSettingsItem(
         ){
             isAlarmEnable = it
             showTimePicker = it
-            onTimeSelected(isAlarmEnable, timePicked)
+            onTimeSelected(isAlarmEnable, if(it) timePicked else null)
         }
 
         GenericSpacer(
@@ -80,6 +80,7 @@ fun AlarmSettingsItem(
                     text = stringResource(R.string.done)
                 ) {
                     showTimePicker = !showTimePicker
+                    onTimeSelected(isAlarmEnable, if(isAlarmEnable) timePicked else null)
                 }
             }
         }

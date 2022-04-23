@@ -12,8 +12,8 @@ android {
         applicationId "com.applications.toms.mimetodoplanificado"
         minSdk 26
         targetSdk 31
-        versionCode 1
-        versionName "1.1"
+        versionCode 4
+        versionName "1.2.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -63,7 +63,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.1'
     implementation 'androidx.activity:activity-compose:1.4.0'
 
-    implementation "androidx.navigation:navigation-compose:2.4.1"
+    implementation "androidx.navigation:navigation-compose:2.4.2"
     // Iconos
     implementation "androidx.compose.material:material-icons-extended:$compose_version"
     // Coil for image loader
@@ -81,6 +81,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
     implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
+    // Splash screen Api
+    implementation "androidx.core:core-splashscreen:1.0.0-beta01"
 
     // TESTING
     testImplementation 'junit:junit:4.13.2'

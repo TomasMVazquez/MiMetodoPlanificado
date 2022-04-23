@@ -216,14 +216,20 @@ fun Settings(
                  * Notification & Alarm Time Picker
                  */
                 item {
-                    NotificationSettingsItem { isNotifEnable, time ->
+                    NotificationSettingsItem(
+                        isEnable = state.isNotificationEnable,
+                        timeSet = state.notificationTime
+                    ) { isNotifEnable, time ->
                         viewModel.changeNotificationValue(
                             value = isNotifEnable,
                             time = time
                         )
                     }
 
-                    AlarmSettingsItem { isAlarmEnabled, time ->
+                    AlarmSettingsItem(
+                        isEnable = state.isAlarmEnable,
+                        timeSet = state.alarmTime
+                    ) { isAlarmEnabled, time ->
                         viewModel.changeAlarmValue(
                             value = isAlarmEnabled,
                             time = time
@@ -254,10 +260,10 @@ fun Settings(
                                         methodAndStartDate = methodAndStartDate,
                                         totalDaysCycle = totalDaysCycle,
                                         breakDays = breakDays,
-                                        isNotificationEnable = notifications,
-                                        notificationTime = notificationTime,
-                                        isAlarmEnable = alarm,
-                                        alarmTime = alarmTime
+                                        isNotificationEnable = isNotificationEnable,
+                                        notificationTime = notificationTime ?: "",
+                                        isAlarmEnable = isAlarmEnable,
+                                        alarmTime = alarmTime ?: ""
                                     )
                                 )
                             }

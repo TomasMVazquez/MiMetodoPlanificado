@@ -23,8 +23,8 @@ class UpdateChosenMethodUseCase(
     data class Input(
         val methodChosen: MethodChosen,
         val notificationsState: Boolean,
-        val notificationTime: String = "",
+        val notificationTime: String? = null,
         val alarmState: Boolean,
-        val alarmTime: String = ""
+        val alarmTime: String? = null
     )
 }

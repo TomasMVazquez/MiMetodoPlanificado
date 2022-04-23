@@ -212,24 +212,28 @@ fun ConfirmRebootSettings(open: Boolean, context: Context, methodChosen: MethodC
             )
 
             if (methodChosen.isNotificationEnable)
-                createRepeatingNotification(
-                    context = context,
-                    timeInMillis = methodChosen.notificationTime.convertToTimeInMills(),
-                    method = it,
-                    totalDaysCycle = daysCycle,
-                    daysFromStart = fromStart
-                )
+                methodChosen.notificationTime?.let { notificationTime ->
+                    createRepeatingNotification(
+                        context = context,
+                        timeInMillis = notificationTime.convertToTimeInMills(),
+                        method = it,
+                        totalDaysCycle = daysCycle,
+                        daysFromStart = fromStart
+                    )
+                }
             else
                 cancelRepeatingNotification(context)
 
             if (methodChosen.isAlarmEnable)
-                createRepeatingAlarm(
-                    context = context,
-                    timeInMillis = methodChosen.alarmTime.convertToTimeInMills(),
-                    method = it,
-                    totalDaysCycle = daysCycle,
-                    daysFromStart = fromStart
-                )
+                methodChosen.alarmTime?.let { alarmTime ->
+                    createRepeatingAlarm(
+                        context = context,
+                        timeInMillis = alarmTime.convertToTimeInMills(),
+                        method = it,
+                        totalDaysCycle = daysCycle,
+                        daysFromStart = fromStart
+                    )
+                }
             else
                 cancelRepeatingAlarm(context)
         }
