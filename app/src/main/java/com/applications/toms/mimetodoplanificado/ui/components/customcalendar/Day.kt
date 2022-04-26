@@ -65,21 +65,26 @@ private fun DayStatusContainer(
                     else -> MaterialTheme.colors.secondary
                 }
             )
-            if (status == DaySelectedStatus.FirstDay) {
-                SemiRect(
-                    color = MaterialTheme.colors.secondary,
-                    lookingLeft = false
-                )
-            } else if (status == DaySelectedStatus.LastDay) {
-                SemiRect(
-                    color = MaterialTheme.colors.secondary,
-                    lookingLeft = true
-                )
-            } else if (status == DaySelectedStatus.LastBreakDay) {
-                SemiRect(
-                    color = MaterialTheme.colors.secondaryVariant,
-                    lookingLeft = true
-                )
+            when (status) {
+                DaySelectedStatus.FirstDay -> {
+                    SemiRect(
+                        color = MaterialTheme.colors.secondary,
+                        lookingLeft = false
+                    )
+                }
+                DaySelectedStatus.LastDay -> {
+                    SemiRect(
+                        color = MaterialTheme.colors.secondary,
+                        lookingLeft = true
+                    )
+                }
+                DaySelectedStatus.LastBreakDay -> {
+                    SemiRect(
+                        color = MaterialTheme.colors.secondaryVariant,
+                        lookingLeft = true
+                    )
+                }
+                else -> {}
             }
             content()
         }

@@ -12,7 +12,7 @@ fun daysOfWeek(): List<String> = DateFormatSymbols().weekdays.filterNot { it.isE
 
 fun getFirstDayOfMonth(yearMonth: YearMonth): String {
     val firstDay = when (val day = yearMonth.atDay(1).dayOfWeek.ordinal) {
-        in 1..6 -> day
+        in 0..5 -> day + 1
         else -> 0
     }
     return daysOfWeek()[firstDay]
@@ -44,7 +44,7 @@ data class CalendarMonth(
         }
     }.toList()
 
-    fun getDay(day: Int): CalendarDay {
+    private fun getDay(day: Int): CalendarDay {
         return days[day + daysOfWeek().indexOf(startDayOfWeek) - 1]
     }
 
