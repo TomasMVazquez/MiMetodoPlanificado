@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -17,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
@@ -31,8 +34,10 @@ import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.crea
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
+import com.applications.toms.mimetodoplanificado.ui.components.DefaultSnackbar
 import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogConfirmMethodChange
@@ -46,7 +51,9 @@ import com.applications.toms.mimetodoplanificado.ui.utils.onRebooted
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -60,9 +67,13 @@ fun MyMethod(
     goToAlarmSettings: () -> Unit
 ) {
     val context = LocalContext.current
+    val scaffoldState = rememberScaffoldState()
 
     val state by viewModel.state.collectAsState(State())
     var openDialog by remember { mutableStateOf(false) }
+
+    val channel = remember { Channel<Int>(Channel.CONFLATED) }
+    var snackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
 
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
@@ -77,7 +88,22 @@ fun MyMethod(
                 MyMethodViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
                 }
+                is MyMethodViewModel.Event.SnackBarEvent -> {
+                    snackBarType = it.snackBarType
+                    channel.trySend(it.snackBarType.channel)
+                }
             }
+        }
+    }
+
+    LaunchedEffect(channel) {
+        channel.receiveAsFlow().collect {
+            scaffoldState.snackbarHostState.showSnackbar(
+                message = when(it){
+                    SnackBarType.ERROR.channel -> context.getString(R.string.snackbar_message_error_message)
+                    else -> context.getString(R.string.snackbar_message_generic)
+                }
+            )
         }
     }
 
@@ -87,19 +113,25 @@ fun MyMethod(
             onConfirm = { viewModel.onDeleteCurrentMethod() }
         )
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (!state.loading) {
-            Column() {
-                MyMethodCustomToolbar(
-                    onChangeMethodClick = { viewModel.onMethodChangeClick() },
-                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
-                )
+    Scaffold(scaffoldState = scaffoldState, snackbarHost = { scaffoldState.snackbarHostState }) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (!state.loading) {
+                Column() {
+                    MyMethodCustomToolbar(
+                        onChangeMethodClick = { viewModel.onMethodChangeClick() },
+                        onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
+                    )
 
-                MyMethodContent(state)
+                    MyMethodContent(state)
 
-                state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(context), context, it) }
+                    state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(context), context, it) }
 
+                }
             }
+
+            DefaultSnackbar(snackbarHostState = scaffoldState.snackbarHostState, onDismiss = {
+                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+            },modifier = Modifier.align(Alignment.BottomCenter), snackBarType = snackBarType)
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodChosen
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -47,10 +48,9 @@ class MyMethodViewModel @Inject constructor(
                     )
                 }
                 .onFailure {
-                    it
-                    /**
-                     * TODO MANAGE ERROR
-                     */
+                    _event.emit(
+                        Event.SnackBarEvent(SnackBarType.ERROR)
+                    )
                 }
         }
     }
@@ -74,7 +74,9 @@ class MyMethodViewModel @Inject constructor(
                     }
                 }
                 .onFailure {
-                    it
+                    _event.emit(
+                        Event.SnackBarEvent(SnackBarType.ERROR)
+                    )
                 }
         }
     }
@@ -104,5 +106,8 @@ class MyMethodViewModel @Inject constructor(
         object ConfirmMethodChange : Event()
         object MethodDeleted : Event()
         object GoToAlarmSettings : Event()
+        data class SnackBarEvent(
+            val snackBarType: SnackBarType
+        ): Event()
     }
 }
