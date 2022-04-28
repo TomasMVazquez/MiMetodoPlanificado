@@ -35,6 +35,7 @@ import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
@@ -59,7 +60,7 @@ import kotlinx.coroutines.flow.collect
 fun Settings(
     method: MethodAndStartDate,
     viewModel: SettingsViewModel = hiltViewModel(),
-    onCancel: () -> Unit,
+    onCancel: (SnackBarType?) -> Unit,
     onDone: () -> Unit
 ) {
     val context = LocalContext.current
@@ -95,11 +96,8 @@ fun Settings(
                             onDone()
                         }
                         .onFailure {
-                            /**
-                             * TODO ADD SNACK BAR ERROR
-                             */
                             viewModel.resetState()
-                            onCancel()
+                            onCancel(SnackBarType.ERROR)
                         }
                 }
             }
@@ -118,7 +116,7 @@ fun Settings(
         IconButton(
             onClick = {
                 viewModel.resetState()
-                onCancel()
+                onCancel(null)
             }
         ) {
             Icon(
@@ -203,7 +201,6 @@ fun Settings(
                             viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(CYCLE_21_DAYS.toInt()))
                             viewModel.changeEnable(true)
                         }
-                        else -> onCancel()
                     }
 
                     GenericSpacer(
