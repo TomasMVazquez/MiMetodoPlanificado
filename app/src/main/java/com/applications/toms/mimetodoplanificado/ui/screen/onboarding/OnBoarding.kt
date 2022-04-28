@@ -18,10 +18,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.applications.toms.domain.OnBoardingPage
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
@@ -78,7 +78,7 @@ private fun OnBoardingContent(
     val context = LocalContext.current
     val pagerState = rememberPagerState(0)
 
-    Column() {
+    Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))) {
 
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -107,28 +107,29 @@ private fun OnBoardingContent(
         HorizontalPagerIndicator(
             pagerState = pagerState,
             modifier = Modifier
-                .padding(16.dp)
+                .padding(dimensionResource(id = R.dimen.padding_large))
                 .align(Alignment.CenterHorizontally),
             activeColor = VividRaspberry,
             inactiveColor = Purple.copy(ContentAlpha.disabled)
         )
 
-        AnimatedVisibility(visible = pagerState.currentPage == 2) {
-            Box(
-                modifier = Modifier.fillMaxWidth(),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                GenericButton(
-                    modifier = Modifier,
-                    buttonType = ButtonType.LOW_EMPHASIS,
-                    text = stringResource(R.string.obg_btn_start)
+        Column(modifier = Modifier.height(dimensionResource(id = R.dimen.button_space_height))) {
+            AnimatedVisibility(visible = pagerState.currentPage == 2) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.CenterEnd
                 ) {
-                    onBoardingHasFinished(context)
-                    onGettingStartedClick()
+                    GenericButton(
+                        modifier = Modifier,
+                        buttonType = ButtonType.LOW_EMPHASIS,
+                        text = stringResource(R.string.obg_btn_start)
+                    ) {
+                        onBoardingHasFinished(context)
+                        onGettingStartedClick()
+                    }
                 }
             }
         }
-
     }
 }
 
@@ -145,17 +146,17 @@ fun PageUI(page: OnBoardingPage) {
                 style = MaterialTheme.typography.h5
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_xxxlarge)))
         }
 
         item {
             Image(
                 painter = painterResource(page.image),
                 contentDescription = page.img_desc,
-                modifier = Modifier.size(size = 200.dp)
+                modifier = Modifier.size(size = dimensionResource(id = R.dimen.onboarding_image_size))
             )
 
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_medium)))
         }
 
         item {
@@ -165,7 +166,7 @@ fun PageUI(page: OnBoardingPage) {
                 textAlign = TextAlign.Center
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(dimensionResource(id = R.dimen.spacer_large)))
         }
     }
 }
