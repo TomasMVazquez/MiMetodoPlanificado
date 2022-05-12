@@ -11,7 +11,6 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,7 +20,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.mimetodoplanificado.R
@@ -30,8 +28,6 @@ import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
-import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
-import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -44,14 +40,11 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
-    val lifecycleOwner = LocalLifecycleOwner.current
     var methodState by remember { mutableStateOf(MethodAndStartDate()) }
-    var shouldShowOnBoarding by rememberSaveable { mutableStateOf(!hasOnBoardingAlreadyShown(appState.context)) }
+    var showOnBoarding by rememberSaveable { mutableStateOf(appState.showOnBoarding) }
     var isMethodSaved by rememberSaveable { mutableStateOf(appState.isSaved) }
 
-    val scaffoldState = rememberScaffoldState()
-
-    LaunchedEffect(lifecycleOwner) {
+    LaunchedEffect(appState.lifecycleOwner) {
         appState.state.collect {
             methodState = MethodAndStartDate(
                 methodChosen = it.methodChosen,
@@ -64,7 +57,7 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
     var snackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
     LaunchedEffect(channel) {
         channel.receiveAsFlow().collect {
-            scaffoldState.snackbarHostState.showSnackbar(
+            appState.scaffoldState.snackbarHostState.showSnackbar(
                 message = when(it){
                     SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
                     else -> appState.context.getString(R.string.snackbar_message_generic)
@@ -95,15 +88,15 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
             sheetState = appState.modalBottomSheetState,
             sheetShape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_bottom_sheet))
         ) {
-            Scaffold(scaffoldState = scaffoldState, snackbarHost = { scaffoldState.snackbarHostState }) { paddingValues ->
+            Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) { paddingValues ->
 
                 Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
                     Navigation(
                         appState.navController,
-                        shouldShowOnBoarding,
+                        showOnBoarding,
                         isMethodSaved,
                         onFinishOnBoarding = {
-                             shouldShowOnBoarding = false
+                             showOnBoarding = false
                         },
                         goToSettings = {
                             appState.setMethodChosen(it)
@@ -114,8 +107,8 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
                         }
                     )
 
-                    DefaultSnackbar(snackbarHostState = scaffoldState.snackbarHostState, onDismiss = {
-                        scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                    DefaultSnackbar(snackbarHostState = appState.scaffoldState.snackbarHostState, onDismiss = {
+                        appState.scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
                     },modifier = Modifier.align(Alignment.BottomCenter), snackBarType = snackBarType)
                 }
             }
