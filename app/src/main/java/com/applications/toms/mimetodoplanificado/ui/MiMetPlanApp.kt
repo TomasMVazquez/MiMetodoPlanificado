@@ -21,7 +21,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.dimensionResource
 import com.applications.toms.domain.MethodAndStartDate
@@ -32,8 +31,7 @@ import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
-import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
-import com.applications.toms.mimetodoplanificado.ui.utils.onMethodHasBeenSaved
+import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
@@ -46,11 +44,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     var methodState by remember { mutableStateOf(MethodAndStartDate()) }
-    var shouldShowOnBoarding by rememberSaveable { mutableStateOf(!hasOnBoardingAlreadyShown(context)) }
-    var isMethodSaved by rememberSaveable { mutableStateOf(isMethodSaved(context)) }
+    var shouldShowOnBoarding by rememberSaveable { mutableStateOf(!hasOnBoardingAlreadyShown(appState.context)) }
+    var isMethodSaved by rememberSaveable { mutableStateOf(appState.isSaved) }
 
     val scaffoldState = rememberScaffoldState()
 
@@ -69,8 +66,8 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
         channel.receiveAsFlow().collect {
             scaffoldState.snackbarHostState.showSnackbar(
                 message = when(it){
-                    SnackBarType.ERROR.channel -> context.getString(R.string.snackbar_message_error_message)
-                    else -> context.getString(R.string.snackbar_message_generic)
+                    SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
+                    else -> appState.context.getString(R.string.snackbar_message_generic)
                 }
             )
         }
@@ -90,9 +87,8 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
                         appState.hideModalSheet()
                     },
                     onDone = {
-                        onMethodHasBeenSaved(context)
                         isMethodSaved = true
-                        appState.hideModalSheet()
+                        appState.onSaveMethod()
                     }
                 )
             },
