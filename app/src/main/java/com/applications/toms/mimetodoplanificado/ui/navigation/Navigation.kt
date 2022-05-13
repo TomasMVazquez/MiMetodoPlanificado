@@ -54,7 +54,7 @@ fun Navigation(
                 navController = navController,
                 startDestination = NavFeature.HOME.route
             ) {
-                nav(
+                homeNav(
                     navController = navController
                 ) {
                     onChangeNavigationState(NavigationState.MY_METHOD)
@@ -138,7 +138,7 @@ private fun NavGraphBuilder.myMethodNav (
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-private fun NavGraphBuilder.nav (
+private fun NavGraphBuilder.homeNav (
     navController: NavController,
     onMethodSaved: () -> Unit
 ) {

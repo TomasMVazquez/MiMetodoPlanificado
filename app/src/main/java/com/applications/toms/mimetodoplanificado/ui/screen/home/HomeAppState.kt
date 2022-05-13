@@ -11,14 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.LifecycleOwner
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
-import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
-import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
