@@ -34,7 +34,7 @@ fun rememberAppState(
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
-    channel: Channel<Int> = remember { Channel<Int>(Channel.CONFLATED) },
+    channel: Channel<Int> = remember { Channel(Channel.CONFLATED) },
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ): AppState = remember(navController, coroutineScope) {
     AppState(scaffoldState, modalBottomSheetState, navController, context, channel, coroutineScope)

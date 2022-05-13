@@ -17,12 +17,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
-import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.DefaultSnackbar
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
@@ -40,7 +38,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
-    var snackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
+    var snackBarType: SnackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
 
     LaunchedEffect(appState.channel) {
         appState.channel.receiveAsFlow().collect {
@@ -97,9 +95,14 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
                         }
                     )
 
-                    DefaultSnackbar(snackbarHostState = appState.scaffoldState.snackbarHostState, onDismiss = {
-                        appState.scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                    },modifier = Modifier.align(Alignment.BottomCenter), snackBarType = snackBarType)
+                    DefaultSnackbar(
+                        snackbarHostState = appState.scaffoldState.snackbarHostState,
+                        onDismiss = {
+                            appState.scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                        },
+                        modifier = Modifier.align(Alignment.BottomCenter),
+                        snackBarType = snackBarType
+                    )
                 }
             }
         }
