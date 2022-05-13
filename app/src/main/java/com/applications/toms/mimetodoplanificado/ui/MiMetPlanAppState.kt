@@ -23,7 +23,7 @@ import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -34,11 +34,10 @@ fun rememberAppState(
     modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
-    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     channel: Channel<Int> = remember { Channel<Int>(Channel.CONFLATED) },
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ): AppState = remember(navController, coroutineScope) {
-    AppState(scaffoldState, modalBottomSheetState, navController, context, lifecycleOwner, channel, coroutineScope)
+    AppState(scaffoldState, modalBottomSheetState, navController, context, channel, coroutineScope)
 }
 
 @ExperimentalMaterialApi
@@ -47,21 +46,26 @@ class AppState(
     val modalBottomSheetState: ModalBottomSheetState,
     val navController: NavHostController,
     val context: Context,
-    val lifecycleOwner: LifecycleOwner,
     val channel: Channel<Int>,
     private val coroutineScope: CoroutineScope,
 ) {
 
-    private val _state = MutableStateFlow(MethodAndStartDate())
-    val state: SharedFlow<MethodAndStartDate> = _state.asStateFlow()
+    private val _state = MutableStateFlow(State())
+    val state: StateFlow<State> = _state.asStateFlow()
 
-    val isSaved: Boolean = isMethodSaved(context)
-
-    val showOnBoarding: Boolean = !hasOnBoardingAlreadyShown(context)
+    init {
+        _state.value = state.value.copy(
+            isSaved = isMethodSaved(context),
+            showOnBoarding = !hasOnBoardingAlreadyShown(context)
+        )
+    }
 
     fun onSaveMethod() {
         onSavedMethod(context)
         hideModalSheet()
+        _state.value = state.value.copy(
+            isSaved = true
+        )
     }
 
     fun hideModalSheet() {
@@ -74,10 +78,29 @@ class AppState(
         }
     }
 
-    fun setMethodChosen(method: Method) {
-        _state.value = MethodAndStartDate(
-            methodChosen = method
+    fun onBoardingFinish() {
+        _state.value = state.value.copy(
+            showOnBoarding = !hasOnBoardingAlreadyShown(context)
         )
     }
 
+    fun onMethodChange(){
+        _state.value = state.value.copy(
+            isSaved = false
+        )
+    }
+
+    fun setMethodChosen(method: Method) {
+        _state.value = state.value.copy(
+            methodAndStartDate = MethodAndStartDate(
+                methodChosen = method
+            )
+        )
+    }
+
+    data class State(
+        var methodAndStartDate: MethodAndStartDate = MethodAndStartDate(),
+        var showOnBoarding: Boolean = true,
+        var isSaved: Boolean = false
+    )
 }

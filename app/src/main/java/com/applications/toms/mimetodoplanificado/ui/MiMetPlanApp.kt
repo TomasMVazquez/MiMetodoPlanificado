@@ -30,7 +30,6 @@ import com.applications.toms.mimetodoplanificado.ui.navigation.Navigation
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.theme.MiMetodoPlanificadoTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -40,15 +39,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @ExperimentalFoundationApi
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
-    
-    var showOnBoarding by rememberSaveable { mutableStateOf(appState.showOnBoarding) }
-    var isMethodSaved by rememberSaveable { mutableStateOf(appState.isSaved) }
+
     var snackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
 
     LaunchedEffect(appState.channel) {
         appState.channel.receiveAsFlow().collect {
             appState.scaffoldState.snackbarHostState.showSnackbar(
-                message = when(it){
+                message = when (it) {
                     SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
                     else -> appState.context.getString(R.string.snackbar_message_generic)
                 }
@@ -61,7 +58,7 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
         ModalBottomSheetLayout(
             sheetContent = {
                 Settings(
-                    method = appState.state.collectAsState(initial = MethodAndStartDate()).value,
+                    method = appState.state.collectAsState().value.methodAndStartDate,
                     onCancel = {
                         it?.let { type ->
                             snackBarType = type
@@ -70,7 +67,6 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
                         appState.hideModalSheet()
                     },
                     onDone = {
-                        isMethodSaved = true
                         appState.onSaveMethod()
                     }
                 )
@@ -80,22 +76,24 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
         ) {
             Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) { paddingValues ->
 
-                Box(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                ) {
                     Navigation(
                         appState.navController,
-                        showOnBoarding,
-                        isMethodSaved,
+                        appState.state.collectAsState().value.showOnBoarding,
+                        appState.state.collectAsState().value.isSaved,
                         onFinishOnBoarding = {
-                             showOnBoarding = false
+                            appState.onBoardingFinish()
                         },
                         goToSettings = {
                             appState.setMethodChosen(it)
                             appState.showModalSheet()
                         },
                         onMethodChanged = {
-                            isMethodSaved = false
+                            appState.onMethodChange()
                         }
                     )
 
