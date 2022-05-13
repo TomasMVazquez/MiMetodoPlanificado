@@ -38,72 +38,22 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
 
-    var snackBarType: SnackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
-
-    LaunchedEffect(appState.channel) {
-        appState.channel.receiveAsFlow().collect {
-            appState.scaffoldState.snackbarHostState.showSnackbar(
-                message = when (it) {
-                    SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
-                    else -> appState.context.getString(R.string.snackbar_message_generic)
-                }
-            )
-        }
-    }
-
     MiMetPlanScreen {
 
-        ModalBottomSheetLayout(
-            sheetContent = {
-                Settings(
-                    method = appState.state.collectAsState().value.methodAndStartDate,
-                    onCancel = {
-                        it?.let { type ->
-                            snackBarType = type
-                            appState.channel.trySend(type.channel)
-                        }
-                        appState.hideModalSheet()
-                    },
-                    onDone = {
-                        appState.onSaveMethod()
+        Scaffold { paddingValues ->
+
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                Navigation(
+                    appState.navController,
+                    appState.state.collectAsState().value.navigationState,
+                    onChangeNavigationState = {
+                        appState.onNavigationStateChange(it)
                     }
                 )
-            },
-            sheetState = appState.modalBottomSheetState,
-            sheetShape = RoundedCornerShape(dimensionResource(id = R.dimen.corner_bottom_sheet))
-        ) {
-            Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) { paddingValues ->
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                ) {
-                    Navigation(
-                        appState.navController,
-                        appState.state.collectAsState().value.showOnBoarding,
-                        appState.state.collectAsState().value.isSaved,
-                        onFinishOnBoarding = {
-                            appState.onBoardingFinish()
-                        },
-                        goToSettings = {
-                            appState.setMethodChosen(it)
-                            appState.showModalSheet()
-                        },
-                        onMethodChanged = {
-                            appState.onMethodChange()
-                        }
-                    )
-
-                    DefaultSnackbar(
-                        snackbarHostState = appState.scaffoldState.snackbarHostState,
-                        onDismiss = {
-                            appState.scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                        },
-                        modifier = Modifier.align(Alignment.BottomCenter),
-                        snackBarType = snackBarType
-                    )
-                }
             }
         }
     }

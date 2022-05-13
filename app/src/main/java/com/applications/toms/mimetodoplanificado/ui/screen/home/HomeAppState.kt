@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui
+package com.applications.toms.mimetodoplanificado.ui.screen.home
 
 import android.content.Context
 import androidx.compose.material.ExperimentalMaterialApi
@@ -17,7 +17,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
-import com.applications.toms.mimetodoplanificado.ui.navigation.NavigationState
 import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadyShown
 import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
@@ -30,38 +29,53 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
-fun rememberAppState(
-    navController: NavHostController = rememberNavController(),
-    context: Context = LocalContext.current
-): AppState = remember(navController) {
-    AppState(navController, context)
+fun rememberHomeAppState(
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+    modalBottomSheetState: ModalBottomSheetState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden),
+    context: Context = LocalContext.current,
+    channel: Channel<Int> = remember { Channel(Channel.CONFLATED) },
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
+): HomeAppState = remember(coroutineScope) {
+    HomeAppState(scaffoldState, modalBottomSheetState, context, channel, coroutineScope)
 }
 
 @ExperimentalMaterialApi
-class AppState(
-    val navController: NavHostController,
+class HomeAppState(
+    val scaffoldState: ScaffoldState,
+    val modalBottomSheetState: ModalBottomSheetState,
     val context: Context,
+    val channel: Channel<Int>,
+    private val coroutineScope: CoroutineScope,
 ) {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
-    init {
-        _state.value = state.value.copy(
-            navigationState = if (!hasOnBoardingAlreadyShown(context)) NavigationState.ON_BOARDING
-            else if (isMethodSaved(context)) NavigationState.MY_METHOD
-            else NavigationState.HOME
-        )
+    fun onSaveMethod() {
+        onSavedMethod(context)
+        hideModalSheet()
     }
 
-    fun onNavigationStateChange(newState: NavigationState) {
+    fun hideModalSheet() {
+        coroutineScope.launch { modalBottomSheetState.hide() }
+    }
+
+    private fun showModalSheet() {
+        coroutineScope.launch {
+            modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+        }
+    }
+
+    fun setMethodChosen(method: Method) {
         _state.value = state.value.copy(
-            navigationState = newState
+            methodAndStartDate = MethodAndStartDate(
+                methodChosen = method
+            )
         )
+        showModalSheet()
     }
 
     data class State(
-        var navigationState: NavigationState = NavigationState.ON_BOARDING
+        var methodAndStartDate: MethodAndStartDate = MethodAndStartDate()
     )
-
 }
