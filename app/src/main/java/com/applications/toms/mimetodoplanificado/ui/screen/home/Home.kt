@@ -33,7 +33,9 @@ import com.applications.toms.mimetodoplanificado.ui.utils.methods.methods
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun Home(onUserAction: (Method?, UserAction) -> Unit){
+fun Home(
+    onUserAction: (Method?, UserAction) -> Unit
+) {
 
     Column() {
         Row(
@@ -69,7 +71,10 @@ fun Home(onUserAction: (Method?, UserAction) -> Unit){
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun HomeContent(methods: List<MethodCard>, onUserAction: (Method, UserAction) -> Unit) {
+fun HomeContent(
+    methods: List<MethodCard>,
+    onUserAction: (Method, UserAction) -> Unit
+) {
 
     Column(
         modifier = Modifier.padding(

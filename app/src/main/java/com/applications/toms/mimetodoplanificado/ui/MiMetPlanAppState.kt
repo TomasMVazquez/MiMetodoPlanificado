@@ -21,6 +21,7 @@ import com.applications.toms.mimetodoplanificado.ui.utils.hasOnBoardingAlreadySh
 import com.applications.toms.mimetodoplanificado.ui.utils.isMethodSaved
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,9 +35,10 @@ fun rememberAppState(
     navController: NavHostController = rememberNavController(),
     context: Context = LocalContext.current,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    channel: Channel<Int> = remember { Channel<Int>(Channel.CONFLATED) },
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ): AppState = remember(navController, coroutineScope) {
-    AppState(scaffoldState, modalBottomSheetState, navController, context, lifecycleOwner, coroutineScope)
+    AppState(scaffoldState, modalBottomSheetState, navController, context, lifecycleOwner, channel, coroutineScope)
 }
 
 @ExperimentalMaterialApi
@@ -46,6 +48,7 @@ class AppState(
     val navController: NavHostController,
     val context: Context,
     val lifecycleOwner: LifecycleOwner,
+    val channel: Channel<Int>,
     private val coroutineScope: CoroutineScope,
 ) {
 

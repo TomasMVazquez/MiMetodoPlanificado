@@ -13,6 +13,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,24 +40,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 @ExperimentalFoundationApi
 @Composable
 fun MiMetPlanApp(appState: AppState = rememberAppState()) {
-
-    var methodState by remember { mutableStateOf(MethodAndStartDate()) }
+    
     var showOnBoarding by rememberSaveable { mutableStateOf(appState.showOnBoarding) }
     var isMethodSaved by rememberSaveable { mutableStateOf(appState.isSaved) }
-
-    LaunchedEffect(appState.lifecycleOwner) {
-        appState.state.collect {
-            methodState = MethodAndStartDate(
-                methodChosen = it.methodChosen,
-                startDate = it.startDate
-            )
-        }
-    }
-
-    val channel = remember { Channel<Int>(Channel.CONFLATED) }
     var snackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
-    LaunchedEffect(channel) {
-        channel.receiveAsFlow().collect {
+
+    LaunchedEffect(appState.channel) {
+        appState.channel.receiveAsFlow().collect {
             appState.scaffoldState.snackbarHostState.showSnackbar(
                 message = when(it){
                     SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
@@ -71,11 +61,11 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
         ModalBottomSheetLayout(
             sheetContent = {
                 Settings(
-                    method = methodState,
+                    method = appState.state.collectAsState(initial = MethodAndStartDate()).value,
                     onCancel = {
                         it?.let { type ->
                             snackBarType = type
-                            channel.trySend(type.channel)
+                            appState.channel.trySend(type.channel)
                         }
                         appState.hideModalSheet()
                     },
@@ -90,7 +80,9 @@ fun MiMetPlanApp(appState: AppState = rememberAppState()) {
         ) {
             Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) { paddingValues ->
 
-                Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+                Box(modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)) {
                     Navigation(
                         appState.navController,
                         showOnBoarding,
