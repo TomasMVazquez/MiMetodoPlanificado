@@ -5,12 +5,14 @@ import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodChosen
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.usecases.DeleteChosenMethodUseCase
 import com.applications.toms.usecases.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -24,7 +26,7 @@ class MyMethodViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
-    val state: SharedFlow<State> = _state.asStateFlow()
+    val state: StateFlow<State> = _state.asStateFlow()
 
     private val _event = MutableSharedFlow<Event>()
     val event: SharedFlow<Event> = _event.asSharedFlow()
@@ -47,10 +49,9 @@ class MyMethodViewModel @Inject constructor(
                     )
                 }
                 .onFailure {
-                    it
-                    /**
-                     * TODO MANAGE ERROR
-                     */
+                    _event.emit(
+                        Event.SnackBarEvent(SnackBarType.ERROR)
+                    )
                 }
         }
     }
@@ -74,7 +75,9 @@ class MyMethodViewModel @Inject constructor(
                     }
                 }
                 .onFailure {
-                    it
+                    _event.emit(
+                        Event.SnackBarEvent(SnackBarType.ERROR)
+                    )
                 }
         }
     }
@@ -104,5 +107,8 @@ class MyMethodViewModel @Inject constructor(
         object ConfirmMethodChange : Event()
         object MethodDeleted : Event()
         object GoToAlarmSettings : Event()
+        data class SnackBarEvent(
+            val snackBarType: SnackBarType
+        ): Event()
     }
 }

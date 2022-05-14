@@ -9,7 +9,7 @@ import com.applications.toms.usecases.GetChosenMethodUseCase
 import com.applications.toms.usecases.UpdateChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class AlarmSettingsViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(AlarmSettingsState())
-    val state: SharedFlow<AlarmSettingsState> = _state.asStateFlow()
+    val state: StateFlow<AlarmSettingsState> = _state.asStateFlow()
 
     lateinit var methodChosen: MethodChosen
 

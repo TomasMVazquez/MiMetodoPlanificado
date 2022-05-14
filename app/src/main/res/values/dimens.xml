@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="onboarding_image_size">200dp</dimen>
+
     <dimen name="padding_bottom_sheet">24dp</dimen>
     <dimen name="corner_bottom_sheet">0dp</dimen>
 
@@ -8,6 +10,7 @@
     <dimen name="spacer_small">4dp</dimen>
     <dimen name="spacer_medium">8dp</dimen>
     <dimen name="spacer_large">12dp</dimen>
+    <dimen name="spacer_xxxlarge">20dp</dimen>
 
     <dimen name="padding_xlarge">22dp</dimen>
     <dimen name="padding_large">16dp</dimen>
@@ -19,6 +22,7 @@
     <dimen name="border_xxsmall">1dp</dimen>
 
     <dimen name="button_round">50dp</dimen>
+    <dimen name="button_space_height">50dp</dimen>
 
     <dimen name="icon_height">144dp</dimen>
     <dimen name="rounded_icon">50dp</dimen>

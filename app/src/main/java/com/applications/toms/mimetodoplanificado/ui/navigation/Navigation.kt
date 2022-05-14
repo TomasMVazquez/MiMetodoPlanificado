@@ -11,8 +11,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.applications.toms.domain.enums.Method
-import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.ContentType
@@ -21,8 +19,14 @@ import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSe
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethod
 import com.applications.toms.mimetodoplanificado.ui.screen.onboarding.OnBoarding
-import com.applications.toms.mimetodoplanificado.ui.utils.onMethodHasBeenSaved
+import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import com.google.accompanist.pager.ExperimentalPagerApi
+
+enum class NavigationState {
+    ON_BOARDING,
+    HOME,
+    MY_METHOD
+}
 
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -31,30 +35,43 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @Composable
 fun Navigation(
     navController: NavHostController,
-    shouldShowOnBoarding: Boolean,
-    isMethodSaved: Boolean,
-    onFinishOnBoarding: () -> Unit,
-    goToSettings: (Method) -> Unit,
-    onMethodChanged: () -> Unit
+    navigationState: NavigationState,
+    onChangeNavigationState: (NavigationState) -> Unit
 ) {
-    if (shouldShowOnBoarding){
-        NavHost(
-            navController = navController,
-            startDestination = NavFeature.ON_BOARDING.route
-        ) {
-            onBoardingNav(onFinishOnBoarding)
-        }
-    } else {
-        NavHost(
-            navController = navController,
-            startDestination = NavFeature.HOME.route
-        ) {
-            nav(
+    when(navigationState){
+        NavigationState.ON_BOARDING -> {
+            NavHost(
                 navController = navController,
-                isMethodSaved = isMethodSaved,
-                goToSettings = goToSettings,
-                onMethodChanged = onMethodChanged
-            )
+                startDestination = NavFeature.ON_BOARDING.route
+            ) {
+                onBoardingNav{
+                    onChangeNavigationState(NavigationState.HOME)
+                }
+            }
+        }
+        NavigationState.HOME -> {
+            NavHost(
+                navController = navController,
+                startDestination = NavFeature.HOME.route
+            ) {
+                homeNav(
+                    navController = navController
+                ) {
+                    onChangeNavigationState(NavigationState.MY_METHOD)
+                }
+            }
+        }
+        NavigationState.MY_METHOD -> {
+            NavHost(
+                navController = navController,
+                startDestination = NavFeature.MY_METHOD.route
+            ) {
+                myMethodNav(
+                    navController = navController
+                ) {
+                    onChangeNavigationState(NavigationState.HOME)
+                }
+            }
         }
     }
 }
@@ -79,65 +96,70 @@ private fun NavGraphBuilder.onBoardingNav (
     }
 }
 
+@ExperimentalFoundationApi
+@ExperimentalAnimationApi
+@ExperimentalMaterialApi
+@ExperimentalPagerApi
+private fun NavGraphBuilder.myMethodNav (
+    navController: NavController,
+    onMethodDeleted: () -> Unit
+) {
+    navigation(
+        startDestination = ContentType(NavFeature.MY_METHOD).route,
+        route = NavFeature.MY_METHOD.route
+    ){
+        composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
+            MyMethod(
+                onMethodDeleted = { wasNotificationEnable, wasAlarmEnable ->
+                    onSavedMethod(navController.context,false)
+                    if (wasNotificationEnable) cancelRepeatingNotification(navController.context)
+                    if (wasAlarmEnable) cancelRepeatingAlarm(navController.context)
+                    onMethodDeleted()
+                },
+                goToAlarmSettings = {
+                    navController.navigate(ContentType(NavFeature.ALARM_SETTINGS).route)
+                }
+            )
+        }
+
+        composable(navCommand = ContentType(NavFeature.ALARM_SETTINGS)){
+            AlarmSettings(
+                onSave = {
+                    navController.navigate(ContentType(NavFeature.MY_METHOD).route)
+                },
+                goBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+    }
+}
+
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-private fun NavGraphBuilder.nav (
+private fun NavGraphBuilder.homeNav (
     navController: NavController,
-    isMethodSaved: Boolean,
-    goToSettings: (Method) -> Unit,
-    onMethodChanged: () -> Unit
+    onMethodSaved: () -> Unit
 ) {
-    if (isMethodSaved) {
-        navigation(
-            startDestination = ContentType(NavFeature.MY_METHOD).route,
-            route = NavFeature.MY_METHOD.route
-        ){
-            composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
-                MyMethod(
-                    onMethodDeleted = { wasNotificationEnable, wasAlarmEnable ->
-                        onMethodHasBeenSaved(navController.context,false)
-                        if (wasNotificationEnable) cancelRepeatingNotification(navController.context)
-                        if (wasAlarmEnable) cancelRepeatingAlarm(navController.context)
-                        onMethodChanged()
-                    },
-                    goToAlarmSettings = {
-                        navController.navigate(ContentType(NavFeature.ALARM_SETTINGS).route)
-                    }
-                )
-            }
-            composable(navCommand = ContentType(NavFeature.ALARM_SETTINGS)){
-                AlarmSettings(
-                    onSave = {
-                        navController.navigate(ContentType(NavFeature.MY_METHOD).route)
-                    },
-                    goBack = {
-                        navController.popBackStack()
-                    }
-                )
-            }
-        }
-    } else {
-        navigation(
-            startDestination = ContentType(NavFeature.HOME).route,
-            route = NavFeature.HOME.route
-        ){
-            composable(navCommand = ContentType(NavFeature.HOME)){
-                Home { method, userAction ->
-                    when (userAction) {
-                        UserAction.ABOUT_US -> {
-                            navController.navigate(ContentType(NavFeature.ABOUT_US).route)
-                        }
-                        else -> method?.let { goToSettings(it) }
-                    }
-                }
-            }
 
-            composable(navCommand = ContentType(NavFeature.ABOUT_US)) {
-                AboutUs {
-                    navController.popBackStack()
-                }
+    navigation(
+        startDestination = ContentType(NavFeature.HOME).route,
+        route = NavFeature.HOME.route
+    ){
+        composable(navCommand = ContentType(NavFeature.HOME)){
+            Home(
+                goToAboutUs = {
+                    navController.navigate(ContentType(NavFeature.ABOUT_US).route)
+                },
+                goToMyMethod = onMethodSaved
+            )
+        }
+
+        composable(navCommand = ContentType(NavFeature.ABOUT_US)) {
+            AboutUs {
+                navController.popBackStack()
             }
         }
     }

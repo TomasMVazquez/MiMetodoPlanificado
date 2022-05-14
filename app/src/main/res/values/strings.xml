@@ -134,4 +134,6 @@
     <string name="notification_desc_shoot">No te olvides de la inyección</string>
     <string name="notification_title_reboot">Has reiniciado/apagado tu dispositivo</string>
     <string name="notification_desc_reboot">Ingresa a la app para confirmar que las notificaciones y alarmas están correctamente configuradas!</string>
+    <string name="snackbar_message_error_message">Oops! Hubo un error, intentalo más tarde</string>
+    <string name="snackbar_message_generic">Oops!</string>
 </resources>

@@ -22,7 +22,7 @@ Mi Método Planificado App incluye las siguientes características:
 * Target Android SDK: 31
 
 ### Version
-* 1.0
+* 1.3
 
 ### Herramientas de desarrollo
 * Android Studio

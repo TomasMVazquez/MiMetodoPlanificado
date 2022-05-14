@@ -3,7 +3,6 @@ package com.applications.toms.mimetodoplanificado.alarmandnotification.alarm
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
-import android.graphics.Color
 import android.media.AudioAttributes
 import android.media.RingtoneManager
 import android.net.Uri
@@ -27,15 +26,13 @@ fun createAlarmChannel(context: Context) {
 
     val vibratorPattern = longArrayOf(0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500, 0, 500)
 
-    val soundUri: Uri = RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_ALARM)
+    val soundUri: Uri = RingtoneManager.getActualDefaultRingtoneUri(context, RingtoneManager.TYPE_RINGTONE)
 
     val channel = NotificationChannel(ALARM_CHANNEL_ID, name, importance).apply {
         description = descriptionText
-        enableLights(true)
         enableVibration(true)
-        lightColor = Color.RED
-        setSound(soundUri, audioAttributes)
         vibrationPattern = vibratorPattern
+        setSound(soundUri, audioAttributes)
     }
 
     notificationManager.createNotificationChannel(channel)

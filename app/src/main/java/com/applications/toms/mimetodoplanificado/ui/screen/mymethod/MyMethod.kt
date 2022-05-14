@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -17,8 +19,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -31,8 +33,10 @@ import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.crea
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
+import com.applications.toms.mimetodoplanificado.ui.components.DefaultSnackbar
 import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogConfirmMethodChange
@@ -47,59 +51,85 @@ import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun MyMethod(
+    appState: MyMethodState = rememberMyMethodState(),
     viewModel: MyMethodViewModel = hiltViewModel(),
     onMethodDeleted: (Boolean, Boolean) -> Unit,
     goToAlarmSettings: () -> Unit
 ) {
-    val context = LocalContext.current
-
     val state by viewModel.state.collectAsState(State())
-    var openDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
             when (it) {
                 MyMethodViewModel.Event.ConfirmMethodChange -> {
-                    openDialog = true
+                    appState.changeOpenDialogState(true)
                 }
                 MyMethodViewModel.Event.MethodDeleted -> {
-                    openDialog = false
+                    appState.changeOpenDialogState(false)
                     onMethodDeleted(state.isNotificationEnable ?: false, state.isAlarmEnable ?: false)
                 }
                 MyMethodViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
                 }
+                is MyMethodViewModel.Event.SnackBarEvent -> {
+                    appState.addSnackBarType(it.snackBarType)
+                    appState.channel.trySend(it.snackBarType.channel)
+                }
             }
         }
     }
 
-    if (openDialog)
+    LaunchedEffect(appState.channel) {
+        appState.channel.receiveAsFlow().collect {
+            appState.scaffoldState.snackbarHostState.showSnackbar(
+                message = when(it){
+                    SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
+                    else -> appState.context.getString(R.string.snackbar_message_generic)
+                }
+            )
+        }
+    }
+
+    if (appState.state.collectAsState().value.openDialog)
         AlertDialogConfirmMethodChange(
-            onCancel = { openDialog = false },
+            onCancel = {  appState.changeOpenDialogState(false) },
             onConfirm = { viewModel.onDeleteCurrentMethod() }
         )
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        if (!state.loading) {
-            Column() {
-                MyMethodCustomToolbar(
-                    onChangeMethodClick = { viewModel.onMethodChangeClick() },
-                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
-                )
+    Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            if (!state.loading) {
+                Column() {
+                    MyMethodCustomToolbar(
+                        onChangeMethodClick = { viewModel.onMethodChangeClick() },
+                        onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
+                    )
 
-                MyMethodContent(state)
+                    MyMethodContent(state)
 
-                state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(context), context, it) }
+                    state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(appState.context), appState.context, it) }
 
+                }
             }
+
+            DefaultSnackbar(
+                snackbarHostState = appState.scaffoldState.snackbarHostState,
+                onDismiss = {
+                    appState.scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                },
+                modifier = Modifier.align(Alignment.BottomCenter),
+                snackBarType = appState.state.collectAsState().value.snackBarType
+            )
         }
     }
 
