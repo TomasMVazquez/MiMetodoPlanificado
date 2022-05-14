@@ -63,9 +63,9 @@ fun Settings(
     onCancel: (SnackBarType?) -> Unit,
     onDone: () -> Unit
 ) {
+    val state by viewModel.state.collectAsState(SettingsState())
     val context = LocalContext.current
 
-    val state by viewModel.state.collectAsState(SettingsState())
     viewModel.setMethodChosen(method)
 
     LaunchedEffect(key1 = viewModel.event) {

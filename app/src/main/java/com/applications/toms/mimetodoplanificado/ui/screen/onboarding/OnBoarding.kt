@@ -38,7 +38,10 @@ import com.google.accompanist.pager.rememberPagerState
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
-fun OnBoarding(onGettingStartedClick:()->Unit, onSkipClicked:()->Unit) {
+fun OnBoarding(
+    onGettingStartedClick: () -> Unit,
+    onSkipClicked: () -> Unit
+) {
 
     val onboardPages = listOf(
         OnBoardingPage(

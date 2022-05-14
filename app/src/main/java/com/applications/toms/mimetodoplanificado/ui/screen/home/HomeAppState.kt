@@ -1,6 +1,7 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.home
 
 import android.content.Context
+import androidx.compose.animation.core.TweenSpec
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetState
 import androidx.compose.material.ModalBottomSheetValue
@@ -51,12 +52,14 @@ class HomeAppState(
     }
 
     fun hideModalSheet() {
-        coroutineScope.launch { modalBottomSheetState.hide() }
+        coroutineScope.launch {
+            modalBottomSheetState.animateTo(ModalBottomSheetValue.Hidden, TweenSpec(durationMillis = 800, delay = 10))
+        }
     }
 
     private fun showModalSheet() {
         coroutineScope.launch {
-            modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded)
+            modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded, TweenSpec(durationMillis = 800, delay = 10))
         }
     }
 

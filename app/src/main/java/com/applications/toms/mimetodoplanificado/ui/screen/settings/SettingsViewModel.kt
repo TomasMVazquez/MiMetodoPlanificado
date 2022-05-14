@@ -102,7 +102,16 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun resetState() {
-        _state.value = SettingsState()
+        _state.value = _state.value.copy(
+            loading = false,
+            enable = false,
+            totalDaysCycle = TOTAL_CYCLE_DAYS,
+            breakDays = 5,
+            isNotificationEnable = false,
+            notificationTime = null,
+            isAlarmEnable = false,
+            alarmTime = null
+        )
     }
 
     data class SettingsState(
