@@ -2,25 +2,18 @@ package com.applications.toms.mimetodoplanificado.ui.screen.mymethod
 
 import android.content.Context
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetState
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.ScaffoldState
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import com.applications.toms.domain.MethodAndStartDate
-import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
-import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
 
 @ExperimentalMaterialApi
 @Composable
