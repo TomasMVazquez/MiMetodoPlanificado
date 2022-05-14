@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -60,60 +61,55 @@ import java.time.temporal.ChronoUnit
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
+@ExperimentalMaterialApi
 @Composable
 fun MyMethod(
+    appState: MyMethodState = rememberMyMethodState(),
     viewModel: MyMethodViewModel = hiltViewModel(),
     onMethodDeleted: (Boolean, Boolean) -> Unit,
     goToAlarmSettings: () -> Unit
 ) {
-    val context = LocalContext.current
-    val scaffoldState = rememberScaffoldState()
-
     val state by viewModel.state.collectAsState(State())
-    var openDialog by remember { mutableStateOf(false) }
-
-    val channel = remember { Channel<Int>(Channel.CONFLATED) }
-    var snackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
 
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
             when (it) {
                 MyMethodViewModel.Event.ConfirmMethodChange -> {
-                    openDialog = true
+                    appState.changeOpenDialogState(true)
                 }
                 MyMethodViewModel.Event.MethodDeleted -> {
-                    openDialog = false
+                    appState.changeOpenDialogState(false)
                     onMethodDeleted(state.isNotificationEnable ?: false, state.isAlarmEnable ?: false)
                 }
                 MyMethodViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
                 }
                 is MyMethodViewModel.Event.SnackBarEvent -> {
-                    snackBarType = it.snackBarType
-                    channel.trySend(it.snackBarType.channel)
+                    appState.addSnackBarType(it.snackBarType)
+                    appState.channel.trySend(it.snackBarType.channel)
                 }
             }
         }
     }
 
-    LaunchedEffect(channel) {
-        channel.receiveAsFlow().collect {
-            scaffoldState.snackbarHostState.showSnackbar(
+    LaunchedEffect(appState.channel) {
+        appState.channel.receiveAsFlow().collect {
+            appState.scaffoldState.snackbarHostState.showSnackbar(
                 message = when(it){
-                    SnackBarType.ERROR.channel -> context.getString(R.string.snackbar_message_error_message)
-                    else -> context.getString(R.string.snackbar_message_generic)
+                    SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
+                    else -> appState.context.getString(R.string.snackbar_message_generic)
                 }
             )
         }
     }
 
-    if (openDialog)
+    if (appState.state.collectAsState().value.openDialog)
         AlertDialogConfirmMethodChange(
-            onCancel = { openDialog = false },
+            onCancel = {  appState.changeOpenDialogState(false) },
             onConfirm = { viewModel.onDeleteCurrentMethod() }
         )
 
-    Scaffold(scaffoldState = scaffoldState, snackbarHost = { scaffoldState.snackbarHostState }) {
+    Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (!state.loading) {
                 Column() {
@@ -124,14 +120,19 @@ fun MyMethod(
 
                     MyMethodContent(state)
 
-                    state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(context), context, it) }
+                    state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(appState.context), appState.context, it) }
 
                 }
             }
 
-            DefaultSnackbar(snackbarHostState = scaffoldState.snackbarHostState, onDismiss = {
-                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-            },modifier = Modifier.align(Alignment.BottomCenter), snackBarType = snackBarType)
+            DefaultSnackbar(
+                snackbarHostState = appState.scaffoldState.snackbarHostState,
+                onDismiss = {
+                    appState.scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                },
+                modifier = Modifier.align(Alignment.BottomCenter),
+                snackBarType = appState.state.collectAsState().value.snackBarType
+            )
         }
     }
 

@@ -98,6 +98,7 @@ private fun NavGraphBuilder.onBoardingNav (
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
+@ExperimentalMaterialApi
 @ExperimentalPagerApi
 private fun NavGraphBuilder.myMethodNav (
     navController: NavController,
