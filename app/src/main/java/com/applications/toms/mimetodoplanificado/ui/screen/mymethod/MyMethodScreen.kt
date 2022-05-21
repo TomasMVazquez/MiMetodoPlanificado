@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,33 +23,27 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.domain.MethodChosen
-import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
-import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.DefaultSnackbar
-import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
-import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
-import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogConfirmMethodChange
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogSuccess
-import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
-import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.State
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCyclePage
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mymethod.MyMethodPage
 import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
 import com.applications.toms.mimetodoplanificado.ui.utils.hasBeenReboot
 import com.applications.toms.mimetodoplanificado.ui.utils.onRebooted
-import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
-import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import java.time.LocalDate
@@ -60,7 +54,7 @@ import java.time.temporal.ChronoUnit
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun MyMethod(
+fun MyMethodScreen(
     appState: MyMethodState = rememberMyMethodState(),
     viewModel: MyMethodViewModel = hiltViewModel(),
     onMethodDeleted: (Boolean, Boolean) -> Unit,
@@ -76,7 +70,10 @@ fun MyMethod(
                 }
                 MyMethodViewModel.Event.MethodDeleted -> {
                     appState.changeOpenDialogState(false)
-                    onMethodDeleted(state.isNotificationEnable ?: false, state.isAlarmEnable ?: false)
+                    onMethodDeleted(
+                        state.isNotificationEnable ?: false,
+                        state.isAlarmEnable ?: false
+                    )
                 }
                 MyMethodViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
@@ -92,7 +89,7 @@ fun MyMethod(
     LaunchedEffect(appState.channel) {
         appState.channel.receiveAsFlow().collect {
             appState.scaffoldState.snackbarHostState.showSnackbar(
-                message = when(it){
+                message = when (it) {
                     SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
                     else -> appState.context.getString(R.string.snackbar_message_generic)
                 }
@@ -102,11 +99,14 @@ fun MyMethod(
 
     if (appState.state.collectAsState().value.openDialog)
         AlertDialogConfirmMethodChange(
-            onCancel = {  appState.changeOpenDialogState(false) },
+            onCancel = { appState.changeOpenDialogState(false) },
             onConfirm = { viewModel.onDeleteCurrentMethod() }
         )
 
-    Scaffold(scaffoldState = appState.scaffoldState, snackbarHost = { appState.scaffoldState.snackbarHostState }) {
+    Scaffold(
+        scaffoldState = appState.scaffoldState,
+        snackbarHost = { appState.scaffoldState.snackbarHostState }
+    ) {
         Box(modifier = Modifier.fillMaxSize()) {
             if (!state.loading) {
                 Column() {
@@ -115,9 +115,35 @@ fun MyMethod(
                         onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
                     )
 
-                    MyMethodContent(state)
+                    HorizontalPagerIndicator(
+                        pagerState = appState.pagerState,
+                        modifier = Modifier
+                            .padding(dimensionResource(id = R.dimen.padding_small))
+                            .align(Alignment.CenterHorizontally),
+                        activeColor = MaterialTheme.colors.secondary,
+                        inactiveColor = MaterialTheme.colors.secondary.copy(ContentAlpha.disabled)
+                    )
 
-                    state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(appState.context), appState.context, it) }
+                    HorizontalPager(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
+                        count = 2,
+                        state = appState.pagerState
+                    ) { page ->
+                        if (page == 0)
+                            MyMethodPage(state)
+                        else
+                            MyCyclePage(state)
+                    }
+
+                    state.methodChosen?.let {
+                        ConfirmRebootSettings(
+                            open = hasBeenReboot(appState.context),
+                            context = appState.context,
+                            methodChosen = it
+                        )
+                    }
 
                 }
             }
@@ -133,92 +159,6 @@ fun MyMethod(
         }
     }
 
-}
-
-@Composable
-fun MyMethodContent(state: State) {
-    safeLet(state.startDate, state.endDate) { from, to ->
-        val monthFrom = from.toCalendarMonth()
-        val monthTo = to.toCalendarMonth()
-        val calendarYear = if (monthFrom.monthNumber == monthTo.monthNumber)
-            listOf(monthFrom) else listOf(monthFrom, monthTo)
-
-        val totalDays = (from.until(to).days + 1).toFloat()
-        val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
-        val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() - 1) }
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    start = dimensionResource(id = R.dimen.padding_medium),
-                    top = dimensionResource(id = R.dimen.no_padding),
-                    end = dimensionResource(id = R.dimen.padding_medium),
-                    bottom = dimensionResource(id = R.dimen.padding_medium)
-                )
-        ) {
-            /**
-             * Title
-             */
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = dimensionResource(id = R.dimen.padding_medium)),
-                text = when (state.methodChosen?.methodAndStartDate?.methodChosen) {
-                    Method.PILLS -> stringResource(R.string.pills)
-                    Method.RING -> stringResource(R.string.ring)
-                    Method.SHOOT -> stringResource(R.string.injection)
-                    Method.PATCH -> stringResource(R.string.patch)
-                    null -> ""
-                },
-                style = MaterialTheme.typography.h3,
-                color = MaterialTheme.colors.onPrimary,
-                textAlign = TextAlign.Center
-            )
-
-            GenericSpacer(
-                type = SpacerType.VERTICAL,
-                padding = dimensionResource(id = R.dimen.spacer_medium)
-            )
-            /**
-             * Progress Day
-             */
-            CircularDaysProgress(
-                modifier = Modifier.weight(1f),
-                percentage = currentDay.div(totalDays),
-                number = totalDays.toInt(),
-                color = if (LocalDate.now() >= breakDayStarts) MaterialTheme.colors.secondaryVariant
-                else MaterialTheme.colors.secondary
-            )
-
-            GenericSpacer(
-                type = SpacerType.VERTICAL,
-                padding = dimensionResource(id = R.dimen.spacer_small)
-            )
-            /**
-             * Info Notif & Alarm
-             */
-            InfoNotificationsAndAlarm(state.isAlarmEnable, state.alarmTime, state.isNotificationEnable, state.notificationTime)
-
-            GenericSpacer(
-                type = SpacerType.VERTICAL,
-                padding = dimensionResource(id = R.dimen.spacer_medium)
-            )
-            /**
-             * Calendar
-             */
-            Calendar(
-                modifier = Modifier.fillMaxWidth(),
-                calendarYear = calendarYear,
-                from = from,
-                to = to,
-                breakDays = state.breakDays ?: 0
-            )
-
-            InfoCalendar()
-
-        }
-    }
 }
 
 @ExperimentalPagerApi

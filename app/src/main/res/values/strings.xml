@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Mi Metodo Planificado</string>
     <string name="home">home</string>
+    <string name="my_cycle_page_title">Mi Ciclo</string>
 
     // OnBoarding
     <string name="obg_title_choose">Elige</string>
@@ -127,7 +128,7 @@
     <string name="alarm_channel_name">Alarma</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
     <string name="alarm_channel_description">Estas notificaciones sonoras y con vibraciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
-    
+
     <string name="notification_desc_generic">No te olvides de tu método anticonceptivo</string>
 
     <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
@@ -146,4 +147,7 @@
     // SnackBar MSG
     <string name="snackbar_message_error_message">Oops! Hubo un error, intentalo más tarde</string>
     <string name="snackbar_message_generic">Oops!</string>
+
+    // MyCycle
+    <string name="register_my_period">Registrar periodo</string>
 </resources>

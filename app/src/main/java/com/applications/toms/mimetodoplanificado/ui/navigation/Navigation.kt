@@ -17,7 +17,7 @@ import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.Conten
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSettings
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethod
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodScreen
 import com.applications.toms.mimetodoplanificado.ui.screen.onboarding.OnBoarding
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -109,7 +109,7 @@ private fun NavGraphBuilder.myMethodNav (
         route = NavFeature.MY_METHOD.route
     ){
         composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
-            MyMethod(
+            MyMethodScreen(
                 onMethodDeleted = { wasNotificationEnable, wasAlarmEnable ->
                     onSavedMethod(navController.context,false)
                     if (wasNotificationEnable) cancelRepeatingNotification(navController.context)
