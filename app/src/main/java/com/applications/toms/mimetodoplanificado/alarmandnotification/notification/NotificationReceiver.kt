@@ -40,16 +40,22 @@ class NotificationReceiver : BroadcastReceiver() {
             }
             Method.RING.name -> {
                 title = context.getString(R.string.ring)
-                text = context.getString(R.string.notification_desc_ring)
+                text = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21)
+                    context.getString(R.string.notification_desc_out_ring)
+                else context.getString(R.string.notification_desc_in_ring)
                 method = Method.RING
-                daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
+                daysOfDelay =
+                    if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
                 delay = currentTime + TimeUnit.DAYS.toMillis(daysOfDelay)
             }
             Method.PATCH.name -> {
                 title = context.getString(R.string.patch)
-                text = context.getString(R.string.notification_desc_path)
+                text = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21)
+                    context.getString(R.string.notification_desc_out_path)
+                else context.getString(R.string.notification_desc_in_path)
                 method = Method.PATCH
-                daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
+                daysOfDelay =
+                    if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
                 delay = currentTime + TimeUnit.HOURS.toMillis(daysOfDelay)
             }
             Method.SHOOT.name -> {

@@ -127,13 +127,23 @@
     <string name="alarm_channel_name">Alarma</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
     <string name="alarm_channel_description">Estas notificaciones sonoras y con vibraciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    
     <string name="notification_desc_generic">No te olvides de tu método anticonceptivo</string>
+
     <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
-    <string name="notification_desc_ring">No te olvides de sacar/poner el anillo</string>
-    <string name="notification_desc_path">No te olvides de sacar/poner el parche</string>
+
+    <string name="notification_desc_in_ring">No te olvides de ponerte el anillo</string>
+    <string name="notification_desc_out_ring">No te olvides de sacarte el anillo</string>
+
+    <string name="notification_desc_in_path">No te olvides de ponerte el parche</string>
+    <string name="notification_desc_out_path">No te olvides de sacarte el parche</string>
+
     <string name="notification_desc_shoot">No te olvides de la inyección</string>
+
     <string name="notification_title_reboot">Has reiniciado/apagado tu dispositivo</string>
     <string name="notification_desc_reboot">Ingresa a la app para confirmar que las notificaciones y alarmas están correctamente configuradas!</string>
+
+    // SnackBar MSG
     <string name="snackbar_message_error_message">Oops! Hubo un error, intentalo más tarde</string>
     <string name="snackbar_message_generic">Oops!</string>
 </resources>
