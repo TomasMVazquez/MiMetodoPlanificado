@@ -23,7 +23,7 @@ class NotificationReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val bundle = intent.extras
 
-        var title = context.getString(R.string.app_name)
+        var title = context.getString(R.string.my_method)
         var text = context.getString(R.string.notification_desc_generic)
 
         var delay: Long? = null

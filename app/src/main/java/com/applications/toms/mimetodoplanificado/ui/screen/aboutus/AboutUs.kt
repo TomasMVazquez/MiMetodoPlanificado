@@ -73,7 +73,7 @@ fun AboutUs(goBack: () -> Unit) {
 
             item {
                 Text(
-                    text = stringResource(R.string.app_name),
+                    text = stringResource(R.string.my_method),
                     style = MaterialTheme.typography.h1,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
