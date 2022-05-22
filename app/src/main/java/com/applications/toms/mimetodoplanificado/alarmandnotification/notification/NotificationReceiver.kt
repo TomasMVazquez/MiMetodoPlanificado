@@ -41,8 +41,8 @@ class NotificationReceiver : BroadcastReceiver() {
             Method.RING.name -> {
                 title = context.getString(R.string.ring)
                 text = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21)
-                    context.getString(R.string.notification_desc_out_ring)
-                else context.getString(R.string.notification_desc_in_ring)
+                    context.getString(R.string.notification_desc_in_ring)
+                else context.getString(R.string.notification_desc_out_ring)
                 method = Method.RING
                 daysOfDelay =
                     if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
@@ -51,8 +51,8 @@ class NotificationReceiver : BroadcastReceiver() {
             Method.PATCH.name -> {
                 title = context.getString(R.string.patch)
                 text = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21)
-                    context.getString(R.string.notification_desc_out_path)
-                else context.getString(R.string.notification_desc_in_path)
+                    context.getString(R.string.notification_desc_in_path)
+                else context.getString(R.string.notification_desc_out_path)
                 method = Method.PATCH
                 daysOfDelay =
                     if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) CYCLE_7_DAYS else CYCLE_21_DAYS
