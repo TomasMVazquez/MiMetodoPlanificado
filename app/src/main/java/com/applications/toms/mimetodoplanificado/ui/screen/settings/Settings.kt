@@ -148,6 +148,7 @@ fun Settings(
                         Method.RING -> stringResource(R.string.ring)
                         Method.SHOOT -> stringResource(R.string.injection)
                         Method.PATCH -> stringResource(R.string.patch)
+                        Method.CYCLE -> TODO()
                         null -> ""
                     }
                 ),

@@ -153,4 +153,5 @@
 
     // MyCycle
     <string name="register_my_period">Registrar periodo</string>
+    <string name="my_cycle_empty_info">El día que te llegue podrás clickear este botón para comenzar a registrar tu periodo</string>
 </resources>

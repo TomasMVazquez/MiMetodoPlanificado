@@ -19,14 +19,14 @@ import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Ca
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.MyMethodState
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import java.time.LocalDate
 
 
 @Composable
-fun MyMethodPage(state: MyMethodViewModel.State) {
+fun MyMethodPage(state: MyMethodState) {
     safeLet(state.startDate, state.endDate) { from, to ->
         val monthFrom = from.toCalendarMonth()
         val monthTo = to.toCalendarMonth()
@@ -54,6 +54,7 @@ fun MyMethodPage(state: MyMethodViewModel.State) {
                     Method.RING -> stringResource(R.string.ring)
                     Method.SHOOT -> stringResource(R.string.injection)
                     Method.PATCH -> stringResource(R.string.patch)
+                    Method.CYCLE -> TODO()
                     null -> ""
                 },
                 style = MaterialTheme.typography.h3,
@@ -64,7 +65,9 @@ fun MyMethodPage(state: MyMethodViewModel.State) {
              * Progress Day
              */
             CircularDaysProgress(
-                modifier = Modifier.weight(1f).padding(dimensionResource(id = R.dimen.padding_medium)),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(dimensionResource(id = R.dimen.padding_medium)),
                 percentage = currentDay.div(totalDays),
                 number = totalDays.toInt(),
                 color = if (LocalDate.now() >= breakDayStarts) MaterialTheme.colors.secondaryVariant

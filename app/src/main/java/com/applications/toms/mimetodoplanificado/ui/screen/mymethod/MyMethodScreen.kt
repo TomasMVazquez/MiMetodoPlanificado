@@ -3,11 +3,13 @@ package com.applications.toms.mimetodoplanificado.ui.screen.mymethod
 import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ContentAlpha
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
@@ -71,8 +73,8 @@ fun MyMethodScreen(
                 MyMethodViewModel.Event.MethodDeleted -> {
                     appState.changeOpenDialogState(false)
                     onMethodDeleted(
-                        state.isNotificationEnable ?: false,
-                        state.isAlarmEnable ?: false
+                        state.myMethodState.isNotificationEnable ?: false,
+                        state.myMethodState.isAlarmEnable ?: false
                     )
                 }
                 MyMethodViewModel.Event.GoToAlarmSettings -> {
@@ -132,12 +134,12 @@ fun MyMethodScreen(
                         state = appState.pagerState
                     ) { page ->
                         if (page == 0)
-                            MyMethodPage(state)
+                            MyMethodPage(state.myMethodState)
                         else
-                            MyCyclePage(state)
+                            MyCyclePage(state.myCycleState)
                     }
 
-                    state.methodChosen?.let {
+                    state.myMethodState.methodChosen?.let {
                         ConfirmRebootSettings(
                             open = hasBeenReboot(appState.context),
                             context = appState.context,
@@ -145,6 +147,14 @@ fun MyMethodScreen(
                         )
                     }
 
+                }
+            } else {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CircularProgressIndicator(color = MaterialTheme.colors.secondary)
                 }
             }
 

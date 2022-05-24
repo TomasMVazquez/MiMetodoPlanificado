@@ -37,15 +37,17 @@ class MyMethodViewModel @Inject constructor(
                 .onSuccess { response ->
                     _state.value = State(
                         loading = false,
-                        methodChosen = response.first,
-                        startDate = response.first.methodAndStartDate.startDate,
-                        endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1),
-                        nextCycle = response.second,
-                        breakDays = response.first.breakDays,
-                        isNotificationEnable = response.first.isNotificationEnable,
-                        notificationTime = response.first.notificationTime,
-                        isAlarmEnable = response.first.isAlarmEnable,
-                        alarmTime = response.first.alarmTime
+                        myMethodState = MyMethodState(
+                            methodChosen = response.first,
+                            startDate = response.first.methodAndStartDate.startDate,
+                            endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1),
+                            nextCycle = response.second,
+                            breakDays = response.first.breakDays,
+                            isNotificationEnable = response.first.isNotificationEnable,
+                            notificationTime = response.first.notificationTime,
+                            isAlarmEnable = response.first.isAlarmEnable,
+                            alarmTime = response.first.alarmTime
+                        )
                     )
                 }
                 .onFailure {
@@ -92,6 +94,11 @@ class MyMethodViewModel @Inject constructor(
 
     data class State(
         val loading: Boolean = true,
+        val myMethodState: MyMethodState = MyMethodState(),
+        val myCycleState: MyCycleState = MyCycleState()
+    )
+
+    data class MyMethodState(
         val methodChosen: MethodChosen? = null,
         val startDate: LocalDate? = null,
         val endDate: LocalDate? = null,
@@ -103,12 +110,19 @@ class MyMethodViewModel @Inject constructor(
         val alarmTime: String? = null
     )
 
+    data class MyCycleState(
+        val hasCycleConfigured: Boolean = false,
+        val startDate: LocalDate? = LocalDate.now(),
+        val endDate: LocalDate? = LocalDate.now(),
+        val nextCycle: LocalDate? = null
+    )
+
     sealed class Event {
         object ConfirmMethodChange : Event()
         object MethodDeleted : Event()
         object GoToAlarmSettings : Event()
         data class SnackBarEvent(
             val snackBarType: SnackBarType
-        ): Event()
+        ) : Event()
     }
 }

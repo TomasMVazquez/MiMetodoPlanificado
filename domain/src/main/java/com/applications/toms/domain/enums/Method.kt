@@ -4,5 +4,6 @@ enum class Method {
     PILLS,
     RING,
     SHOOT,
-    PATCH
+    PATCH,
+    CYCLE
 }
