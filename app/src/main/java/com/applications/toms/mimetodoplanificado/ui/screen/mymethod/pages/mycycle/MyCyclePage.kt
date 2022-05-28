@@ -23,8 +23,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateCompone
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.*
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import java.time.LocalDate

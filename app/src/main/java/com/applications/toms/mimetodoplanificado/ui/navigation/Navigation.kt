@@ -110,10 +110,10 @@ private fun NavGraphBuilder.myMethodNav (
     ){
         composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
             MyMethodScreen(
-                onMethodDeleted = { wasNotificationEnable, wasAlarmEnable ->
+                onMethodDeleted = {
                     onSavedMethod(navController.context,false)
-                    if (wasNotificationEnable) cancelRepeatingNotification(navController.context)
-                    if (wasAlarmEnable) cancelRepeatingAlarm(navController.context)
+                    cancelRepeatingNotification(navController.context)
+                    cancelRepeatingAlarm(navController.context)
                     onMethodDeleted()
                 },
                 goToAlarmSettings = {
