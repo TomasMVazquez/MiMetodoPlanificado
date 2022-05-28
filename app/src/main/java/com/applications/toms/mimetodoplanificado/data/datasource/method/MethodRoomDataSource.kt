@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.data.method
+package com.applications.toms.mimetodoplanificado.data.datasource.method
 
 import com.applications.toms.data.Either
 import com.applications.toms.data.EitherState

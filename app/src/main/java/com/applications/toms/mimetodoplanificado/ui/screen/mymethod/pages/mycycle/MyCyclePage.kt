@@ -9,11 +9,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
@@ -21,13 +24,30 @@ import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Ca
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.*
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import java.time.LocalDate
 
 
 @Composable
-fun MyCyclePage(state: MyMethodViewModel.MyCycleState) {
+fun MyCyclePage(
+    viewModel: MyCycleViewModel = hiltViewModel()
+) {
+
+    val state by viewModel.state.collectAsState(State())
+
+    MyCycleContent(state) {
+        viewModel.saveMyCycle()
+    }
+}
+
+@Composable
+fun MyCycleContent(
+    state: State,
+    onRegisterPeriod: () -> Unit
+) {
+
     safeLet(state.startDate, state.endDate) { from, to ->
         val monthFrom = from.toCalendarMonth()
         val monthTo = to.toCalendarMonth()
@@ -95,7 +115,7 @@ fun MyCyclePage(state: MyMethodViewModel.MyCycleState) {
                     buttonType = ButtonType.HIGH_EMPHASIS,
                     text = stringResource(id = R.string.register_my_period)
                 ) {
-                    //TODO
+                    onRegisterPeriod()
                 }
             }
             /**

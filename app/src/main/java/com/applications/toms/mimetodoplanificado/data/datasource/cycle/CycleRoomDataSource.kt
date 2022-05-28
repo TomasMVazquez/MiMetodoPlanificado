@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.data.cycle
+package com.applications.toms.mimetodoplanificado.data.datasource.cycle
 
 import com.applications.toms.data.Either
 import com.applications.toms.data.EitherState
@@ -30,7 +30,7 @@ class CycleRoomDataSource(db: MyCycleDatabase) : LocalCycleDataSource {
             val response = if (cycle != null) {
                 dao.updateCycle(dbModel)
             } else {
-                dao.insert(dbModel)
+                dao.insert(dbModel).toInt()
             }
             if (response > 0) eitherSuccess(myCycle)
             else eitherFailure(ErrorStates.NOT_SAVED)

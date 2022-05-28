@@ -6,8 +6,8 @@ import com.applications.toms.data.source.LocalCycleDataSource
 import com.applications.toms.data.source.LocalMethodDataSource
 import com.applications.toms.mimetodoplanificado.data.MyCycleDatabase
 import com.applications.toms.mimetodoplanificado.data.MyMethodDatabase
-import com.applications.toms.mimetodoplanificado.data.cycle.CycleRoomDataSource
-import com.applications.toms.mimetodoplanificado.data.method.MethodRoomDataSource
+import com.applications.toms.mimetodoplanificado.data.datasource.cycle.CycleRoomDataSource
+import com.applications.toms.mimetodoplanificado.data.datasource.method.MethodRoomDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,10 +20,18 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun databaseProvider(app: Application) = Room.databaseBuilder(
+    fun methodDatabaseProvider(app: Application) = Room.databaseBuilder(
         app,
         MyMethodDatabase::class.java,
         "method_table"
+    ).build()
+
+    @Provides
+    @Singleton
+    fun cycleDatabaseProvider(app: Application) = Room.databaseBuilder(
+        app,
+        MyCycleDatabase::class.java,
+        "cycle_table"
     ).build()
 
     @Provides

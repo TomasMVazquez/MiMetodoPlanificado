@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.data.cycle
+package com.applications.toms.mimetodoplanificado.data.datasource.cycle
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -20,5 +20,5 @@ interface CycleDatabaseDao {
     fun deleteCycle(id: Int): Int
 
     @Update
-    fun updateCycle(item: MyCycleDatabaseModel): Long
+    fun updateCycle(item: MyCycleDatabaseModel): Int
 }

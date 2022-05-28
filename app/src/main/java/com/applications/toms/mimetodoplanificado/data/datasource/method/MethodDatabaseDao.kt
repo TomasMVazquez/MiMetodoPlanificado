@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.data.method
+package com.applications.toms.mimetodoplanificado.data.datasource.method
 
 import androidx.room.Dao
 import androidx.room.Insert

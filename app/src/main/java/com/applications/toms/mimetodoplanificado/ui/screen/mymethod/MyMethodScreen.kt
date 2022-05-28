@@ -136,7 +136,7 @@ fun MyMethodScreen(
                         if (page == 0)
                             MyMethodPage(state.myMethodState)
                         else
-                            MyCyclePage(state.myCycleState)
+                            MyCyclePage()
                     }
 
                     state.myMethodState.methodChosen?.let {
