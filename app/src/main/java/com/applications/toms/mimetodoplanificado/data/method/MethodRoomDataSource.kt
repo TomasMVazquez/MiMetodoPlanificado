@@ -1,12 +1,13 @@
-package com.applications.toms.mimetodoplanificado.data
+package com.applications.toms.mimetodoplanificado.data.method
 
 import com.applications.toms.data.Either
 import com.applications.toms.data.EitherState
 import com.applications.toms.data.eitherFailure
 import com.applications.toms.data.eitherSuccess
-import com.applications.toms.data.source.LocalDataSource
+import com.applications.toms.data.source.LocalMethodDataSource
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.mimetodoplanificado.data.MyMethodDatabase
 import com.applications.toms.mimetodoplanificado.data.mapper.toDatabaseModel
 import com.applications.toms.mimetodoplanificado.data.mapper.toModel
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
@@ -16,7 +17,7 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class RoomDataSource(db: MyDatabase): LocalDataSource {
+class MethodRoomDataSource(db: MyMethodDatabase): LocalMethodDataSource {
 
     private val formatter = DateTimeFormatter.ofPattern("dd/MM/yy")
 

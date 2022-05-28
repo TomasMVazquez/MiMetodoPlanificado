@@ -1,9 +1,10 @@
-package com.applications.toms.usecases
+package com.applications.toms.usecases.method
 
 import com.applications.toms.data.Either
 import com.applications.toms.data.repository.ChosenMethodRepository
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.usecases.UseCase
 
 class UpdateChosenMethodUseCase(
     private val chosenMethodRepository: ChosenMethodRepository

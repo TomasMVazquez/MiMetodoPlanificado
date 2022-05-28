@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodChosen
-import com.applications.toms.usecases.GetChosenMethodUseCase
-import com.applications.toms.usecases.UpdateChosenMethodUseCase
+import com.applications.toms.usecases.method.GetChosenMethodUseCase
+import com.applications.toms.usecases.method.UpdateChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

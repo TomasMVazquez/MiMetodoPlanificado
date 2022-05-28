@@ -2,7 +2,9 @@ package com.applications.toms.mimetodoplanificado.data.mapper
 
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
+import com.applications.toms.domain.MyCycle
 import com.applications.toms.mimetodoplanificado.data.model.ChosenMethod
+import com.applications.toms.mimetodoplanificado.data.model.MyCycleDatabaseModel
 import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -34,4 +36,20 @@ fun ChosenMethod.toModel(formatter: DateTimeFormatter): MethodChosen =
         notificationTime = this.notificationTime,
         isAlarmEnable = this.alarm,
         alarmTime = this.alarmTime
+    )
+
+fun MyCycleDatabaseModel.toModel(formatter: DateTimeFormatter): MyCycle =
+    MyCycle(
+        id = this.id,
+        startDate = LocalDate.parse(this.startDate, formatter),
+        nextCycle = LocalDate.parse(this.nextCycle, formatter),
+        totalDaysCycle = this.totalDaysCycle
+    )
+
+fun MyCycle.toDatabaseModel(): MyCycleDatabaseModel =
+    MyCycleDatabaseModel(
+        id = 0,
+        startDate = this.startDate.toFormattedString(),
+        nextCycle = this.nextCycle.toFormattedString(),
+        totalDaysCycle = this.totalDaysCycle
     )

@@ -16,7 +16,7 @@ import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_days
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
-import com.applications.toms.usecases.SaveChosenMethodUseCase
+import com.applications.toms.usecases.method.SaveChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

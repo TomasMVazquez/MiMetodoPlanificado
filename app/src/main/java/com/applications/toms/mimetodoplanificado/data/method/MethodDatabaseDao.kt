@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.data
+package com.applications.toms.mimetodoplanificado.data.method
 
 import androidx.room.Dao
 import androidx.room.Insert
@@ -9,7 +9,7 @@ import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.data.model.ChosenMethod
 
 @Dao
-interface DatabaseDao {
+interface MethodDatabaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(item: ChosenMethod): Long

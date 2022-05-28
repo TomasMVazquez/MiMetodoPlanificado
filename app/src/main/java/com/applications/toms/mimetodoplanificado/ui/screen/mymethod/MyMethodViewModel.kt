@@ -6,8 +6,8 @@ import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
-import com.applications.toms.usecases.DeleteChosenMethodUseCase
-import com.applications.toms.usecases.GetChosenMethodUseCase
+import com.applications.toms.usecases.method.DeleteChosenMethodUseCase
+import com.applications.toms.usecases.method.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

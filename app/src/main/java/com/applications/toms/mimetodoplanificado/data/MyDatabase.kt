@@ -2,11 +2,21 @@ package com.applications.toms.mimetodoplanificado.data
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import com.applications.toms.mimetodoplanificado.data.cycle.CycleDatabaseDao
+import com.applications.toms.mimetodoplanificado.data.method.MethodDatabaseDao
 import com.applications.toms.mimetodoplanificado.data.model.ChosenMethod
+import com.applications.toms.mimetodoplanificado.data.model.MyCycleDatabaseModel
 
-@Database(entities = [ChosenMethod::class], version = 1, exportSchema = false)
-abstract class MyDatabase: RoomDatabase() {
+@Database(entities = [ChosenMethod::class], version = 2, exportSchema = false)
+abstract class MyMethodDatabase: RoomDatabase() {
 
-    abstract fun databaseDao(): DatabaseDao
+    abstract fun databaseDao(): MethodDatabaseDao
+
+}
+
+@Database(entities = [MyCycleDatabaseModel::class], version = 1, exportSchema = false)
+abstract class MyCycleDatabase: RoomDatabase() {
+
+    abstract fun databaseDao(): CycleDatabaseDao
 
 }
