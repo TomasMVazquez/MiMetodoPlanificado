@@ -40,6 +40,8 @@
     <string name="flaticon_attribution_kliwir"> kliwir art </string>
     <string name="flaticon_attribution_good_link">https://www.flaticon.es/autores/good-ware</string>
     <string name="flaticon_attribution_good"> Good Ware </string>
+    <string name="flaticon_attribution_designer_nata_link">https://www.flaticon.com/authors/designer-nata</string>
+    <string name="flaticon_attribution_designer_nata"> Designer_Nata </string>
 
     <string name="imgs_blob_start">Formas creadas por: </string>
     <string name="imgs_blob_title">Blobmaker</string>
@@ -54,6 +56,8 @@
     <string name="play_store_apps_link">https://play.google.com/store/apps/developer?id=Tomás+M.+Vazquez</string>
 
     // Home
+    <string name="cycle">Ciclo</string>
+    <string name="content_description_cycle">Ciclo</string>
     <string name="ring">Anillo</string>
     <string name="content_description_ring">Anillo</string>
     <string name="pills">Pastilla</string>

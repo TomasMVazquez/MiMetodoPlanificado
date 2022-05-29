@@ -239,6 +239,35 @@ fun AboutUs(goBack: () -> Unit) {
             item {
                 LinkText(
                     linkTextData = listOf(
+                        LinkTextData(text = "${stringResource(id = R.string.flaticon_attribution_start)} "),
+                        LinkTextData(
+                            text = "${stringResource(id = R.string.flaticon_attribution_designer_nata)} ",
+                            tag = stringResource(id = R.string.flaticon_attribution_designer_nata),
+                            annotation = stringResource(id = R.string.flaticon_attribution_designer_nata_link),
+                            onClick = {
+                                uriHandler.openUri(it.item)
+                            }
+                        ),
+                        LinkTextData(text = "${stringResource(id = R.string.flaticon_attribution_from)} "),
+                        LinkTextData(
+                            text = stringResource(id = R.string.flaticon_attribution_title),
+                            tag = stringResource(id = R.string.flaticon_attribution_title),
+                            annotation = stringResource(id = R.string.flaticon_attribution_link),
+                            onClick = {
+                                uriHandler.openUri(it.item)
+                            }
+                        )
+                    )
+                )
+                GenericSpacer(
+                    type = SpacerType.VERTICAL,
+                    padding = dimensionResource(id = R.dimen.spacer_small)
+                )
+            }
+
+            item {
+                LinkText(
+                    linkTextData = listOf(
                         LinkTextData(text = "${stringResource(id = R.string.imgs_blob_start)} "),
                         LinkTextData(
                             text = "${stringResource(id = R.string.imgs_blob_title)} ",
