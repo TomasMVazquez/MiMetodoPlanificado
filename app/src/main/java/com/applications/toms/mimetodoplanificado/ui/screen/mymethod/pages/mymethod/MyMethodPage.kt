@@ -12,6 +12,7 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,9 +21,11 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
+import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
 import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
@@ -35,6 +38,7 @@ import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DA
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @ExperimentalPagerApi
@@ -43,12 +47,24 @@ import java.time.LocalDate
 @Composable
 fun MyMethodPage(
     viewModel: MyMethodViewModel = hiltViewModel(),
-    context: Context
+    context: Context,
 ) {
     val state by viewModel.state.collectAsState(State())
 
-    MyMethodContent(state, context) {
-        viewModel.getMethodData()
+    if (state.errorState != null) {
+        EmptyStateComponent(
+            textToShow = when (state.errorState!!) {
+                ErrorStates.EMPTY -> stringResource(R.string.snackbar_message_error_empty)
+                ErrorStates.NOT_FOUND -> stringResource(R.string.snackbar_message_error_not_found)
+                ErrorStates.NOT_SAVED -> stringResource(R.string.snackbar_message_error_not_saved)
+                ErrorStates.GENERIC,
+                ErrorStates.THROWABLE -> stringResource(R.string.snackbar_message_error_message)
+            }
+        )
+    } else {
+        MyMethodContent(state, context) {
+            viewModel.getMethodData()
+        }
     }
 }
 
@@ -83,7 +99,9 @@ fun MyMethodContent(
         if (currentDay > TOTAL_CYCLE_DAYS) updateState()
 
         Column(
-            modifier = Modifier.fillMaxSize().padding(dimensionResource(id = R.dimen.padding_medium)),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(dimensionResource(id = R.dimen.padding_medium)),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -102,8 +120,7 @@ fun MyMethodContent(
                         Method.RING -> stringResource(R.string.ring)
                         Method.SHOOT -> stringResource(R.string.injection)
                         Method.PATCH -> stringResource(R.string.patch)
-                        Method.CYCLE -> TODO()
-                        null -> ""
+                        else -> ""
                     },
                     style = MaterialTheme.typography.h3,
                     color = MaterialTheme.colors.onPrimary,
@@ -152,9 +169,7 @@ fun MyMethodContent(
                 )
 
                 InfoCalendar()
-
             }
         }
-
     }
 }

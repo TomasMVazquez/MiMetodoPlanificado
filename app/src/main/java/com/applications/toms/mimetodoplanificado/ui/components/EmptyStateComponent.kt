@@ -20,7 +20,7 @@ import com.applications.toms.mimetodoplanificado.R
 @Composable
 fun EmptyStateComponent(textToShow: String = "") {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(dimensionResource(id = R.dimen.padding_medium)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

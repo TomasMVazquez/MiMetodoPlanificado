@@ -8,8 +8,11 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.usecases.method.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -41,13 +44,14 @@ class MyMethodViewModel @Inject constructor(
                         isNotificationEnable = response.first.isNotificationEnable,
                         notificationTime = response.first.notificationTime,
                         isAlarmEnable = response.first.isAlarmEnable,
-                        alarmTime = response.first.alarmTime
+                        alarmTime = response.first.alarmTime,
+                        errorState = null
                     )
                 }
                 .onFailure {
                     _state.value = State(
                         loading = false,
-                        errorStates = it
+                        errorState = it
                     )
                 }
         }
@@ -64,7 +68,7 @@ class MyMethodViewModel @Inject constructor(
         val notificationTime: String? = null,
         val isAlarmEnable: Boolean? = null,
         val alarmTime: String? = null,
-        val errorStates: ErrorStates? = null
+        val errorState: ErrorStates? = null
     )
 
 }

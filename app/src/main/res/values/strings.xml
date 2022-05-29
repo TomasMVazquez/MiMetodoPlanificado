@@ -150,9 +150,9 @@
     // SnackBar MSG
     <string name="snackbar_message_generic">Oops!</string>
     <string name="snackbar_message_error_message">Oops! Hubo un error, intentalo más tarde</string>
-    <string name="snackbar_message_error_not_found">Oops!No encontramos el ciclo guardado, intentalo más tarde</string>
-    <string name="snackbar_message_error_not_saved">Oops!No hemos podido guardar, intentalo más tarde</string>
-    <string name="snackbar_message_error_empty">Oops!Parece que hay problemas con los datos, intentalo más tarde</string>
+    <string name="snackbar_message_error_not_found">Oops! No hemos logrado encontrar los datos guardados, intentalo más tarde</string>
+    <string name="snackbar_message_error_not_saved">Oops! No hemos podido guardar, intentalo más tarde</string>
+    <string name="snackbar_message_error_empty">Oops! Parece que hay problemas con los datos, intentalo más tarde</string>
 
     // MyCycle
     <string name="register_my_period">Registrar periodo</string>

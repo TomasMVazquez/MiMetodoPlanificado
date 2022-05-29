@@ -10,11 +10,8 @@ import com.applications.toms.usecases.cycle.DeleteCycleUseCase
 import com.applications.toms.usecases.cycle.GetCycleUseCase
 import com.applications.toms.usecases.cycle.SaveCycleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -29,9 +26,6 @@ class MyCycleViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
-
-    private val _event = MutableSharedFlow<Event>()
-    val event: SharedFlow<Event> = _event.asSharedFlow()
 
     init {
         getCycleData()
@@ -103,9 +97,4 @@ class MyCycleViewModel @Inject constructor(
         val errorState: ErrorStates? = null
     )
 
-    sealed class Event {
-        data class ErrorFound(
-            val errorState: ErrorStates?
-        ): Event()
-    }
 }
