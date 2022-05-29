@@ -32,6 +32,10 @@ class MyMethodViewModel @Inject constructor(
     val event: SharedFlow<Event> = _event.asSharedFlow()
 
     init {
+        getMethod()
+    }
+
+    fun getMethod(){
         viewModelScope.launch {
             getChosenMethodUseCase.execute(Unit)
                 .onSuccess { response ->

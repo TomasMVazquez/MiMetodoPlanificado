@@ -46,6 +46,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerTy
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
 import com.applications.toms.mimetodoplanificado.ui.utils.hasBeenReboot
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.onRebooted
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
@@ -115,7 +116,9 @@ fun MyMethod(
                         onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
                     )
 
-                    MyMethodContent(state)
+                    MyMethodContent(state) {
+                        viewModel.getMethod()
+                    }
 
                     state.methodChosen?.let { ConfirmRebootSettings(hasBeenReboot(appState.context), appState.context, it) }
 
@@ -136,7 +139,7 @@ fun MyMethod(
 }
 
 @Composable
-fun MyMethodContent(state: State) {
+fun MyMethodContent(state: State, updateState: () -> Unit) {
     safeLet(state.startDate, state.endDate) { from, to ->
         val monthFrom = from.toCalendarMonth()
         val monthTo = to.toCalendarMonth()
@@ -146,6 +149,8 @@ fun MyMethodContent(state: State) {
         val totalDays = (from.until(to).days + 1).toFloat()
         val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
         val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() - 1) }
+
+        if (currentDay > TOTAL_CYCLE_DAYS) updateState()
 
         Column(
             modifier = Modifier
