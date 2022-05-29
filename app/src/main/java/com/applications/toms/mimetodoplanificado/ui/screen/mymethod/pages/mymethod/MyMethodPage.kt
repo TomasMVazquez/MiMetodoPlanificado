@@ -12,7 +12,6 @@ import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,14 +30,13 @@ import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Ca
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
 import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.ConfirmRebootSettings
+import com.applications.toms.mimetodoplanificado.ui.screen.settings.ConfirmRebootSettings
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mymethod.MyMethodViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.hasBeenReboot
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
-import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @ExperimentalPagerApi

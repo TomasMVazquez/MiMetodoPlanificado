@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.screen.mymethod
+package com.applications.toms.mimetodoplanificado.ui.screen.settings
 
 import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi

@@ -12,7 +12,7 @@ android {
         applicationId "com.applications.toms.mimetodoplanificado"
         minSdk 26
         targetSdk 31
-        versionCode 8
+        versionCode 9
         versionName "1.4.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
