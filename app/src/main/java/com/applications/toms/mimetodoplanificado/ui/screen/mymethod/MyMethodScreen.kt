@@ -43,6 +43,8 @@ fun MyMethodScreen(
     goToAlarmSettings: () -> Unit
 ) {
 
+    val isOnlyCycle = appState.state.collectAsState().value.isOnlyCycle
+
     LaunchedEffect(key1 = viewModel.event) {
         viewModel.event.collect {
             when (it) {
@@ -79,7 +81,14 @@ fun MyMethodScreen(
     if (appState.state.collectAsState().value.openDialog)
         AlertDialogConfirmMethodChange(
             onCancel = { appState.changeOpenDialogState(false) },
-            onConfirm = { viewModel.onDeleteCurrentMethod() }
+            onConfirm = {
+                if (!isOnlyCycle)
+                    viewModel.onDeleteCurrentMethod()
+                else {
+                    appState.changeOpenDialogState(false)
+                    onMethodDeleted()
+                }
+            }
         )
 
     Scaffold(
@@ -106,15 +115,15 @@ fun MyMethodScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
-                    count = 2,
+                    count = if (isOnlyCycle) 1 else 2,
                     state = appState.pagerState
                 ) { page ->
-                    if (page == 0)
-                        MyMethodPage(context = appState.context)
-                    else
+                    if (isOnlyCycle || page == 1) {
                         MyCyclePage() { error ->
                             viewModel.onErrorDetected(error)
                         }
+                    } else
+                        MyMethodPage(context = appState.context)
                 }
             }
 

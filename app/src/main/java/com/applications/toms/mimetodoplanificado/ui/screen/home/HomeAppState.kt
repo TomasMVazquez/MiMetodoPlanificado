@@ -14,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
+import com.applications.toms.mimetodoplanificado.ui.utils.onOnlyCycleChosen
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -46,20 +47,27 @@ class HomeAppState(
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
-    fun onSaveMethod() {
+    fun onSaveMethod(isOnlyCycle: Boolean) {
         onSavedMethod(context)
+        onOnlyCycleChosen(context, isOnlyCycle)
         hideModalSheet()
     }
 
     fun hideModalSheet() {
         coroutineScope.launch {
-            modalBottomSheetState.animateTo(ModalBottomSheetValue.Hidden, TweenSpec(durationMillis = 800, delay = 10))
+            modalBottomSheetState.animateTo(
+                ModalBottomSheetValue.Hidden,
+                TweenSpec(durationMillis = 800, delay = 10)
+            )
         }
     }
 
     private fun showModalSheet() {
         coroutineScope.launch {
-            modalBottomSheetState.animateTo(ModalBottomSheetValue.Expanded, TweenSpec(durationMillis = 800, delay = 10))
+            modalBottomSheetState.animateTo(
+                ModalBottomSheetValue.Expanded,
+                TweenSpec(durationMillis = 800, delay = 10)
+            )
         }
     }
 

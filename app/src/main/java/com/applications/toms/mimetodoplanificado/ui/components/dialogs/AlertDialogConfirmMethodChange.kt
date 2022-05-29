@@ -32,7 +32,10 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerTy
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun AlertDialogConfirmMethodChange(onCancel: () -> Unit, onConfirm: () -> Unit) {
+fun AlertDialogConfirmMethodChange(
+    onCancel: () -> Unit,
+    onConfirm: () -> Unit
+) {
     AlertDialog(
         onDismissRequest = onCancel,
         properties = DialogProperties(usePlatformDefaultWidth = false),

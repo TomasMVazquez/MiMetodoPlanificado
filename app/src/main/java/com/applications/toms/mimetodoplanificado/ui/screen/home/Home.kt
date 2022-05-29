@@ -88,8 +88,10 @@ fun Home(
                     appState.hideModalSheet()
                 },
                 onDone = {
-                    appState.onSaveMethod()
-                    goToMyMethod()
+                    it?.let {
+                        appState.onSaveMethod(it == Method.CYCLE)
+                        goToMyMethod()
+                    }
                 }
             )
         },

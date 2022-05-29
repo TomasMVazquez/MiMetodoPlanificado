@@ -33,11 +33,9 @@ class MyMethodScreenViewModel @Inject constructor(
         viewModelScope.launch {
             deleteChosenMethodUseCase.execute(Unit)
                 .onSuccess {
-                    viewModelScope.launch {
-                        _event.emit(
-                            Event.MethodDeleted
-                        )
-                    }
+                    _event.emit(
+                        Event.MethodDeleted
+                    )
                 }
                 .onFailure {
                     onErrorDetected()

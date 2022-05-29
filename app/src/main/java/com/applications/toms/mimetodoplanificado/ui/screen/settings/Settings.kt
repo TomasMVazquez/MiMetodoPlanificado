@@ -62,7 +62,7 @@ fun Settings(
     method: MethodAndStartDate,
     viewModel: SettingsViewModel = hiltViewModel(),
     onCancel: (SnackBarType?) -> Unit,
-    onDone: () -> Unit
+    onDone: (Method?) -> Unit
 ) {
     val state by viewModel.state.collectAsState(SettingsState())
     val context = LocalContext.current
@@ -94,7 +94,7 @@ fun Settings(
                                     daysFromStart = event.daysFromStart
                                 )
                             }
-                            onDone()
+                            onDone(state.methodAndStartDate.methodChosen)
                         }
                         .onFailure {
                             viewModel.resetState()

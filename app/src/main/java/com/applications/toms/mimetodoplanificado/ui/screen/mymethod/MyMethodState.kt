@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
+import com.applications.toms.mimetodoplanificado.ui.utils.isOnlyCycle
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
@@ -44,6 +45,12 @@ class MyMethodState(
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
+    init {
+        _state.value = state.value.copy(
+            isOnlyCycle = isOnlyCycle(context)
+        )
+    }
+
     fun changeOpenDialogState(value: Boolean) {
         _state.value = state.value.copy(
             openDialog = value
@@ -58,6 +65,7 @@ class MyMethodState(
 
     data class State(
         var openDialog: Boolean = false,
-        var snackBarType: SnackBarType = SnackBarType.DEFAULT
+        var snackBarType: SnackBarType = SnackBarType.DEFAULT,
+        var isOnlyCycle: Boolean = false
     )
 }
