@@ -43,4 +43,11 @@ val methods: List<MethodCard>
             icon_description = stringResource(R.string.content_description_injection),
             action = UserAction.SHOOT
         ),
+        MethodCard(
+            method = Method.CYCLE,
+            name = stringResource(R.string.cycle),
+            icon = R.drawable.ic_cycle,
+            icon_description = stringResource(R.string.content_description_cycle),
+            action = UserAction.CYCLE
+        )
     )
