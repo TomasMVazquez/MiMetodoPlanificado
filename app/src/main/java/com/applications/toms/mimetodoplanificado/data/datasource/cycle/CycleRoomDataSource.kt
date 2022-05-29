@@ -28,7 +28,11 @@ class CycleRoomDataSource(db: MyCycleDatabase) : LocalCycleDataSource {
             val dbModel = myCycle.toDatabaseModel()
             val cycle = dao.getCycle()
             val response = if (cycle != null) {
-                dao.updateCycle(dbModel)
+                dao.updateCycle(cycle.copy(
+                    startDate = dbModel.startDate,
+                    nextCycle = dbModel.nextCycle,
+                    totalDaysCycle = dbModel.totalDaysCycle
+                ))
             } else {
                 dao.insert(dbModel).toInt()
             }

@@ -32,7 +32,7 @@ class MyCycleViewModel @Inject constructor(
         getCycleData()
     }
 
-    fun getCycleData() {
+    private fun getCycleData() {
         viewModelScope.launch {
             getCycleUseCase.execute(Unit)
                 .onSuccess { response ->

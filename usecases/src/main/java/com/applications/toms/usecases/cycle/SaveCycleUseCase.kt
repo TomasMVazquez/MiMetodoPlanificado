@@ -18,7 +18,7 @@ class SaveCycleUseCase(
     override suspend fun buildUseCase(input: Input): Either<MyCycle, ErrorStates> {
         val newCycle = MyCycle(
             startDate = input.startDate,
-            nextCycle = input.startDate.plusDays(input.totalCycleDays),
+            nextCycle = input.startDate.plusDays(input.totalCycleDays - 1),
             totalDaysCycle = input.totalCycleDays
         )
         return cycleRepository.saveMyCycle(newCycle)
