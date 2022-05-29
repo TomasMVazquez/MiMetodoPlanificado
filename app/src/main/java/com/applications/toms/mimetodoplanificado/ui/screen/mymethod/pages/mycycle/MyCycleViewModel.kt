@@ -6,13 +6,17 @@ import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MyCycle
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodScreenViewModel
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.cycle.DeleteCycleUseCase
 import com.applications.toms.usecases.cycle.GetCycleUseCase
 import com.applications.toms.usecases.cycle.SaveCycleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -27,6 +31,9 @@ class MyCycleViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
+
+    private val _event = MutableSharedFlow<Event>()
+    val event: SharedFlow<Event> = _event.asSharedFlow()
 
     init {
         getCycleData()
@@ -76,11 +83,16 @@ class MyCycleViewModel @Inject constructor(
                 .onFailure { error ->
                     _state.value = state.value.copy(
                         loading = false,
-                        hasCycleConfigured = false,
                         errorState = error
                     )
                 }
         }
+    }
+
+    fun onResetError() {
+        _state.value = state.value.copy(
+            errorState = null
+        )
     }
 
     data class State(
@@ -93,4 +105,9 @@ class MyCycleViewModel @Inject constructor(
         val errorState: ErrorStates? = null
     )
 
+    sealed class Event {
+        data class ErrorFound(
+            val errorState: ErrorStates?
+        ): Event()
+    }
 }

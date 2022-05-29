@@ -13,14 +13,16 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.unit.dp
+import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.theme.ErrorRed
 import com.applications.toms.mimetodoplanificado.ui.theme.Info
 import com.applications.toms.mimetodoplanificado.ui.theme.Shapes
 import com.applications.toms.mimetodoplanificado.ui.theme.Success
 import com.applications.toms.mimetodoplanificado.ui.theme.Warning
 
-enum class SnackBarType(val channel: Int) {
+enum class SnackBarType(val channel: Int, var text: String? = null) {
     SUCCESS(1),
     ERROR(2),
     INFO(3),
@@ -39,7 +41,7 @@ fun DefaultSnackbar(
         hostState = snackbarHostState,
         snackbar = { data ->
             Snackbar(
-                modifier = Modifier.padding(16.dp),
+                modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_large)),
                 shape = Shapes.medium,
                 backgroundColor = when(snackBarType) {
                     SnackBarType.SUCCESS -> Success

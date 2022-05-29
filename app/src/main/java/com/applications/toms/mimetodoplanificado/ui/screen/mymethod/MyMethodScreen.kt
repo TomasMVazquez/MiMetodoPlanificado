@@ -65,10 +65,11 @@ fun MyMethodScreen(
     }
 
     LaunchedEffect(appState.channel) {
-        appState.channel.receiveAsFlow().collect {
+        appState.channel.receiveAsFlow().collect { channel ->
             appState.scaffoldState.snackbarHostState.showSnackbar(
-                message = when (it) {
-                    SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
+                message = when (channel) {
+                    SnackBarType.ERROR.channel -> appState.state.value.snackBarType.text
+                        ?: appState.context.getString(R.string.snackbar_message_error_message)
                     else -> appState.context.getString(R.string.snackbar_message_generic)
                 }
             )
@@ -111,9 +112,10 @@ fun MyMethodScreen(
                     if (page == 0)
                         MyMethodPage(context = appState.context)
                     else
-                        MyCyclePage()
+                        MyCyclePage() { error ->
+                            viewModel.onErrorDetected(error)
+                        }
                 }
-
             }
 
             DefaultSnackbar(

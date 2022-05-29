@@ -40,9 +40,7 @@ class MyMethodScreenViewModel @Inject constructor(
                     }
                 }
                 .onFailure {
-                    _event.emit(
-                        Event.SnackBarEvent(SnackBarType.ERROR)
-                    )
+                    onErrorDetected()
                 }
         }
     }
@@ -51,6 +49,20 @@ class MyMethodScreenViewModel @Inject constructor(
         viewModelScope.launch {
             _event.emit(
                 Event.GoToAlarmSettings
+            )
+        }
+    }
+
+    fun onErrorDetected(error: String? = null) {
+        val typeError = SnackBarType.ERROR
+        error?.let {
+            typeError.apply {
+                text = it
+            }
+        }
+        viewModelScope.launch {
+            _event.emit(
+                Event.SnackBarEvent(typeError)
             )
         }
     }

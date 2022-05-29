@@ -43,7 +43,7 @@ class CycleRoomDataSource(db: MyCycleDatabase) : LocalCycleDataSource {
     override suspend fun getMyCycle(): Either<MyCycle, ErrorStates> =
         withContext(Dispatchers.IO) {
             val cycle = dao.getCycle()
-            if (cycle == null) eitherFailure(ErrorStates.NOT_SAVED)
+            if (cycle == null) eitherFailure(ErrorStates.NOT_FOUND)
             else {
                 val nextCycle = LocalDate.parse(cycle.nextCycle, formatter)
                 if (LocalDate.now().isAfter(nextCycle) || LocalDate.now().isEqual(nextCycle)) {

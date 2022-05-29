@@ -17,6 +17,7 @@ import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
@@ -31,10 +32,24 @@ import java.time.LocalDate
 
 @Composable
 fun MyCyclePage(
-    viewModel: MyCycleViewModel = hiltViewModel()
+    viewModel: MyCycleViewModel = hiltViewModel(),
+    onErrorListener: (String) -> Unit
 ) {
 
     val state by viewModel.state.collectAsState(State())
+
+    state.errorState?.let { error ->
+        onErrorListener(
+            when(error) {
+                ErrorStates.EMPTY -> stringResource(R.string.snackbar_message_error_empty)
+                ErrorStates.NOT_FOUND -> stringResource(R.string.snackbar_message_error_not_found)
+                ErrorStates.NOT_SAVED -> stringResource(R.string.snackbar_message_error_not_saved)
+                ErrorStates.GENERIC,
+                ErrorStates.THROWABLE -> stringResource(R.string.snackbar_message_error_message)
+            }
+        )
+        viewModel.onResetError()
+    }
 
     MyCycleContent(state) {
         viewModel.saveMyCycle()
