@@ -40,7 +40,7 @@ fun MyCyclePage(
 
     state.errorState?.let { error ->
         onErrorListener(
-            when(error) {
+            when (error) {
                 ErrorStates.EMPTY -> stringResource(R.string.snackbar_message_error_empty)
                 ErrorStates.NOT_FOUND -> stringResource(R.string.snackbar_message_error_not_found)
                 ErrorStates.NOT_SAVED -> stringResource(R.string.snackbar_message_error_not_saved)

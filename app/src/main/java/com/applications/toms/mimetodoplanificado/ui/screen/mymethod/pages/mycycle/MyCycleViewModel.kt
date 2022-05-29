@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
-import com.applications.toms.domain.MyCycle
 import com.applications.toms.domain.enums.ErrorStates
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodScreenViewModel
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.cycle.DeleteCycleUseCase
 import com.applications.toms.usecases.cycle.GetCycleUseCase

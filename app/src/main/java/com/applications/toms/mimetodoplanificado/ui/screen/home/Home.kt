@@ -1,5 +1,6 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -74,12 +75,15 @@ fun Home(
         }
     }
 
+    BackHandler(appState.modalBottomSheetState.isVisible) {
+        appState.hideModalSheet()
+    }
+
     ModalBottomSheetLayout(
         sheetContent = {
             Settings(
                 method = appState.state.collectAsState().value.methodAndStartDate,
                 onCancel = { type ->
-                    //TODO WHEN CLOSE SHEET ADD ANIMATION
                     type?.let { appState.channel.trySend(it.channel) }
                     appState.hideModalSheet()
                 },
@@ -96,7 +100,9 @@ fun Home(
             scaffoldState = appState.scaffoldState,
             snackbarHost = { appState.scaffoldState.snackbarHostState }
         ) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            Box(modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()) {
                 Column {
                     Row(
                         modifier = Modifier
