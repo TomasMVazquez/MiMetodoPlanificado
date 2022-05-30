@@ -120,6 +120,10 @@ fun MyCycleContent(
                         .padding(horizontal = dimensionResource(id = R.dimen.padding_large)),
                     text = when {
                         !state.hasCycleConfigured -> stringResource(R.string.my_cycle_empty_info)
+                        currentDay.toInt() == 1 -> stringResource(R.string.my_cycle_msg_first_day)
+                        currentDay.toInt() == 21 -> stringResource(R.string.my_cycle_msg_21_day)
+                        currentDay.toInt() in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
+                        currentDay.toInt() > 28 -> stringResource(R.string.my_cycle_msg_29_day)
                         else -> ""
                     },
                     style = MaterialTheme.typography.body2,

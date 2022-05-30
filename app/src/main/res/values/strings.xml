@@ -164,4 +164,9 @@
     // MyCycle
     <string name="register_my_period">Registrar periodo</string>
     <string name="my_cycle_empty_info">El día que te llegue podrás clickear este botón para comenzar a registrar tu periodo</string>
+    <string name="my_cycle_msg_first_day">Comienzo de tu ciclo</string>
+    <string name="my_cycle_msg_21_day">Está cerca un nuevo ciclo</string>
+    <string name="my_cycle_msg_22_to_28_day">No te olvides de registrar tu ciclo</string>
+    <string name="my_cycle_msg_29_day">Tu nuevo ciclo debería haber comenzado.\nNo te olvides de registrarlo</string>
+
 </resources>
