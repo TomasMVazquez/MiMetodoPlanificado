@@ -8,7 +8,7 @@
     <string name="obg_title_choose">Elige</string>
     <string name="obg_title_set">Configura</string>
     <string name="obg_title_relax">Relajate</string>
-    <string name="obg_desc_choose">Elige el metodo anticonceptivo que estas usando o quieres comenzar a usar</string>
+    <string name="obg_desc_choose">Elige el metodo anticonceptivo que estas usando, o quieres comenzar a usar, o puedes elegir solo registrar tu ciclo.</string>
     <string name="obg_desc_set">Configura las fechas y modos de recordatorio</string>
     <string name="obg_desc_relax">Relajate sabiendo que estamos aqui para ayudarte a recordar</string>
 
@@ -67,7 +67,7 @@
     <string name="injection">Inyección</string>
     <string name="content_description_injection">Inyección</string>
     <string name="home_title">ELIGE</string>
-    <string name="home_subtitle">Elige el metodo anticonceptivo que usas o quieras empezar a usar</string>
+    <string name="home_subtitle">Elige el metodo anticonceptivo que estas usando, o quieres comenzar a usar, o puedes elegir solo registrar tu ciclo.</string>
 
     // Settings
     <string name="content_description_close">cerrar</string>

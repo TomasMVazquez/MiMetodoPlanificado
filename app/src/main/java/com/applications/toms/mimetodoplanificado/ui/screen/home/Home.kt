@@ -110,10 +110,7 @@ fun Home(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = dimensionResource(id = R.dimen.padding_large),
-                                top = dimensionResource(id = R.dimen.no_padding),
-                                end = dimensionResource(id = R.dimen.no_padding),
-                                bottom = dimensionResource(id = R.dimen.padding_medium)
+                                start = dimensionResource(id = R.dimen.padding_large)
                             ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
@@ -166,7 +163,6 @@ fun HomeContent(
 
     Column(
         modifier = Modifier.padding(
-            vertical = dimensionResource(id = R.dimen.no_padding),
             horizontal = dimensionResource(id = R.dimen.padding_large)
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
@@ -191,5 +187,4 @@ fun HomeContent(
             }
         }
     }
-
 }
