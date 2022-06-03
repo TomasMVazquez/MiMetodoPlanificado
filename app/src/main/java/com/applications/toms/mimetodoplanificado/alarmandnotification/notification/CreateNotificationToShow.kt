@@ -21,32 +21,34 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 @OptIn(ExperimentalMaterialApi::class)
 fun createNotificationToShow(
     context: Context,
+    code: Int = DAILY_NOTIFICATION_CODE.code,
     title: String,
-    text: String
+    text: String,
+    isCycle: Boolean = false
 ) {
 
     val intent = Intent(context, MainActivity::class.java).apply {
         flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        action = context.packageName + "." + DAILY_NOTIFICATION_CODE.code
+        action = context.packageName + "." + code
     }
     val pendingIntent = PendingIntent.getActivity(
         context,
-        DAILY_NOTIFICATION_CODE.code,
+        code,
         intent,
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE
         else PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    val builder = NotificationCompat.Builder(context, NOTIF_CHANNEL_ID)
+    val builder = NotificationCompat.Builder(context, if (isCycle) CYCLE_NOTIF_CHANNEL_ID else NOTIF_CHANNEL_ID)
         .setContentIntent(pendingIntent)
         .setSmallIcon(R.drawable.ic_icono)
         .setColor(Purple.toArgb())
         .setContentTitle(title)
         .setStyle(NotificationCompat.BigTextStyle().bigText(text))
         .setAutoCancel(true)
-        .setPriority(NotificationCompat.PRIORITY_HIGH)
+        .setPriority(if (isCycle) NotificationCompat.PRIORITY_DEFAULT else NotificationCompat.PRIORITY_HIGH)
 
     with(NotificationManagerCompat.from(context)) {
-        notify(DAILY_NOTIFICATION_CODE.code, builder.build())
+        notify(code, builder.build())
     }
 }

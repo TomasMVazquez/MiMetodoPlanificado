@@ -60,6 +60,7 @@ fun createRepeatingNotification(
                     timeInMillis + TimeUnit.DAYS.toMillis(totalDaysCycle.toLong() - daysFromStart)
                 totalDaysCycle
             }
+            else -> {}
         }
     )
     intent.putExtras(bundle)

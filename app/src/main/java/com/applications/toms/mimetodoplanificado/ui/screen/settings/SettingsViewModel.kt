@@ -13,10 +13,11 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_days
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
-import com.applications.toms.usecases.SaveChosenMethodUseCase
+import com.applications.toms.usecases.cycle.SaveCycleUseCase
+import com.applications.toms.usecases.method.SaveChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,7 +32,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    private val saveChosenMethodUseCase: SaveChosenMethodUseCase
+    private val saveChosenMethodUseCase: SaveChosenMethodUseCase,
+    private val saveCycleUseCase: SaveCycleUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SettingsState())
@@ -61,7 +63,8 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun changeTotalDaysCycle(days: Int) {
-        _state.value = _state.value.copy(totalDaysCycle = if (days == 30) CYCLE_30_days else CYCLE_90_days)
+        _state.value =
+            _state.value.copy(totalDaysCycle = if (days == 30) CYCLE_30_DAYS else CYCLE_90_DAYS)
     }
 
     fun changeBreakDays(days: Int) {
@@ -78,26 +81,58 @@ class SettingsViewModel @Inject constructor(
 
     fun onSaveMethodChosen(methodChosen: MethodChosen) {
         viewModelScope.launch {
-            saveChosenMethodUseCase.execute(methodChosen)
-                .onSuccess {
-                    _event.emit(
-                        Event.Continue(
-                            saveMethodState = eitherSuccess(it.eitherState),
-                            method = methodChosen.methodAndStartDate.methodChosen,
-                            totalDaysCycle = methodChosen.totalDaysCycle.toInt(),
-                            notificationsState = it.notificationsState,
-                            notificationTimeInMillis = it.notificationTimeInMillis?.convertToTimeInMills(
-                                it.notificationTimeInMillis == it.alarmTimeInMillis
-                            ) ?: 0L,
-                            alarmState = it.alarmState,
-                            alarmTimeInMillis = it.alarmTimeInMillis?.convertToTimeInMills() ?: 0L,
-                            daysFromStart = methodChosen.methodAndStartDate.startDate.until(LocalDate.now(), ChronoUnit.DAYS)
+            when (methodChosen.methodAndStartDate.methodChosen) {
+                Method.CYCLE -> {
+                    saveCycleUseCase.execute(
+                        SaveCycleUseCase.Input(
+                            startDate = methodChosen.methodAndStartDate.startDate,
+                            totalCycleDays = methodChosen.totalDaysCycle
                         )
                     )
+                        .onSuccess {
+                            _event.emit(
+                                Event.Continue(
+                                    saveMethodState = eitherSuccess(EitherState.SUCCESS),
+                                    method = methodChosen.methodAndStartDate.methodChosen,
+                                    totalDaysCycle = methodChosen.totalDaysCycle.toInt(),
+                                    daysFromStart = methodChosen.methodAndStartDate.startDate.until(
+                                        LocalDate.now(),
+                                        ChronoUnit.DAYS
+                                    )
+                                )
+                            )
+                        }
+                        .onFailure {
+                            _event.emit(Event.Continue(saveMethodState = eitherFailure(it)))
+                        }
                 }
-                .onFailure {
-                    _event.emit(Event.Continue(saveMethodState = eitherFailure(it)))
+                else -> {
+                    saveChosenMethodUseCase.execute(methodChosen)
+                        .onSuccess {
+                            _event.emit(
+                                Event.Continue(
+                                    saveMethodState = eitherSuccess(it.eitherState),
+                                    method = methodChosen.methodAndStartDate.methodChosen,
+                                    totalDaysCycle = methodChosen.totalDaysCycle.toInt(),
+                                    notificationsState = it.notificationsState,
+                                    notificationTimeInMillis = it.notificationTimeInMillis?.convertToTimeInMills(
+                                        it.notificationTimeInMillis == it.alarmTimeInMillis
+                                    ) ?: 0L,
+                                    alarmState = it.alarmState,
+                                    alarmTimeInMillis = it.alarmTimeInMillis?.convertToTimeInMills()
+                                        ?: 0L,
+                                    daysFromStart = methodChosen.methodAndStartDate.startDate.until(
+                                        LocalDate.now(),
+                                        ChronoUnit.DAYS
+                                    )
+                                )
+                            )
+                        }
+                        .onFailure {
+                            _event.emit(Event.Continue(saveMethodState = eitherFailure(it)))
+                        }
                 }
+            }
         }
     }
 

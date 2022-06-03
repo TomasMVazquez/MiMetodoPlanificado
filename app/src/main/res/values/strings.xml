@@ -1,12 +1,14 @@
 <resources>
     <string name="app_name">Mi Metodo Planificado</string>
+    <string name="my_method">Mi Método Planificado</string>
     <string name="home">home</string>
+    <string name="my_cycle_page_title">Mi Ciclo</string>
 
     // OnBoarding
     <string name="obg_title_choose">Elige</string>
     <string name="obg_title_set">Configura</string>
     <string name="obg_title_relax">Relajate</string>
-    <string name="obg_desc_choose">Elige el metodo anticonceptivo que estas usando o quieres comenzar a usar</string>
+    <string name="obg_desc_choose">Elige el metodo anticonceptivo que estas usando, o quieres comenzar a usar, o puedes elegir solo registrar tu ciclo.</string>
     <string name="obg_desc_set">Configura las fechas y modos de recordatorio</string>
     <string name="obg_desc_relax">Relajate sabiendo que estamos aqui para ayudarte a recordar</string>
 
@@ -38,6 +40,8 @@
     <string name="flaticon_attribution_kliwir"> kliwir art </string>
     <string name="flaticon_attribution_good_link">https://www.flaticon.es/autores/good-ware</string>
     <string name="flaticon_attribution_good"> Good Ware </string>
+    <string name="flaticon_attribution_designer_nata_link">https://www.flaticon.com/authors/designer-nata</string>
+    <string name="flaticon_attribution_designer_nata"> Designer_Nata </string>
 
     <string name="imgs_blob_start">Formas creadas por: </string>
     <string name="imgs_blob_title">Blobmaker</string>
@@ -52,6 +56,8 @@
     <string name="play_store_apps_link">https://play.google.com/store/apps/developer?id=Tomás+M.+Vazquez</string>
 
     // Home
+    <string name="cycle">Ciclo</string>
+    <string name="content_description_cycle">Ciclo</string>
     <string name="ring">Anillo</string>
     <string name="content_description_ring">Anillo</string>
     <string name="pills">Pastilla</string>
@@ -61,14 +67,17 @@
     <string name="injection">Inyección</string>
     <string name="content_description_injection">Inyección</string>
     <string name="home_title">ELIGE</string>
-    <string name="home_subtitle">Elige el metodo anticonceptivo que usas o quieras empezar a usar</string>
+    <string name="home_subtitle">Elige el metodo anticonceptivo que estas usando, o quieres comenzar a usar, o puedes elegir solo registrar tu ciclo.</string>
 
     // Settings
     <string name="content_description_close">cerrar</string>
     <string name="settings_title">Configuración %s</string>
     <string name="settings_label_start_date">Fecha de inicio</string>
     <string name="content_desc_calendar">Icono calendario</string>
+    <string name="settings_text_start_date_cycle">Selecciona la fecha en la cual comenzaste tu ciclo</string>
     <string name="settings_text_start_date">Selecciona la fecha con la cual comenzaste o comenzarás a usar este método anticonceptivo</string>
+    <string name="settings_cycle_start_date_text">Comienzo del ciclo de 28 días el %1$s</string>
+    <string name="settings_cycle_next_date_text">El próximo ciclo comenzará alrededor del %1$s</string>
     <string name="settings_ring_start_date_text">Comienzo del ciclo de 21 días el %1$s</string>
     <string name="settings_ring_break_date_text">El descanso comienza el %1$s y durará 7 días</string>
     <string name="settings_ring_next_date_text">El próximo ciclo comienza el %1$s</string>
@@ -108,6 +117,8 @@
     <string name="info_config_alarm">Alarma a las %s hs</string>
 
     // AlarmSettings
+    <string name="alarm_settings_title">Configuración</string>
+    <string name="alarm_settings_desc">Configura aquí la hora en la cual quieres que te recordemos sobre tu método anticonceptivo</string>
     <string name="content_description_expand">Expandir</string>
     <string name="settings_btn_save">GUARDAR</string>
 
@@ -124,11 +135,14 @@
 
     // Notification
     <string name="notification_channel_name">Notificaciones</string>
+    <string name="cycle_notification_channel_name">Notificaciones Ciclo</string>
     <string name="alarm_channel_name">Alarma</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    <string name="cycle_notification_channel_description">Estas notificaciones te mostraran avisos sobre momentos de tu ciclo</string>
     <string name="alarm_channel_description">Estas notificaciones sonoras y con vibraciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
-    
+
     <string name="notification_desc_generic">No te olvides de tu método anticonceptivo</string>
+    <string name="notification_cycle_desc_generic">No te olvides de registrar tu ciclo</string>
 
     <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
 
@@ -144,6 +158,18 @@
     <string name="notification_desc_reboot">Ingresa a la app para confirmar que las notificaciones y alarmas están correctamente configuradas!</string>
 
     // SnackBar MSG
-    <string name="snackbar_message_error_message">Oops! Hubo un error, intentalo más tarde</string>
     <string name="snackbar_message_generic">Oops!</string>
+    <string name="snackbar_message_error_message">Oops! Hubo un error, intentalo más tarde</string>
+    <string name="snackbar_message_error_not_found">Oops! No hemos logrado encontrar los datos guardados, intentalo más tarde</string>
+    <string name="snackbar_message_error_not_saved">Oops! No hemos podido guardar, intentalo más tarde</string>
+    <string name="snackbar_message_error_empty">Oops! Parece que hay problemas con los datos, intentalo más tarde</string>
+
+    // MyCycle
+    <string name="register_my_period">Registrar periodo</string>
+    <string name="my_cycle_empty_info">El día que te llegue podrás clickear este botón para comenzar a registrar tu periodo</string>
+    <string name="my_cycle_msg_first_day">Comienzo de tu ciclo</string>
+    <string name="my_cycle_msg_21_day">Está cerca un nuevo ciclo</string>
+    <string name="my_cycle_msg_22_to_28_day">No te olvides de registrar tu ciclo</string>
+    <string name="my_cycle_msg_29_day">Tu nuevo ciclo debería haber comenzado.\nNo te olvides de registrarlo</string>
+
 </resources>

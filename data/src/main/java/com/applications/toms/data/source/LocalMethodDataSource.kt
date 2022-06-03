@@ -6,7 +6,7 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
 import java.time.LocalDate
 
-interface LocalDataSource {
+interface LocalMethodDataSource {
 
     suspend fun saveChosenMethod(chosenMethod: MethodChosen): Either<EitherState, ErrorStates>
 

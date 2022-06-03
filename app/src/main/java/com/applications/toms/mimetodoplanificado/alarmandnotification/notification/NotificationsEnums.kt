@@ -2,10 +2,11 @@ package com.applications.toms.mimetodoplanificado.alarmandnotification.notificat
 
 enum class RequestNotificationCode(val code: Int) {
     DAILY_NOTIFICATION_CODE(100),
-    ALARM_CODE(200)
+    ALARM_CODE(200),
+    CYCLE_NOTIFICATION_CODE(300)
 }
 
 enum class NotificationBundle(val key: String) {
     NOTIFICATION_METHOD_KEY("method"),
-    NOTIFICATION_CYCLE_KEY("cycle"),
+    NOTIFICATION_CYCLE_KEY("cycle")
 }

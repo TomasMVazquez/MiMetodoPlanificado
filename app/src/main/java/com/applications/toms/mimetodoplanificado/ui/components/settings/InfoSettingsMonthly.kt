@@ -20,7 +20,10 @@ import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import java.time.LocalDate
 
 @Composable
-fun InfoSettingsMonthly(startDate: LocalDate, onOptionSelected: (Int) -> Unit) {
+fun InfoSettingsMonthly(
+    startDate: LocalDate,
+    onOptionSelected: (Int) -> Unit
+) {
 
     var optionSelected by remember { mutableStateOf(0) }
 

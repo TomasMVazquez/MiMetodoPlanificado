@@ -1,13 +1,12 @@
-package com.applications.toms.mimetodoplanificado.ui.screen.mymethod
+package com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mymethod
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
 import com.applications.toms.domain.MethodChosen
-import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
-import com.applications.toms.usecases.DeleteChosenMethodUseCase
-import com.applications.toms.usecases.GetChosenMethodUseCase
+import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.usecases.method.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,21 +20,17 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyMethodViewModel @Inject constructor(
-    private val getChosenMethodUseCase: GetChosenMethodUseCase,
-    private val deleteChosenMethodUseCase: DeleteChosenMethodUseCase
+    private val getChosenMethodUseCase: GetChosenMethodUseCase
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
 
-    private val _event = MutableSharedFlow<Event>()
-    val event: SharedFlow<Event> = _event.asSharedFlow()
-
     init {
-        getMethod()
+        getMethodData()
     }
 
-    fun getMethod(){
+    fun getMethodData() {
         viewModelScope.launch {
             getChosenMethodUseCase.execute(Unit)
                 .onSuccess { response ->
@@ -49,48 +44,16 @@ class MyMethodViewModel @Inject constructor(
                         isNotificationEnable = response.first.isNotificationEnable,
                         notificationTime = response.first.notificationTime,
                         isAlarmEnable = response.first.isAlarmEnable,
-                        alarmTime = response.first.alarmTime
+                        alarmTime = response.first.alarmTime,
+                        errorState = null
                     )
                 }
                 .onFailure {
-                    _event.emit(
-                        Event.SnackBarEvent(SnackBarType.ERROR)
+                    _state.value = State(
+                        loading = false,
+                        errorState = it
                     )
                 }
-        }
-    }
-
-    fun onMethodChangeClick() {
-        viewModelScope.launch {
-            _event.emit(
-                Event.ConfirmMethodChange
-            )
-        }
-    }
-
-    fun onDeleteCurrentMethod() {
-        viewModelScope.launch {
-            deleteChosenMethodUseCase.execute(Unit)
-                .onSuccess {
-                    viewModelScope.launch {
-                        _event.emit(
-                            Event.MethodDeleted
-                        )
-                    }
-                }
-                .onFailure {
-                    _event.emit(
-                        Event.SnackBarEvent(SnackBarType.ERROR)
-                    )
-                }
-        }
-    }
-
-    fun onGoToAlarmSettingsClick() {
-        viewModelScope.launch {
-            _event.emit(
-                Event.GoToAlarmSettings
-            )
         }
     }
 
@@ -104,15 +67,8 @@ class MyMethodViewModel @Inject constructor(
         val isNotificationEnable: Boolean? = null,
         val notificationTime: String? = null,
         val isAlarmEnable: Boolean? = null,
-        val alarmTime: String? = null
+        val alarmTime: String? = null,
+        val errorState: ErrorStates? = null
     )
 
-    sealed class Event {
-        object ConfirmMethodChange : Event()
-        object MethodDeleted : Event()
-        object GoToAlarmSettings : Event()
-        data class SnackBarEvent(
-            val snackBarType: SnackBarType
-        ): Event()
-    }
 }

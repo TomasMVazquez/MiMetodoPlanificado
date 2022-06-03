@@ -1,5 +1,6 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -74,18 +75,23 @@ fun Home(
         }
     }
 
+    BackHandler(appState.modalBottomSheetState.isVisible) {
+        appState.hideModalSheet()
+    }
+
     ModalBottomSheetLayout(
         sheetContent = {
             Settings(
                 method = appState.state.collectAsState().value.methodAndStartDate,
                 onCancel = { type ->
-                    //TODO WHEN CLOSE SHEET ADD ANIMATION
                     type?.let { appState.channel.trySend(it.channel) }
                     appState.hideModalSheet()
                 },
                 onDone = {
-                    appState.onSaveMethod()
-                    goToMyMethod()
+                    it?.let {
+                        appState.onSaveMethod(it == Method.CYCLE)
+                        goToMyMethod()
+                    }
                 }
             )
         },
@@ -96,16 +102,15 @@ fun Home(
             scaffoldState = appState.scaffoldState,
             snackbarHost = { appState.scaffoldState.snackbarHostState }
         ) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            Box(modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()) {
                 Column {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = dimensionResource(id = R.dimen.padding_large),
-                                top = dimensionResource(id = R.dimen.no_padding),
-                                end = dimensionResource(id = R.dimen.no_padding),
-                                bottom = dimensionResource(id = R.dimen.padding_medium)
+                                start = dimensionResource(id = R.dimen.padding_large)
                             ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
@@ -158,7 +163,6 @@ fun HomeContent(
 
     Column(
         modifier = Modifier.padding(
-            vertical = dimensionResource(id = R.dimen.no_padding),
             horizontal = dimensionResource(id = R.dimen.padding_large)
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
@@ -183,5 +187,4 @@ fun HomeContent(
             }
         }
     }
-
 }

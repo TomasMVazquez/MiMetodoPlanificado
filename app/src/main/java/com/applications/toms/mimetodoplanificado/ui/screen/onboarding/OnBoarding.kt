@@ -33,6 +33,7 @@ import com.applications.toms.mimetodoplanificado.ui.utils.onBoardingHasFinished
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
 @ExperimentalAnimationApi
@@ -79,7 +80,7 @@ private fun OnBoardingContent(
 ) {
 
     val context = LocalContext.current
-    val pagerState = rememberPagerState(0)
+    val pagerState: PagerState = rememberPagerState(0)
 
     Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_medium))) {
 

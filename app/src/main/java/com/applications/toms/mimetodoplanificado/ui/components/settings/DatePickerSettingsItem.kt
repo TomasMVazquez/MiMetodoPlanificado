@@ -21,7 +21,11 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun DatePickerSettingsItem(date: LocalDate, onDateChange: (LocalDate) -> Unit) {
+fun DatePickerSettingsItem(
+    date: LocalDate,
+    cycle: Boolean = false,
+    onDateChange: (LocalDate) -> Unit
+) {
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
 
     Column {
@@ -29,7 +33,8 @@ fun DatePickerSettingsItem(date: LocalDate, onDateChange: (LocalDate) -> Unit) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
-            text = stringResource(R.string.settings_text_start_date),
+            text = if (cycle) stringResource(R.string.settings_text_start_date_cycle)
+            else stringResource(R.string.settings_text_start_date),
             style = MaterialTheme.typography.subtitle1,
             color = MaterialTheme.colors.onPrimary
         )
