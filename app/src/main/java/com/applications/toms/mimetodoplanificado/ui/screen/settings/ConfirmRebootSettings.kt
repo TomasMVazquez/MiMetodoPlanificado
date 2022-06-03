@@ -10,10 +10,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.domain.MethodChosen
+import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.cancelRepeatingNotification
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogSuccess
 import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
@@ -45,6 +47,13 @@ fun ConfirmRebootSettings(
                 LocalDate.now(),
                 ChronoUnit.DAYS
             )
+
+            if (methodChosen.methodAndStartDate.methodChosen == Method.CYCLE) {
+                createCycleNotifications(
+                    context = context,
+                    daysFromStart = fromStart
+                )
+            }
 
             if (methodChosen.isNotificationEnable)
                 methodChosen.notificationTime?.let { notificationTime ->

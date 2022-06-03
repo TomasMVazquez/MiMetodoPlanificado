@@ -33,6 +33,7 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
@@ -76,6 +77,12 @@ fun Settings(
                     event.saveMethodState
                         .onSuccess {
                             viewModel.resetState()
+                            if (event.method == Method.CYCLE) {
+                                createCycleNotifications(
+                                    context = context,
+                                    daysFromStart = event.daysFromStart + 1
+                                )
+                            }
                             if (event.notificationsState == true && event.method != null) {
                                 createRepeatingNotification(
                                     context = context,

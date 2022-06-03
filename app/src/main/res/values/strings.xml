@@ -135,11 +135,14 @@
 
     // Notification
     <string name="notification_channel_name">Notificaciones</string>
+    <string name="cycle_notification_channel_name">Notificaciones Ciclo</string>
     <string name="alarm_channel_name">Alarma</string>
     <string name="notification_channel_description">Estas notificaciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
+    <string name="cycle_notification_channel_description">Estas notificaciones te mostraran avisos sobre momentos de tu ciclo</string>
     <string name="alarm_channel_description">Estas notificaciones sonoras y con vibraciones te ayudaran a no olvidarte de tomar las acciones necesarias según el método anticonceptivo elegido</string>
 
     <string name="notification_desc_generic">No te olvides de tu método anticonceptivo</string>
+    <string name="notification_cycle_desc_generic">No te olvides de registrar tu ciclo</string>
 
     <string name="notification_desc_pills">No te olvides de tomar tu pastilla anticonceptiva</string>
 

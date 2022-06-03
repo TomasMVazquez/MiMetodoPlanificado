@@ -13,8 +13,8 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.ui.utils.convertToTimeInMills
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_days
-import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_days
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_30_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_90_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.cycle.SaveCycleUseCase
 import com.applications.toms.usecases.method.SaveChosenMethodUseCase
@@ -64,7 +64,7 @@ class SettingsViewModel @Inject constructor(
 
     fun changeTotalDaysCycle(days: Int) {
         _state.value =
-            _state.value.copy(totalDaysCycle = if (days == 30) CYCLE_30_days else CYCLE_90_days)
+            _state.value.copy(totalDaysCycle = if (days == 30) CYCLE_30_DAYS else CYCLE_90_DAYS)
     }
 
     fun changeBreakDays(days: Int) {

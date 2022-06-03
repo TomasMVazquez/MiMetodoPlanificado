@@ -11,6 +11,9 @@ import com.applications.toms.mimetodoplanificado.alarmandnotification.notificati
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.NotificationBundle.NOTIFICATION_METHOD_KEY
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_21_DAYS
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_7_DAYS
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_DAY_21
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_DAY_25
+import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_DAY_29
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.concurrent.TimeUnit
@@ -30,6 +33,8 @@ class NotificationReceiver : BroadcastReceiver() {
         var method: Method? = null
         val currentTime: Long = System.currentTimeMillis()
         var daysOfDelay = 1L
+        var isCycle = false
+        var code = RequestNotificationCode.DAILY_NOTIFICATION_CODE.code
 
         when (bundle?.get(NOTIFICATION_METHOD_KEY.key)) {
             Method.PILLS.name -> {
@@ -65,7 +70,25 @@ class NotificationReceiver : BroadcastReceiver() {
                 daysOfDelay = bundle.getInt(NOTIFICATION_CYCLE_KEY.key).toLong()
                 delay = currentTime + TimeUnit.HOURS.toMillis(daysOfDelay)
             }
-            else -> {}
+            Method.CYCLE.name -> {
+                title = context.getString(R.string.cycle)
+                text = when (bundle.getInt(NOTIFICATION_CYCLE_KEY.key)) {
+                    CYCLE_DAY_21.toInt() -> {
+                        code = RequestNotificationCode.CYCLE_NOTIFICATION_CODE.code.plus(CYCLE_DAY_21.toInt())
+                        context.getString(R.string.my_cycle_msg_21_day)
+                    }
+                    CYCLE_DAY_25.toInt() -> {
+                        code = RequestNotificationCode.CYCLE_NOTIFICATION_CODE.code.plus(CYCLE_DAY_25.toInt())
+                        context.getString(R.string.my_cycle_msg_22_to_28_day)
+                    }
+                    CYCLE_DAY_29.toInt() -> {
+                        code = RequestNotificationCode.CYCLE_NOTIFICATION_CODE.code.plus(CYCLE_DAY_29.toInt())
+                        context.getString(R.string.my_cycle_msg_29_day)
+                    }
+                    else -> context.getString(R.string.notification_cycle_desc_generic)
+                }
+                isCycle = true
+            }
         }
 
         safeLet(method, delay) { m, d ->
@@ -77,7 +100,7 @@ class NotificationReceiver : BroadcastReceiver() {
             )
         }
 
-        createNotificationToShow(context, title, text)
+        createNotificationToShow(context, code, title, text, isCycle)
     }
 
 }

@@ -1,5 +1,7 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle
 
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,12 +15,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
@@ -27,15 +31,18 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericB
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
+import com.google.accompanist.pager.ExperimentalPagerApi
 import java.time.LocalDate
 
-
+@ExperimentalPagerApi
+@ExperimentalAnimationApi
+@ExperimentalFoundationApi
 @Composable
 fun MyCyclePage(
     viewModel: MyCycleViewModel = hiltViewModel(),
     onErrorListener: (String) -> Unit
 ) {
-
+    val context = LocalContext.current
     val state by viewModel.state.collectAsState(State())
 
     state.errorState?.let { error ->
@@ -53,6 +60,7 @@ fun MyCyclePage(
 
     MyCycleContent(state) {
         viewModel.saveMyCycle()
+        createCycleNotifications(context)
     }
 }
 
