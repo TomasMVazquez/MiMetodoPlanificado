@@ -42,6 +42,8 @@
     <string name="flaticon_attribution_good"> Good Ware </string>
     <string name="flaticon_attribution_designer_nata_link">https://www.flaticon.com/authors/designer-nata</string>
     <string name="flaticon_attribution_designer_nata"> Designer_Nata </string>
+    <string name="flaticon_attribution_fk_studio_link">https://www.flaticon.com/authors/fk-studio</string>
+    <string name="flaticon_attribution_fk_studio"> Fk Studio </string>
 
     <string name="imgs_blob_start">Formas creadas por: </string>
     <string name="imgs_blob_title">Blobmaker</string>
