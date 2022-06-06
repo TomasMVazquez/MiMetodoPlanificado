@@ -56,11 +56,11 @@ class MyCycleViewModel @Inject constructor(
         }
     }
 
-    fun saveMyCycle() {
+    fun saveMyCycle(localDate: LocalDate) {
         viewModelScope.launch {
             saveCycleUseCase.execute(
                 SaveCycleUseCase.Input(
-                    startDate = LocalDate.now(),
+                    startDate = localDate,
                     totalCycleDays = TOTAL_CYCLE_DAYS
                 )
             )

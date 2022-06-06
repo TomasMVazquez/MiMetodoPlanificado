@@ -1,5 +1,6 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -13,6 +14,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -28,6 +32,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateCompone
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
+import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
@@ -57,7 +62,7 @@ fun MyCyclePage(
     }
 
     MyCycleContent(state) {
-        viewModel.saveMyCycle()
+        viewModel.saveMyCycle(it)
         createCycleNotifications(context)
     }
 }
@@ -65,8 +70,10 @@ fun MyCyclePage(
 @Composable
 fun MyCycleContent(
     state: State,
-    onRegisterPeriod: () -> Unit
+    onRegisterPeriod: (LocalDate) -> Unit
 ) {
+
+    var showDatePicker by rememberSaveable { mutableStateOf(false) }
 
     safeLet(state.startDate, state.endDate) { from, to ->
         val monthFrom = from.toCalendarMonth()
@@ -81,7 +88,8 @@ fun MyCycleContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
-            verticalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             /**
              * Title
@@ -100,13 +108,15 @@ fun MyCycleContent(
                 /**
                  * Progress Day
                  */
-                CircularDaysProgress(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(dimensionResource(id = R.dimen.padding_medium)),
-                    percentage = currentDay.div(totalDays),
-                    number = totalDays.toInt()
-                )
+                if (!showDatePicker){
+                    CircularDaysProgress(
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(dimensionResource(id = R.dimen.padding_medium)),
+                        percentage = currentDay.div(totalDays),
+                        number = totalDays.toInt()
+                    )
+                }
             } else {
                 EmptyStateComponent()
             }
@@ -116,7 +126,7 @@ fun MyCycleContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = dimensionResource(id = R.dimen.padding_large)),
+                    .padding(top = dimensionResource(id = R.dimen.padding_large)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -137,24 +147,54 @@ fun MyCycleContent(
                 )
                 GenericButton(
                     buttonType = ButtonType.HIGH_EMPHASIS,
-                    text = stringResource(id = R.string.register_my_period)
+                    text = stringResource(id = R.string.register_my_period_today)
                 ) {
-                    onRegisterPeriod()
+                    onRegisterPeriod(LocalDate.now())
                 }
             }
-            //TODO ADD HERE BUTTON
+            /**
+             * Button select date
+             */
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = dimensionResource(id = R.dimen.padding_large)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.End
+            ) {
+                GenericButton(
+                    buttonType = ButtonType.LOW_EMPHASIS,
+                    text = stringResource(id = R.string.register_my_period)
+                ) {
+                    showDatePicker = true
+                }
+            }
+            /**
+             * Date Picker
+             */
+            AnimatedVisibility(visible = showDatePicker) {
+                DatePickerSettingsItem(
+                    date = LocalDate.now(),
+                    cycle = true
+                ) {
+                    showDatePicker = false
+                    onRegisterPeriod(it)
+                }
+            }
             /**
              * Calendar
              */
-            Calendar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
-                calendarYear = calendarYear,
-                from = from,
-                to = to,
-                breakDays = 0
-            )
+            AnimatedVisibility(visible = !showDatePicker) {
+                Calendar(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
+                    calendarYear = calendarYear,
+                    from = from,
+                    to = to,
+                    breakDays = 0
+                )
+            }
         }
     }
 }
