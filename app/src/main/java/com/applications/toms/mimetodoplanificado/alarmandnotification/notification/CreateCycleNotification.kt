@@ -57,7 +57,7 @@ fun createNotificationAtDay(context: Context, daysFromStart: Long, atDay: Long) 
         set(Calendar.HOUR_OF_DAY, 9)
         set(Calendar.MINUTE, 0)
         set(Calendar.SECOND, 0)
-        add(Calendar.DATE, TimeUnit.DAYS.toMillis(atDay - daysFromStart).toInt())
+        add(Calendar.DATE, (atDay - daysFromStart).toInt())
     }
 
     val intent = Intent(context, NotificationReceiver::class.java)

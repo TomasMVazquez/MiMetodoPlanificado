@@ -45,11 +45,13 @@ class MyCycleViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    _state.value = state.value.copy(
-                        loading = false,
-                        hasCycleConfigured = false,
-                        errorState = error
-                    )
+                    if (error != ErrorStates.NOT_FOUND) {
+                        _state.value = state.value.copy(
+                            loading = false,
+                            hasCycleConfigured = false,
+                            errorState = error
+                        )
+                    }
                 }
         }
     }

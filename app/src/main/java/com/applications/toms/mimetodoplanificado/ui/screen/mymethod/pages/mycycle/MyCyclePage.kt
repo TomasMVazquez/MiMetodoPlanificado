@@ -49,10 +49,8 @@ fun MyCyclePage(
         onErrorListener(
             when (error) {
                 ErrorStates.EMPTY -> stringResource(R.string.snackbar_message_error_empty)
-                ErrorStates.NOT_FOUND -> stringResource(R.string.snackbar_message_error_not_found)
                 ErrorStates.NOT_SAVED -> stringResource(R.string.snackbar_message_error_not_saved)
-                ErrorStates.GENERIC,
-                ErrorStates.THROWABLE -> stringResource(R.string.snackbar_message_error_message)
+                else -> stringResource(R.string.snackbar_message_error_message)
             }
         )
         viewModel.onResetError()
@@ -125,7 +123,7 @@ fun MyCycleContent(
                 Text(
                     modifier = Modifier
                         .weight(1f)
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_large)),
+                        .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                     text = when {
                         !state.hasCycleConfigured -> stringResource(R.string.my_cycle_empty_info)
                         currentDay.toInt() == 1 -> stringResource(R.string.my_cycle_msg_first_day)
@@ -144,13 +142,14 @@ fun MyCycleContent(
                     onRegisterPeriod()
                 }
             }
+            //TODO ADD HERE BUTTON
             /**
              * Calendar
              */
             Calendar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(dimensionResource(id = R.dimen.padding_medium)),
+                    .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
                 calendarYear = calendarYear,
                 from = from,
                 to = to,

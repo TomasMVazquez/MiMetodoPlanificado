@@ -165,7 +165,7 @@
     <string name="snackbar_message_error_empty">Oops! Parece que hay problemas con los datos, intentalo más tarde</string>
 
     // MyCycle
-    <string name="register_my_period">Registrar periodo</string>
+    <string name="register_my_period">Registrar periodo hoy</string>
     <string name="my_cycle_empty_info">El día que te llegue podrás clickear este botón para comenzar a registrar tu periodo</string>
     <string name="my_cycle_msg_first_day">Comienzo de tu ciclo</string>
     <string name="my_cycle_msg_21_day">Está cerca un nuevo ciclo</string>
