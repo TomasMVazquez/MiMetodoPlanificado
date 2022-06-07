@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -29,10 +30,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
-import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonMoods
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
+import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonMoods
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
+import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAddMoods
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
@@ -52,6 +54,7 @@ fun MyCyclePage(
     onErrorListener: (String) -> Unit
 ) {
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState(State())
 
     state.errorState?.let { error ->
@@ -65,17 +68,29 @@ fun MyCyclePage(
         viewModel.onResetError()
     }
 
-    MyCycleContent(state) {
-        viewModel.saveMyCycle(it)
-        createCycleNotifications(context)
-    }
+    MyCycleContent(
+        state = state,
+        onRegisterPeriod = {
+            viewModel.saveMyCycle(it)
+            createCycleNotifications(context)
+        },
+        onShowDialogMoods = {
+            showDialog = true
+        }
+    )
+
+    DialogAddMoods(
+        showDialog = showDialog,
+        setShowDialog = { showDialog = it }
+    )
 }
 
 @ExperimentalMaterialApi
 @Composable
 fun MyCycleContent(
     state: State,
-    onRegisterPeriod: (LocalDate) -> Unit
+    onRegisterPeriod: (LocalDate) -> Unit,
+    onShowDialogMoods: () -> Unit
 ) {
 
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
@@ -125,7 +140,7 @@ fun MyCycleContent(
                         CardButtonMoods(
                             modifier = Modifier.align(Alignment.TopEnd)
                         ) {
-                            // TODO on CLICK MOODS
+                            onShowDialogMoods()
                         }
                     }
                 }

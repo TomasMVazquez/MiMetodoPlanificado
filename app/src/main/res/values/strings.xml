@@ -175,6 +175,28 @@
     <string name="my_cycle_msg_22_to_28_day">No te olvides de registrar tu ciclo</string>
     <string name="my_cycle_msg_29_day">Tu nuevo ciclo debería haber comenzado.\nNo te olvides de registrarlo</string>
 
+    // MOOD DIALOG
     <string name="ic_content_desc_moods">Ingresar mis estados de ánimo</string>
+    <string name="dialog_moods_cancel">Cancelar</string>
+    <string name="dialog_moods_save">Guardar</string>
+    <string name="dialog_moods_title">Selecciona tu estado de ánimo</string>
+    <string name="pain_scale_title_0">Sin dolor</string>
+    <string name="pain_scale_title_1">Dolor suave</string>
+    <string name="pain_scale_title_2">Dolor leve</string>
+    <string name="pain_scale_title_3">Tolerable</string>
+    <string name="pain_scale_title_4">Dolor moderado</string>
+    <string name="pain_scale_title_5">Dolor molesto</string>
+    <string name="pain_scale_title_6">Dolor intenso</string>
+    <string name="pain_scale_title_7">Dolor severo</string>
+    <string name="pain_scale_title_8">Dolor insoportable</string>
+    <string name="pain_scale_cont_desc_0">icono de dolor, sin dolor</string>
+    <string name="pain_scale_cont_desc_1">icono de dolor, dolor suave</string>
+    <string name="pain_scale_cont_desc_2">icono de dolor, dolor leve</string>
+    <string name="pain_scale_cont_desc_3">icono de dolor, dolor tolerable</string>
+    <string name="pain_scale_cont_desc_4">icono de dolor, dolor moderado</string>
+    <string name="pain_scale_cont_desc_5">icono de dolor, dolor molesto</string>
+    <string name="pain_scale_cont_desc_6">icono de dolor, dolor intenso</string>
+    <string name="pain_scale_cont_desc_7">icono de dolor, dolor severo</string>
+    <string name="pain_scale_cont_desc_8">icono de dolor, dolor insoportable</string>
 
 </resources>
