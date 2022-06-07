@@ -4,11 +4,13 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -27,6 +29,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
+import com.applications.toms.mimetodoplanificado.ui.components.CardButtonMoods
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
@@ -40,6 +43,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import java.time.LocalDate
 
 @ExperimentalPagerApi
+@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
@@ -67,6 +71,7 @@ fun MyCyclePage(
     }
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun MyCycleContent(
     state: State,
@@ -109,13 +114,20 @@ fun MyCycleContent(
                  * Progress Day
                  */
                 if (!showDatePicker){
-                    CircularDaysProgress(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(dimensionResource(id = R.dimen.padding_medium)),
-                        percentage = currentDay.div(totalDays),
-                        number = totalDays.toInt()
-                    )
+                    Box(modifier = Modifier.weight(1f)) {
+                        CircularDaysProgress(
+                            modifier = Modifier
+                                .padding(dimensionResource(id = R.dimen.padding_medium)),
+                            percentage = currentDay.div(totalDays),
+                            number = totalDays.toInt()
+                        )
+
+                        CardButtonMoods(
+                            modifier = Modifier.align(Alignment.TopEnd)
+                        ) {
+                            // TODO on CLICK MOODS
+                        }
+                    }
                 }
             } else {
                 EmptyStateComponent()
