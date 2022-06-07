@@ -1,4 +1,4 @@
-package com.applications.toms.mimetodoplanificado.ui.components
+package com.applications.toms.mimetodoplanificado.ui.components.cardbuttons
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
 import com.applications.toms.domain.MethodCard
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
