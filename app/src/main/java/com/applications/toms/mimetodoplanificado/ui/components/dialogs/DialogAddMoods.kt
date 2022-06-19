@@ -2,9 +2,11 @@ package com.applications.toms.mimetodoplanificado.ui.components.dialogs
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.GridCells
@@ -31,9 +33,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.theme.CarnationPink
+import com.applications.toms.mimetodoplanificado.ui.theme.LightBlack
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
 import com.applications.toms.mimetodoplanificado.ui.theme.VividRaspberry
 import com.applications.toms.mimetodoplanificado.ui.utils.moods.moodCards
@@ -58,11 +62,12 @@ fun DialogAddMoods(
         ) {
             DialogContent(
                 onClickCancel = { setShowDialog(false) },
-                onClickSave = { onSaveMood(it) }
+                onClickSave = {
+                    onSaveMood(it)
+                }
             )
         }
     }
-
 }
 
 @ExperimentalFoundationApi
@@ -70,7 +75,7 @@ fun DialogAddMoods(
 @Composable
 fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
 
-    var sliderPosition by remember { mutableStateOf(0f) }
+    var loading by remember { mutableStateOf(false) }
     var painScale by remember { mutableStateOf(-1) }
     val moods = moodCards
 
@@ -84,66 +89,6 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
                 style = MaterialTheme.typography.h6,
                 color = MaterialTheme.colors.onPrimary
             )
-
-            /*Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceAround
-            ) {
-                moods.forEach { mood ->
-                    Column(
-                        verticalArrangement = Arrangement.Bottom,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        if (sliderPosition.toInt() == mood.painScale) {
-                            MoodImage(mood.icon, mood.icon_description, false)
-
-                            Text(
-                                modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small)),
-                                text = mood.name,
-                                style = MaterialTheme.typography.overline,
-                                color = VividRaspberry
-                            )
-                        }
-                        when (sliderPosition.toInt()) {
-                            in 0..1 -> {
-                                if (mood.painScale % 2 == 0 && mood.painScale > 1) {
-                                    MoodImage(mood.icon, mood.icon_description, true)
-                                }
-                            }
-                            in 2..3 -> {
-                                if (mood.painScale % 2 == 0 && mood.painScale != 2) {
-                                    MoodImage(mood.icon, mood.icon_description, true)
-                                }
-                            }
-                            4 -> {
-                                if (mood.painScale % 2 == 0 && mood.painScale != 4) {
-                                    MoodImage(mood.icon, mood.icon_description, true)
-                                }
-                            }
-                            in 5..6 -> {
-                                if (mood.painScale % 2 == 0 && mood.painScale != 6) {
-                                    MoodImage(mood.icon, mood.icon_description, true)
-                                }
-                            }
-                            in 7..8 -> {
-                                if (mood.painScale % 2 == 0 && mood.painScale != 8) {
-                                    MoodImage(mood.icon, mood.icon_description, true)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Slider(
-                value = sliderPosition,
-                onValueChange = { sliderPosition = round(it) },
-                valueRange = 0f..8f,
-                colors = SliderDefaults.colors(
-                    thumbColor = VividRaspberry,
-                    activeTrackColor = VividRaspberry
-                )
-            )*/
 
             LazyVerticalGrid(cells = GridCells.Fixed(3)){
                 items(moods) {
@@ -189,9 +134,11 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
                     buttonType = ButtonType.HIGH_EMPHASIS,
                     text = stringResource(R.string.dialog_moods_save)
                 ) {
+                    loading = true
                     onClickSave(painScale)
                 }
             }
         }
+        if (loading) MyLoadingContent(Modifier.background(color = LightBlack.copy(alpha = 0.5f)))
     }
 }

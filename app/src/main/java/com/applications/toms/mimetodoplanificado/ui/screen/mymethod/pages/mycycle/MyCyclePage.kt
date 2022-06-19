@@ -3,6 +3,7 @@ package com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycyc
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +15,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +34,7 @@ import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
+import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonMoods
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAddMoods
@@ -39,9 +42,11 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonTy
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
+import com.applications.toms.mimetodoplanificado.ui.theme.LightBlack
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @ExperimentalPagerApi
@@ -57,15 +62,20 @@ fun MyCyclePage(
     var showDialog by remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState(State())
 
-    state.errorState?.let { error ->
-        onErrorListener(
-            when (error) {
-                ErrorStates.EMPTY -> stringResource(R.string.snackbar_message_error_empty)
-                ErrorStates.NOT_SAVED -> stringResource(R.string.snackbar_message_error_not_saved)
-                else -> stringResource(R.string.snackbar_message_error_message)
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collect {
+            when(it){
+                is MyCycleViewModel.Effect.Error -> {
+                    onErrorListener(
+                        when (it.error) {
+                            ErrorStates.EMPTY -> context.getString(R.string.snackbar_message_error_empty)
+                            ErrorStates.NOT_SAVED -> context.getString(R.string.snackbar_message_error_not_saved)
+                            else -> context.getString(R.string.snackbar_message_error_message)
+                        }
+                    )
+                }
             }
-        )
-        viewModel.onResetError()
+        }
     }
 
     MyCycleContent(
@@ -83,9 +93,10 @@ fun MyCyclePage(
         showDialog = showDialog,
         setShowDialog = { showDialog = it },
         onSaveMood = {
-
+            viewModel.onSaveMood()
         }
     )
+
 }
 
 @ExperimentalMaterialApi

@@ -10,9 +10,12 @@ import com.applications.toms.usecases.cycle.DeleteCycleUseCase
 import com.applications.toms.usecases.cycle.GetCycleUseCase
 import com.applications.toms.usecases.cycle.SaveCycleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -26,6 +29,9 @@ class MyCycleViewModel @Inject constructor(
 
     private val _state = MutableStateFlow(State())
     val state: StateFlow<State> = _state.asStateFlow()
+
+    private val _effect: Channel<Effect> = Channel()
+    val effect = _effect.receiveAsFlow()
 
     init {
         getCycleData()
@@ -46,11 +52,13 @@ class MyCycleViewModel @Inject constructor(
                 }
                 .onFailure { error ->
                     if (error != ErrorStates.NOT_FOUND) {
-                        _state.value = state.value.copy(
-                            loading = false,
-                            hasCycleConfigured = false,
-                            errorState = error
-                        )
+                        emitEffect(Effect.Error(error))
+                        _state.update { state ->
+                            state.copy(
+                                loading = false,
+                                hasCycleConfigured = false
+                            )
+                        }
                     }
                 }
         }
@@ -75,18 +83,29 @@ class MyCycleViewModel @Inject constructor(
                     )
                 }
                 .onFailure { error ->
-                    _state.value = state.value.copy(
-                        loading = false,
-                        errorState = error
-                    )
+                    emitEffect(Effect.Error(error))
+                    _state.update { state ->
+                        state.copy(
+                            loading = false
+                        )
+                    }
                 }
         }
     }
 
-    fun onResetError() {
-        _state.value = state.value.copy(
-            errorState = null
-        )
+    fun onSaveMood() {
+        /**
+         * TODO ADD METHOD TO SAVE MOOD ON ROOM
+         */
+        emitEffect(Effect.Error(ErrorStates.GENERIC))
+    }
+
+    private fun emitEffect(effect: Effect) {
+        viewModelScope.launch {
+            _effect.send(
+                effect
+            )
+        }
     }
 
     data class State(
@@ -95,8 +114,13 @@ class MyCycleViewModel @Inject constructor(
         val startDate: LocalDate? = LocalDate.now(),
         val endDate: LocalDate? = LocalDate.now(),
         val nextCycle: LocalDate? = null,
-        val totalDaysCycle: Long = TOTAL_CYCLE_DAYS,
-        val errorState: ErrorStates? = null
+        val totalDaysCycle: Long = TOTAL_CYCLE_DAYS
     )
+
+    sealed class Effect {
+        data class Error(
+            val error: ErrorStates
+        ) : Effect()
+    }
 
 }
