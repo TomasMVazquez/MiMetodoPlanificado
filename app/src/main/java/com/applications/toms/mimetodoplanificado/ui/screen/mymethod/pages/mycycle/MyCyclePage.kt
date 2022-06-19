@@ -81,7 +81,10 @@ fun MyCyclePage(
 
     DialogAddMoods(
         showDialog = showDialog,
-        setShowDialog = { showDialog = it }
+        setShowDialog = { showDialog = it },
+        onSaveMood = {
+
+        }
     )
 }
 
