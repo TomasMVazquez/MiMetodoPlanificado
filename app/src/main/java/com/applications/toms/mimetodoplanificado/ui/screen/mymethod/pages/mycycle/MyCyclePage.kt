@@ -3,7 +3,6 @@ package com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycyc
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,7 +33,7 @@ import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
-import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonMoods
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAddMoods
@@ -42,7 +41,6 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonTy
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
-import com.applications.toms.mimetodoplanificado.ui.theme.LightBlack
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -56,7 +54,7 @@ import java.time.LocalDate
 @Composable
 fun MyCyclePage(
     viewModel: MyCycleViewModel = hiltViewModel(),
-    onErrorListener: (String) -> Unit
+    listener: (SnackBarType, String) -> Unit
 ) {
     val context = LocalContext.current
     var showDialog by remember { mutableStateOf(false) }
@@ -66,7 +64,8 @@ fun MyCyclePage(
         viewModel.effect.collect {
             when(it){
                 is MyCycleViewModel.Effect.Error -> {
-                    onErrorListener(
+                    listener(
+                        SnackBarType.ERROR,
                         when (it.error) {
                             ErrorStates.EMPTY -> context.getString(R.string.snackbar_message_error_empty)
                             ErrorStates.NOT_SAVED -> context.getString(R.string.snackbar_message_error_not_saved)
@@ -93,6 +92,10 @@ fun MyCyclePage(
         showDialog = showDialog,
         setShowDialog = { showDialog = it },
         onSaveMood = {
+            listener(
+                SnackBarType.SUCCESS,
+                "Estado guardado"
+            )
             viewModel.onSaveMood()
         }
     )
