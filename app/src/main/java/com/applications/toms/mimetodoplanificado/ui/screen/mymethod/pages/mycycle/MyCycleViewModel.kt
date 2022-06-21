@@ -49,6 +49,8 @@ class MyCycleViewModel @Inject constructor(
                         hasCycleConfigured = true,
                         startDate = response.startDate,
                         endDate = response.startDate.plusDays(response.totalDaysCycle - 1),
+                        currentDay = response.startDate.until(LocalDate.now()).days + 1,
+                        totalDays = response.startDate.until(response.nextCycle).days + 1,
                         nextCycle = response.nextCycle,
                         totalDaysCycle = response.totalDaysCycle
                     )
@@ -81,6 +83,8 @@ class MyCycleViewModel @Inject constructor(
                         hasCycleConfigured = true,
                         startDate = response.startDate,
                         endDate = response.startDate.plusDays(response.totalDaysCycle - 1),
+                        currentDay = response.startDate.until(LocalDate.now()).days + 1,
+                        totalDays = response.startDate.until(response.nextCycle).days + 1,
                         nextCycle = response.nextCycle,
                         totalDaysCycle = response.totalDaysCycle
                     )
@@ -101,7 +105,8 @@ class MyCycleViewModel @Inject constructor(
             savePainScaleUseCase.execute(
                 PainScaleModel(
                     date = LocalDate.now(),
-                    painScale = painScale
+                    painScale = painScale,
+                    dayOfCycle = state.value.currentDay
                 )
             ).onSuccess {
                 emitEffect(Effect.Success(SAVE_PAIN_SUCCESS))
@@ -124,6 +129,8 @@ class MyCycleViewModel @Inject constructor(
         val hasCycleConfigured: Boolean = false,
         val startDate: LocalDate? = LocalDate.now(),
         val endDate: LocalDate? = LocalDate.now(),
+        val currentDay: Int = -1,
+        val totalDays: Int = -1,
         val nextCycle: LocalDate? = null,
         val totalDaysCycle: Long = TOTAL_CYCLE_DAYS
     )

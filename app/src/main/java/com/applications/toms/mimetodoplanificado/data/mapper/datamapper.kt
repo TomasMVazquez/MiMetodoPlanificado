@@ -59,11 +59,13 @@ fun MyCycle.toDatabaseModel(): MyCycleDatabaseModel =
 fun PainScaleModel.toDatabaseModel(): PainScaleDatabaseModel =
     PainScaleDatabaseModel(
         date = this.date.toFormattedString(),
-        painScale = this.painScale
+        painScale = this.painScale,
+        dayOfCycle = this.dayOfCycle
     )
 
 fun PainScaleDatabaseModel.toModel(formatter: DateTimeFormatter): PainScaleModel =
     PainScaleModel(
         date = LocalDate.parse(this.date, formatter),
-        painScale = this.painScale
+        painScale = this.painScale,
+        dayOfCycle = dayOfCycle
     )

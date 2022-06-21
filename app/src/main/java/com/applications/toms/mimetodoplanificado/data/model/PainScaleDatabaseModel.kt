@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class PainScaleDatabaseModel(
     @PrimaryKey
     val date: String,
-    val painScale: Int
+    val painScale: Int,
+    val dayOfCycle: Int
 )

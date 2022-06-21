@@ -125,9 +125,6 @@ fun MyCycleContent(
         val calendarYear = if (monthFrom.monthNumber == monthTo.monthNumber)
             listOf(monthFrom) else listOf(monthFrom, monthTo)
 
-        val totalDays = (from.until(to).days + 1).toFloat()
-        val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -157,8 +154,8 @@ fun MyCycleContent(
                         CircularDaysProgress(
                             modifier = Modifier
                                 .padding(dimensionResource(id = R.dimen.padding_medium)),
-                            percentage = currentDay.div(totalDays),
-                            number = totalDays.toInt()
+                            percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
+                            number = state.totalDays
                         )
 
                         CardButtonPainScale(
@@ -187,10 +184,10 @@ fun MyCycleContent(
                         .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                     text = when {
                         !state.hasCycleConfigured -> stringResource(R.string.my_cycle_empty_info)
-                        currentDay.toInt() == 1 -> stringResource(R.string.my_cycle_msg_first_day)
-                        currentDay.toInt() == 21 -> stringResource(R.string.my_cycle_msg_21_day)
-                        currentDay.toInt() in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
-                        currentDay.toInt() > 28 -> stringResource(R.string.my_cycle_msg_29_day)
+                        state.currentDay == 1 -> stringResource(R.string.my_cycle_msg_first_day)
+                        state.currentDay == 21 -> stringResource(R.string.my_cycle_msg_21_day)
+                        state.currentDay in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
+                        state.currentDay > 28 -> stringResource(R.string.my_cycle_msg_29_day)
                         else -> ""
                     },
                     style = MaterialTheme.typography.body2,
