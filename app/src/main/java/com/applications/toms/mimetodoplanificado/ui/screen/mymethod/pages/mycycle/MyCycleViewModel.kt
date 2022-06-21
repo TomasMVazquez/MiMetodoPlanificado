@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.applications.toms.data.onFailure
 import com.applications.toms.data.onSuccess
+import com.applications.toms.domain.PainScaleModel
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.TOTAL_CYCLE_DAYS
 import com.applications.toms.usecases.cycle.DeleteCycleUseCase
 import com.applications.toms.usecases.cycle.GetCycleUseCase
 import com.applications.toms.usecases.cycle.SaveCycleUseCase
+import com.applications.toms.usecases.painscale.SavePainScaleUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,7 +26,8 @@ import javax.inject.Inject
 class MyCycleViewModel @Inject constructor(
     private val getCycleUseCase: GetCycleUseCase,
     private val saveCycleUseCase: SaveCycleUseCase,
-    private val deleteCycleUseCase: DeleteCycleUseCase
+    private val deleteCycleUseCase: DeleteCycleUseCase,
+    private val savePainScaleUseCase: SavePainScaleUseCase
 ): ViewModel() {
 
     private val _state = MutableStateFlow(State())
@@ -93,11 +96,19 @@ class MyCycleViewModel @Inject constructor(
         }
     }
 
-    fun onSavePainScale() {
-        /**
-         * TODO ADD METHOD TO SAVE MOOD ON ROOM
-         */
-        emitEffect(Effect.Error(ErrorStates.GENERIC))
+    fun onSavePainScale(painScale: Int) {
+        viewModelScope.launch {
+            savePainScaleUseCase.execute(
+                PainScaleModel(
+                    date = LocalDate.now(),
+                    painScale = painScale
+                )
+            ).onSuccess {
+                emitEffect(Effect.Success(SAVE_PAIN_SUCCESS))
+            }.onFailure {
+                emitEffect(Effect.Error(it))
+            }
+        }
     }
 
     private fun emitEffect(effect: Effect) {
@@ -121,6 +132,14 @@ class MyCycleViewModel @Inject constructor(
         data class Error(
             val error: ErrorStates
         ) : Effect()
+
+        data class Success(
+            val from: Int
+        ) : Effect()
+    }
+
+    companion object {
+        const val SAVE_PAIN_SUCCESS = 1
     }
 
 }

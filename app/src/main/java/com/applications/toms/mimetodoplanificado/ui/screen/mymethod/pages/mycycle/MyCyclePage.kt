@@ -40,6 +40,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAdd
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.Companion.SAVE_PAIN_SUCCESS
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
@@ -73,6 +74,18 @@ fun MyCyclePage(
                         }
                     )
                 }
+                is MyCycleViewModel.Effect.Success -> {
+                    listener(
+                        SnackBarType.SUCCESS,
+                        when (it.from) {
+                            SAVE_PAIN_SUCCESS -> {
+                                showDialog = false
+                                context.getString(R.string.pain_save_successfully)
+                            }
+                            else -> context.getString(R.string.generic_msg_successful)
+                        }
+                    )
+                }
             }
         }
     }
@@ -91,13 +104,7 @@ fun MyCyclePage(
     DialogAddPainScale(
         showDialog = showDialog,
         setShowDialog = { showDialog = it },
-        onSavePainScale = {
-            listener(
-                SnackBarType.SUCCESS,
-                "Estado guardado"
-            )
-            viewModel.onSavePainScale()
-        }
+        onSavePainScale = { viewModel.onSavePainScale(it) }
     )
 
 }

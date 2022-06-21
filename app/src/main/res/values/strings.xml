@@ -198,5 +198,7 @@
     <string name="pain_scale_cont_desc_6">icono de dolor, dolor intenso</string>
     <string name="pain_scale_cont_desc_7">icono de dolor, dolor severo</string>
     <string name="pain_scale_cont_desc_8">icono de dolor, dolor insoportable</string>
+    <string name="pain_save_successfully">Estado guardado</string>
+    <string name="generic_msg_successful">Guardado exitosamente!</string>
 
 </resources>
