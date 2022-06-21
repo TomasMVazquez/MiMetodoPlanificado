@@ -90,11 +90,7 @@ fun MyMethodContent(
         val calendarYear = if (monthFrom.monthNumber == monthTo.monthNumber)
             listOf(monthFrom) else listOf(monthFrom, monthTo)
 
-        val totalDays = (from.until(to).days + 1).toFloat()
-        val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
-        val breakDayStarts = state.breakDays?.let { to.minusDays(it.toLong() - 1) }
-
-        if (currentDay > TOTAL_CYCLE_DAYS) updateState()
+        if (state.currentDay > TOTAL_CYCLE_DAYS) updateState()
 
         Column(
             modifier = Modifier
@@ -131,9 +127,9 @@ fun MyMethodContent(
                     modifier = Modifier
                         .weight(1f)
                         .padding(dimensionResource(id = R.dimen.padding_medium)),
-                    percentage = currentDay.div(totalDays),
-                    number = totalDays.toInt(),
-                    color = if (LocalDate.now() >= breakDayStarts) MaterialTheme.colors.secondaryVariant
+                    percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
+                    number = state.totalDays,
+                    color = if (LocalDate.now() >= state.breakDayStarts) MaterialTheme.colors.secondaryVariant
                     else MaterialTheme.colors.secondary
                 )
 
