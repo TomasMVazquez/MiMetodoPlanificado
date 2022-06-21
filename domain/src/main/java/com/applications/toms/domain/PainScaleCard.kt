@@ -1,6 +1,6 @@
 package com.applications.toms.domain
 
-data class MoodCard(
+data class PainScaleCard(
     val painScale: Int,
     val name: String,
     val icon: Int,

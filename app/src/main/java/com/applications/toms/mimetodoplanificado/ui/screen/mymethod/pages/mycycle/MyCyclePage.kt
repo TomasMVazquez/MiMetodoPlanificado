@@ -34,9 +34,9 @@ import com.applications.toms.mimetodoplanificado.alarmandnotification.notificati
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
-import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonMoods
+import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonPainScale
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
-import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAddMoods
+import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAddPainScale
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
@@ -83,20 +83,20 @@ fun MyCyclePage(
             viewModel.saveMyCycle(it)
             createCycleNotifications(context)
         },
-        onShowDialogMoods = {
+        onShowDialogPainScale = {
             showDialog = true
         }
     )
 
-    DialogAddMoods(
+    DialogAddPainScale(
         showDialog = showDialog,
         setShowDialog = { showDialog = it },
-        onSaveMood = {
+        onSavePainScale = {
             listener(
                 SnackBarType.SUCCESS,
                 "Estado guardado"
             )
-            viewModel.onSaveMood()
+            viewModel.onSavePainScale()
         }
     )
 
@@ -107,7 +107,7 @@ fun MyCyclePage(
 fun MyCycleContent(
     state: State,
     onRegisterPeriod: (LocalDate) -> Unit,
-    onShowDialogMoods: () -> Unit
+    onShowDialogPainScale: () -> Unit
 ) {
 
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
@@ -154,10 +154,10 @@ fun MyCycleContent(
                             number = totalDays.toInt()
                         )
 
-                        CardButtonMoods(
+                        CardButtonPainScale(
                             modifier = Modifier.align(Alignment.TopEnd)
                         ) {
-                            onShowDialogMoods()
+                            onShowDialogPainScale()
                         }
                     }
                 }

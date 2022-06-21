@@ -93,7 +93,7 @@ class MyCycleViewModel @Inject constructor(
         }
     }
 
-    fun onSaveMood() {
+    fun onSavePainScale() {
         /**
          * TODO ADD METHOD TO SAVE MOOD ON ROOM
          */

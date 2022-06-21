@@ -31,15 +31,15 @@ import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonTy
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.theme.CarnationPink
 import com.applications.toms.mimetodoplanificado.ui.theme.LightBlack
-import com.applications.toms.mimetodoplanificado.ui.utils.moods.moodCards
+import com.applications.toms.mimetodoplanificado.ui.utils.painscale.painScaleCards
 
 @ExperimentalFoundationApi
 @ExperimentalMaterialApi
 @Composable
-fun DialogAddMoods(
+fun DialogAddPainScale(
     showDialog: Boolean,
     setShowDialog: (Boolean) -> Unit,
-    onSaveMood: (Int) -> Unit
+    onSavePainScale: (Int) -> Unit
 ) {
     if (showDialog) {
         Dialog(
@@ -53,7 +53,7 @@ fun DialogAddMoods(
             DialogContent(
                 onClickCancel = { setShowDialog(false) },
                 onClickSave = {
-                    onSaveMood(it)
+                    onSavePainScale(it)
                 }
             )
         }
@@ -67,7 +67,7 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
 
     var loading by remember { mutableStateOf(false) }
     var painScale by remember { mutableStateOf(-1) }
-    val moods = moodCards
+    val painScales = painScaleCards
 
     Card() {
         Column(
@@ -75,13 +75,13 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
         ) {
             Text(
                 modifier = Modifier.padding(bottom = dimensionResource(id = R.dimen.padding_medium)),
-                text = stringResource(R.string.dialog_moods_title),
+                text = stringResource(R.string.dialog_pain_scale_title),
                 style = MaterialTheme.typography.h6,
                 color = MaterialTheme.colors.onPrimary
             )
 
             LazyVerticalGrid(cells = GridCells.Fixed(3)){
-                items(moods) {
+                items(painScales) {
                     Card(
                         onClick = { painScale = it.painScale },
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
@@ -94,7 +94,7 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
 
-                            MoodImage(it.icon, it.icon_description, painScale == it.painScale)
+                            PainScaleImage(it.icon, it.icon_description, painScale == it.painScale)
 
                             Text(
                                 modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small)),
@@ -115,14 +115,14 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
             ) {
                 GenericButton(
                     buttonType = ButtonType.LOW_EMPHASIS,
-                    text = stringResource(R.string.dialog_moods_cancel)
+                    text = stringResource(R.string.dialog_pain_scale_cancel)
                 ) {
                     onClickCancel()
                 }
 
                 GenericButton(
                     buttonType = ButtonType.HIGH_EMPHASIS,
-                    text = stringResource(R.string.dialog_moods_save)
+                    text = stringResource(R.string.dialog_pain_scale_save)
                 ) {
                     loading = true
                     onClickSave(painScale)

@@ -11,13 +11,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MoodImage(moodIcon: Int, moodContDesc: String, filterGray: Boolean) {
+fun PainScaleImage(painScaleIcon: Int, painScaleContDesc: String, filterGray: Boolean) {
     Image(
         modifier = Modifier
             .size(40.dp)
             .background(color = Color.Transparent),
-        painter = painterResource(id = moodIcon),
-        contentDescription = moodContDesc,
+        painter = painterResource(id = painScaleIcon),
+        contentDescription = painScaleContDesc,
         colorFilter = if (filterGray) ColorFilter.tint(Color.Gray) else null
     )
 }

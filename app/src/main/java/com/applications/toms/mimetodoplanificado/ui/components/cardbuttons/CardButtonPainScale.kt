@@ -17,7 +17,7 @@ import com.applications.toms.mimetodoplanificado.R
 
 @ExperimentalMaterialApi
 @Composable
-fun CardButtonMoods(modifier: Modifier = Modifier,onClick: () -> Unit) {
+fun CardButtonPainScale(modifier: Modifier = Modifier, onClick: () -> Unit) {
     Card(
         onClick = onClick,
         modifier = modifier
@@ -30,8 +30,8 @@ fun CardButtonMoods(modifier: Modifier = Modifier,onClick: () -> Unit) {
                 .size(dimensionResource(id = R.dimen.icon_size))
                 .background(color = MaterialTheme.colors.primary.copy(alpha = 0.5f))
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
-            painter = painterResource(id = R.drawable.ic_moods),
-            contentDescription = stringResource(R.string.ic_content_desc_moods)
+            painter = painterResource(id = R.drawable.ic_pain_scale),
+            contentDescription = stringResource(R.string.ic_content_desc_pain_scale)
         )
     }
 }

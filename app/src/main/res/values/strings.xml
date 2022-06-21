@@ -175,11 +175,11 @@
     <string name="my_cycle_msg_22_to_28_day">No te olvides de registrar tu ciclo</string>
     <string name="my_cycle_msg_29_day">Tu nuevo ciclo debería haber comenzado.\nNo te olvides de registrarlo</string>
 
-    // MOOD DIALOG
-    <string name="ic_content_desc_moods">Ingresar mis estados de ánimo</string>
-    <string name="dialog_moods_cancel">Cancelar</string>
-    <string name="dialog_moods_save">Guardar</string>
-    <string name="dialog_moods_title">Selecciona tu nivel de dolor:</string>
+    // PAINSCALE DIALOG
+    <string name="ic_content_desc_pain_scale">Ingresar mis estados de ánimo</string>
+    <string name="dialog_pain_scale_cancel">Cancelar</string>
+    <string name="dialog_pain_scale_save">Guardar</string>
+    <string name="dialog_pain_scale_title">Selecciona tu nivel de dolor:</string>
     <string name="pain_scale_title_0">Sin dolor</string>
     <string name="pain_scale_title_1">Suave</string>
     <string name="pain_scale_title_2">Leve</string>
