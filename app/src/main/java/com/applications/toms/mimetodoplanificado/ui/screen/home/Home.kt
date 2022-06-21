@@ -61,16 +61,15 @@ fun Home(
 ) {
     var snackBarType: SnackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
 
-    LaunchedEffect(appState.channel) {
-        appState.channel.receiveAsFlow().collect { channel ->
-            SnackBarType.values().firstOrNull { type -> type.channel == channel }?.let {
-                snackBarType = it
-                appState.scaffoldState.snackbarHostState.showSnackbar(
-                    message = when (channel) {
-                        SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
-                        else -> appState.context.getString(R.string.snackbar_message_generic)
-                    }
-                )
+    LaunchedEffect(key1 = appState.effect) {
+        appState.effect.collect {
+            when(it) {
+                is HomeAppState.Effect.SnackBarEvent -> {
+                    snackBarType = it.snackBarType
+                    appState.scaffoldState.snackbarHostState.showSnackbar(
+                        message = it.msg ?: appState.context.getString(R.string.snackbar_message_generic)
+                    )
+                }
             }
         }
     }
@@ -84,7 +83,7 @@ fun Home(
             Settings(
                 method = appState.state.collectAsState().value.methodAndStartDate,
                 onCancel = { type ->
-                    type?.let { appState.channel.trySend(it.channel) }
+                    type?.let { appState.showSnackBar(type) }
                     appState.hideModalSheet()
                 },
                 onDone = {
@@ -129,8 +128,7 @@ fun Home(
                     HomeContent(methods) { method, userAction ->
                         when (userAction) {
                             UserAction.NONE -> {
-                                snackBarType = SnackBarType.ERROR
-                                appState.channel.trySend(SnackBarType.ERROR.channel)
+                                appState.showSnackBar(SnackBarType.ERROR)
                             }
                             else -> {
                                 appState.setMethodChosen(method)

@@ -21,12 +21,12 @@ import com.applications.toms.mimetodoplanificado.ui.theme.Shapes
 import com.applications.toms.mimetodoplanificado.ui.theme.Success
 import com.applications.toms.mimetodoplanificado.ui.theme.Warning
 
-enum class SnackBarType(val channel: Int, var text: String? = null) {
-    SUCCESS(1),
-    ERROR(2),
-    INFO(3),
-    WARNING(4),
-    DEFAULT(0)
+enum class SnackBarType {
+    SUCCESS,
+    ERROR,
+    INFO,
+    WARNING,
+    DEFAULT
 }
 
 @Composable
