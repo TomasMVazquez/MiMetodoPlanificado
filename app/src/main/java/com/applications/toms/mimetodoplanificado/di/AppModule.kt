@@ -6,6 +6,7 @@ import com.applications.toms.data.source.LocalCycleDataSource
 import com.applications.toms.data.source.LocalMethodDataSource
 import com.applications.toms.mimetodoplanificado.data.MyCycleDatabase
 import com.applications.toms.mimetodoplanificado.data.MyMethodDatabase
+import com.applications.toms.mimetodoplanificado.data.MyPainScaleDatabase
 import com.applications.toms.mimetodoplanificado.data.datasource.cycle.CycleRoomDataSource
 import com.applications.toms.mimetodoplanificado.data.datasource.method.MethodRoomDataSource
 import dagger.Module
@@ -32,6 +33,14 @@ class AppModule {
         app,
         MyCycleDatabase::class.java,
         "cycle_table"
+    ).build()
+
+    @Provides
+    @Singleton
+    fun painScaleDatabaseProvider(app: Application) = Room.databaseBuilder(
+        app,
+        MyPainScaleDatabase::class.java,
+        "pain_scale_table"
     ).build()
 
     @Provides
