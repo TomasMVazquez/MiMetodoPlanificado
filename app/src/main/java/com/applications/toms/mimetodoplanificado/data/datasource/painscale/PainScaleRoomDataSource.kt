@@ -40,12 +40,12 @@ class PainScaleRoomDataSource(db: MyPainScaleDatabase) : LocalPainScaleDataSourc
             else eitherSuccess(response.map { it.toModel(formatter) })
         }
 
-    override suspend fun deletePainScale(model: PainScaleModel): Either<EitherState, EitherState> =
+    override suspend fun deletePainScale(model: PainScaleModel): Either<EitherState, ErrorStates> =
         withContext(Dispatchers.IO) {
             val dbModel = model.toDatabaseModel()
             val response = dao.deletePainScaleFromDate(dbModel.date)
             if (response > 0) eitherSuccess(EitherState.SUCCESS)
-            else eitherFailure(EitherState.FAILURE)
+            else eitherFailure(ErrorStates.NOT_FOUND)
         }
 
 }

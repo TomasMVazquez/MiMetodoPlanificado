@@ -12,6 +12,6 @@ interface LocalPainScaleDataSource {
 
     suspend fun getPainScales(): Either<List<PainScaleModel>, ErrorStates>
 
-    suspend fun deletePainScale(model: PainScaleModel): Either<EitherState, EitherState>
+    suspend fun deletePainScale(model: PainScaleModel): Either<EitherState, ErrorStates>
 
 }

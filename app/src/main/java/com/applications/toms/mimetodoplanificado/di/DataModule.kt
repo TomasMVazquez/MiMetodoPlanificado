@@ -2,8 +2,10 @@ package com.applications.toms.mimetodoplanificado.di
 
 import com.applications.toms.data.repository.ChosenMethodRepository
 import com.applications.toms.data.repository.CycleRepository
+import com.applications.toms.data.repository.PainScaleRepository
 import com.applications.toms.data.source.LocalCycleDataSource
 import com.applications.toms.data.source.LocalMethodDataSource
+import com.applications.toms.data.source.LocalPainScaleDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,4 +25,10 @@ class DataModule {
     @Singleton
     fun cycleRepositoryProvider(localCycleDataSource: LocalCycleDataSource) =
         CycleRepository(localCycleDataSource)
+
+    @Provides
+    @Singleton
+    fun painScaleRepositoryProvider(localDataSource: LocalPainScaleDataSource) =
+        PainScaleRepository(localDataSource)
+
 }
