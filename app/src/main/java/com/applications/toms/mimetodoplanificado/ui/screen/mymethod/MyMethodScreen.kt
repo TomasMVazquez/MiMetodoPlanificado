@@ -38,7 +38,8 @@ fun MyMethodScreen(
     appState: MyMethodState = rememberMyMethodState(),
     viewModel: MyMethodScreenViewModel = hiltViewModel(),
     onMethodDeleted: () -> Unit,
-    goToAlarmSettings: () -> Unit
+    goToAlarmSettings: () -> Unit,
+    goToAnalytics: () -> Unit
 ) {
 
     val isOnlyCycle = appState.state.collectAsState().value.isOnlyCycle
@@ -55,6 +56,9 @@ fun MyMethodScreen(
                 }
                 MyMethodScreenViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
+                }
+                MyMethodScreenViewModel.Event.GoToAnalytics -> {
+                    goToAnalytics()
                 }
             }
         }
@@ -93,8 +97,10 @@ fun MyMethodScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             Column() {
                 MyMethodCustomToolbar(
+                    isOnlyCycle = isOnlyCycle,
                     onChangeMethodClick = { viewModel.onMethodChangeClick() },
-                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
+                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() },
+                    onGoToAnalyticsClick = { viewModel.onGoToAnalyticsClick() }
                 )
 
                 HorizontalPagerIndicator(

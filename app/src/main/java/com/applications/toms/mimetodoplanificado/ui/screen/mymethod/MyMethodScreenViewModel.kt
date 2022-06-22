@@ -27,20 +27,14 @@ class MyMethodScreenViewModel @Inject constructor(
     val effect = _effect.receiveAsFlow()
 
     fun onMethodChangeClick() {
-        viewModelScope.launch {
-            _event.emit(
-                Event.ConfirmMethodChange
-            )
-        }
+        emitEvent(Event.ConfirmMethodChange)
     }
 
     fun onDeleteCurrentMethod() {
         viewModelScope.launch {
             deleteChosenMethodUseCase.execute(Unit)
                 .onSuccess {
-                    _event.emit(
-                        Event.MethodDeleted
-                    )
+                    emitEvent(Event.MethodDeleted)
                 }
                 .onFailure {
                     showSnackBar(SnackBarType.ERROR)
@@ -49,11 +43,11 @@ class MyMethodScreenViewModel @Inject constructor(
     }
 
     fun onGoToAlarmSettingsClick() {
-        viewModelScope.launch {
-            _event.emit(
-                Event.GoToAlarmSettings
-            )
-        }
+        emitEvent(Event.GoToAlarmSettings)
+    }
+
+    fun onGoToAnalyticsClick() {
+        emitEvent(Event.GoToAnalytics)
     }
 
     fun showSnackBar(type: SnackBarType, msg: String? = null) {
@@ -63,6 +57,14 @@ class MyMethodScreenViewModel @Inject constructor(
                 msg = msg
             )
         )
+    }
+
+    private fun emitEvent(event: Event) {
+        viewModelScope.launch {
+            _event.emit(
+                event
+            )
+        }
     }
 
     private fun emitEffect(effect: Effect) {
@@ -77,6 +79,7 @@ class MyMethodScreenViewModel @Inject constructor(
         object ConfirmMethodChange : Event()
         object MethodDeleted : Event()
         object GoToAlarmSettings : Event()
+        object GoToAnalytics : Event()
     }
 
     sealed class Effect {

@@ -107,6 +107,7 @@
     <string name="info_calendar_cycle">Ciclo</string>
     <string name="info_calendar_break">Descanso</string>
     <string name="my_method_settings">Configuración</string>
+    <string name="analytics">Informes</string>
     <string name="my_method_change">Cambiar método</string>
     <string name="my_method_alarm">Alarma</string>
     <string name="my_method_notif">Notificaciones</string>
