@@ -29,7 +29,7 @@ import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
-import com.applications.toms.mimetodoplanificado.ui.theme.CarnationPink
+import com.applications.toms.mimetodoplanificado.ui.components.painscale.CardPain
 import com.applications.toms.mimetodoplanificado.ui.theme.LightBlack
 import com.applications.toms.mimetodoplanificado.ui.utils.painscale.painScaleCards
 
@@ -82,29 +82,14 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
 
             LazyVerticalGrid(cells = GridCells.Fixed(3)){
                 items(painScales) {
-                    Card(
-                        onClick = { painScale = it.painScale },
+                    CardPain(
                         modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_medium)),
-                        backgroundColor = if (painScale == it.painScale) CarnationPink
-                        else MaterialTheme.colors.primary
-                    ) {
-                        Column(
-                            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_tiny)),
-                            verticalArrangement = Arrangement.SpaceEvenly,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-
-                            PainScaleImage(it.icon, it.icon_description, painScale == it.painScale)
-
-                            Text(
-                                modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_small)),
-                                text = it.name,
-                                style = MaterialTheme.typography.overline,
-                                color = if (painScale == it.painScale) MaterialTheme.colors.secondary
-                                else MaterialTheme.colors.secondaryVariant
-                            )
+                        painScaleCard = it,
+                        selectedPainScaleCard = painScale,
+                        onClickCard = { selection ->
+                            painScale = selection
                         }
-                    }
+                    )
                 }
             }
 

@@ -33,4 +33,5 @@
     <dimen name="calendar_day_size">24dp</dimen>
 
     <dimen name="DefaultAxisThickness">1dp</dimen>
+    <dimen name="card_pain_width">110dp</dimen>
 </resources>

@@ -204,5 +204,6 @@
 
     // Analytics
     <string name="pain_line_chart_title">Picos de dolor</string>
+    <string name="pain_reference_title">Referencia</string>
 
 </resources>
