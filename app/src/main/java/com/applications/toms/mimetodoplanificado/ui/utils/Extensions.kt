@@ -1,7 +1,10 @@
 package com.applications.toms.mimetodoplanificado.ui.utils
 
 import androidx.compose.material.Colors
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import com.applications.toms.domain.CalendarMonth
 import com.applications.toms.domain.enums.DaySelectedStatus
 import com.applications.toms.domain.getFirstDayOfMonth
@@ -64,3 +67,6 @@ fun LocalDate.toCalendarMonth(): CalendarMonth =
 inline fun <T1 : Any, T2 : Any, R : Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
     return if (p1 != null && p2 != null) block(p1, p2) else null
 }
+
+@Composable
+fun dpToPx(value: Dp): Float = LocalDensity.current.run { value.toPx() }

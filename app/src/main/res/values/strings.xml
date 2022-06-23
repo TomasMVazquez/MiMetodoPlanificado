@@ -202,4 +202,7 @@
     <string name="pain_save_successfully">Estado guardado</string>
     <string name="generic_msg_successful">Guardado exitosamente!</string>
 
+    // Analytics
+    <string name="pain_line_chart_title">Picos de dolor</string>
+
 </resources>
