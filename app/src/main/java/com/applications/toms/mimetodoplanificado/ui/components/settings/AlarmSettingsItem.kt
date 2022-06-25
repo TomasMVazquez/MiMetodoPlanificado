@@ -105,7 +105,7 @@ fun AlarmSettingsItem(
                 ) {
                     Icon(
                         imageVector = Icons.Default.ExpandMore,
-                        contentDescription = stringResource(R.string.content_description_expand),
+                        contentDescription = stringResource(R.string.content_description_expand_more),
                         tint = MaterialTheme.colors.onBackground
                     )
                 }

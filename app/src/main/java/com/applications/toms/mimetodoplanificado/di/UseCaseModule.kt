@@ -13,6 +13,7 @@ import com.applications.toms.usecases.method.UpdateChosenMethodUseCase
 import com.applications.toms.usecases.painscale.DeletePainScaleUseCase
 import com.applications.toms.usecases.painscale.GetLineChartHistoryUseCase
 import com.applications.toms.usecases.painscale.GetPainScaleHistoryUseCase
+import com.applications.toms.usecases.painscale.GetPieChartHistoryUseCase
 import com.applications.toms.usecases.painscale.SavePainScaleUseCase
 import dagger.Module
 import dagger.Provides
@@ -73,6 +74,11 @@ class UseCaseModule {
     @ViewModelScoped
     fun getLineChartHistoryUseCase(painScaleRepository: PainScaleRepository) =
         GetLineChartHistoryUseCase(painScaleRepository)
+
+    @Provides
+    @ViewModelScoped
+    fun getPieChartHistoryUseCase(painScaleRepository: PainScaleRepository) =
+        GetPieChartHistoryUseCase(painScaleRepository)
 
     @Provides
     @ViewModelScoped

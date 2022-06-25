@@ -122,7 +122,8 @@
     // AlarmSettings
     <string name="alarm_settings_title">Configuración</string>
     <string name="alarm_settings_desc">Configura aquí la hora en la cual quieres que te recordemos sobre tu método anticonceptivo</string>
-    <string name="content_description_expand">Expandir</string>
+    <string name="content_description_expand_more">Expandir</string>
+    <string name="content_description_expand_less">Contraer</string>
     <string name="settings_btn_save">GUARDAR</string>
 
     // Dialogs
@@ -204,6 +205,7 @@
 
     // Analytics
     <string name="pain_line_chart_title">Picos de dolor</string>
+    <string name="pain_pie_chart_title">Dolores más frecuentes</string>
     <string name="pain_reference_title">Referencia</string>
     <string name="empty_analytics_text">Aún no tenemos información suficiente para completar los informes</string>
     <string name="error_analytics_text">Oops! Nos hemos encontrado con un error.\nVuelve a intentarlo más tarde.</string>

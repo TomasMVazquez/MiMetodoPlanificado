@@ -6,7 +6,9 @@ import com.applications.toms.data.eitherFailure
 import com.applications.toms.data.eitherSuccess
 import com.applications.toms.data.source.LocalPainScaleDataSource
 import com.applications.toms.domain.LineChartEntity
+import com.applications.toms.domain.PainScaleCard
 import com.applications.toms.domain.PainScaleModel
+import com.applications.toms.domain.PieChartEntity
 import com.applications.toms.domain.enums.ErrorStates
 
 class PainScaleRepository(
@@ -36,6 +38,25 @@ class PainScaleRepository(
                             LineChartEntity(
                                 value = if (dayList.isEmpty()) 0f else dayList.average().toFloat(),
                                 label = day.toString()
+                            )
+                        }
+                    )
+                }
+            }
+        }
+
+    suspend fun getPieChartHistory(input: List<PainScaleCard>): Either<List<PieChartEntity>, ErrorStates> =
+        when (val result = localDataSource.getPainScales()) {
+            is Either.Failure -> eitherFailure(ErrorStates.GENERIC)
+            is Either.Success -> {
+                if (result.data.isEmpty()) eitherSuccess(emptyList())
+                else {
+                    eitherSuccess(
+                        input.map { painScaleCard ->
+                            PieChartEntity(
+                                value = result.data.count { it.painScale == painScaleCard.painScale }.toFloat(),
+                                color = painScaleCard.color,
+                                label = painScaleCard.name
                             )
                         }
                     )

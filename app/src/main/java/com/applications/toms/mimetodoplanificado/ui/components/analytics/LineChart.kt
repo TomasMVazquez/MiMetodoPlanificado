@@ -24,8 +24,7 @@ import com.applications.toms.mimetodoplanificado.ui.utils.dpToPx
 
 @Composable
 fun LineChart(
-    modifier: Modifier? = Modifier
-        .padding(top = 16.dp, bottom = 16.dp),
+    modifier: Modifier? = Modifier.padding(top = 16.dp, bottom = 16.dp),
     lineChartData: List<LineChartEntity>,
     verticalAxisValues: List<Float>,
     axisColor: Color = DefaultAxisColor,
