@@ -47,7 +47,6 @@ import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.methods
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi

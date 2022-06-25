@@ -12,11 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewModelScope
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodScreenViewModel
 import com.applications.toms.mimetodoplanificado.ui.utils.onOnlyCycleChosen
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import kotlinx.coroutines.CoroutineScope

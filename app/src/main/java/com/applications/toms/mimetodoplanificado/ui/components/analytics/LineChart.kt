@@ -45,7 +45,7 @@ fun LineChart(
         modifier = modifier!!.aspectRatio(1f)
     ) {
 
-        val bottomAreaHeight = horizontalAxisLabelFontSize.toPx()
+        val bottomAreaHeight = horizontalAxisLabelFontSize.toPx() + 8
         val leftAreaWidth =
             (verticalAxisValues[verticalAxisValues.size - 1].toString().length * verticalAxisLabelFontSize.toPx()
                 .div(3)).toInt()
@@ -147,11 +147,11 @@ fun LineChart(
                     drawText(
                         lineChartData[index].label!!,
                         currentOffset.x + barWidth.div(2),
-                        verticalAxisLength + horizontalAxisLabelFontSize.toPx(),
+                        verticalAxisLength + bottomAreaHeight,
                         Paint().apply {
-                            textSize = bottomAreaHeight
+                            textSize = horizontalAxisLabelFontSize.toPx()
                             color = horizontalAxisLabelColor.toArgb()
-                            textAlign = Paint.Align.RIGHT
+                            textAlign = Paint.Align.CENTER
                         }
                     )
                 }
