@@ -33,6 +33,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.applications.toms.domain.PainScaleCard
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
 import com.applications.toms.mimetodoplanificado.ui.components.analytics.LineChart
@@ -53,10 +54,11 @@ fun MyAnalytics(
     val painScales = painScaleCards
     val state by viewModel.state.collectAsState(State())
 
-    viewModel.getLineChartHistoryData(painScales)
+    viewModel.getPainScaleHistoryData(painScales)
 
     AnalyticsContent(
         state = state,
+        painScales = painScales,
         goBack = goBack
     )
 }
@@ -65,9 +67,9 @@ fun MyAnalytics(
 @Composable
 fun AnalyticsContent(
     state: State,
+    painScales: List<PainScaleCard>,
     goBack: () -> Unit
 ) {
-    val painScales = painScaleCards
     var expandReference by rememberSaveable { mutableStateOf(true) }
 
     Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_tiny))) {
@@ -151,7 +153,7 @@ fun AnalyticsContent(
                                             .padding(dimensionResource(id = R.dimen.padding_small)),
                                         painScaleCard = it,
                                         showPainScaleNumber = true,
-                                        selectedPainScaleCard = -1,
+                                        selectedPainScaleCard = null,
                                         onClickCard = { }
                                     )
                                 }

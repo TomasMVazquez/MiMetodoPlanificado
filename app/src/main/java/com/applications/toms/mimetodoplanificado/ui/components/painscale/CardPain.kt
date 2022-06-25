@@ -26,7 +26,7 @@ fun CardPain(
     painScaleCard: PainScaleCard,
     showPainScaleNumber: Boolean = false,
     elevation: Dp = 1.dp,
-    selectedPainScaleCard: Int,
+    selectedPainScaleCard: Int?,
     onClickCard: (Int) -> Unit
 ) {
     Card(

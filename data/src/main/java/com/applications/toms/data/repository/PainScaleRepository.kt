@@ -23,42 +23,34 @@ class PainScaleRepository(
     suspend fun deletePainScale(model: PainScaleModel): Either<EitherState, ErrorStates> =
         localDataSource.deletePainScale(model)
 
-    suspend fun getLineChartHistory(): Either<List<LineChartEntity>, ErrorStates> =
+    suspend fun getPainScaleHistory(input: List<PainScaleCard>):
+            Either<Triple<List<PainScaleModel>, List<LineChartEntity>, List<PieChartEntity>>, ErrorStates> =
         when (val result = localDataSource.getPainScales()) {
             is Either.Failure -> {
                 eitherFailure(ErrorStates.GENERIC)
             }
             is Either.Success -> {
-                if (result.data.isEmpty()) eitherSuccess(emptyList())
+                if (result.data.isEmpty()) eitherSuccess(Triple(emptyList(), emptyList(), emptyList()))
                 else {
                     eitherSuccess(
-                        List(28) { index ->
-                            val day = index + 1
-                            val dayList = result.data.filter { it.dayOfCycle == day }.map { it.painScale }
-                            LineChartEntity(
-                                value = if (dayList.isEmpty()) 0f else dayList.average().toFloat(),
-                                label = day.toString()
-                            )
-                        }
-                    )
-                }
-            }
-        }
-
-    suspend fun getPieChartHistory(input: List<PainScaleCard>): Either<List<PieChartEntity>, ErrorStates> =
-        when (val result = localDataSource.getPainScales()) {
-            is Either.Failure -> eitherFailure(ErrorStates.GENERIC)
-            is Either.Success -> {
-                if (result.data.isEmpty()) eitherSuccess(emptyList())
-                else {
-                    eitherSuccess(
-                        input.map { painScaleCard ->
-                            PieChartEntity(
-                                value = result.data.count { it.painScale == painScaleCard.painScale }.toFloat(),
-                                color = painScaleCard.color,
-                                label = painScaleCard.name
-                            )
-                        }
+                        Triple(
+                            result.data,
+                            List(28) { index ->
+                                val day = index + 1
+                                val dayList = result.data.filter { it.dayOfCycle == day }.map { it.painScale }
+                                LineChartEntity(
+                                    value = if (dayList.isEmpty()) 0f else dayList.average().toFloat(),
+                                    label = day.toString()
+                                )
+                            },
+                            input.map { painScaleCard ->
+                                PieChartEntity(
+                                    value = result.data.count { it.painScale == painScaleCard.painScale }.toFloat(),
+                                    color = painScaleCard.color,
+                                    label = painScaleCard.name
+                                )
+                            }
+                        )
                     )
                 }
             }
