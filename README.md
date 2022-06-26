@@ -12,17 +12,20 @@ Mi Método Planificado App incluye las siguientes características:
 * Modal Sheet Bottom para la configuración inicial.
 * Selectores de fecha y hora.
 * Switch para activar/desactivar notificaciones y/o alarmas.
+* Dialogos para cambiar de métodos y para añadir la escala de dolor.
 * Room para la base de datos local.
-* Navegación hacía las pantallas "Sobre nosotros", "Home" de inicio para seleccionar un método, "Mi Método" una vez seleccionado y "Configuración" para cambiar las notificaciones y/o alarmas.
+* Navegación hacía las pantallas "Sobre nosotros", "Home" de inicio para seleccionar un método, "Mi Método" una vez seleccionado, "Configuración" para cambiar las notificaciones y/o alarmas, "Mi Ciclo" y "Informes" sobre el estado de dolor durante el ciclo.
 
-### Screenshots
+### Screenshots / PlayStore
+[Mi Método Planificado](https://play.google.com/store/apps/details?id=com.applications.toms.mimetodoplanificado)
+
 
 ### Requirements
 * Min. Android SDK: 26
 * Target Android SDK: 31
 
 ### Version
-* 1.3
+* 2.0
 
 ### Herramientas de desarrollo
 * Android Studio
@@ -48,5 +51,6 @@ Es por ello que queremos agradecerles y reconocerlos aquí, brindando su informa
 * Icons made by [kliwir art](https://www.flaticon.com/authors/kliwir-art) from [www.flaticon.com](https://www.flaticon.com/)
 * Icons made by [Good Ware](https://www.flaticon.com/authors/good-ware) from [www.flaticon.com](https://www.flaticon.com/)
 * Icons made by [Designer-Nata](https://www.flaticon.com/authors/designer-nata) from [www.flaticon.com](https://www.flaticon.com/)
+* Icons made by [Fk Studio](https://www.flaticon.com/authors/fk-studio) from [www.flaticon.com](https://www.flaticon.com/)
 * Formas creadas por [Blobmaker](https://www.blobmaker.app)
 * Imagenes creadas por [Itg Digital](https://itg.digital/)
