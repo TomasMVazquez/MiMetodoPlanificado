@@ -42,6 +42,8 @@
     <string name="flaticon_attribution_good"> Good Ware </string>
     <string name="flaticon_attribution_designer_nata_link">https://www.flaticon.com/authors/designer-nata</string>
     <string name="flaticon_attribution_designer_nata"> Designer_Nata </string>
+    <string name="flaticon_attribution_fk_studio_link">https://www.flaticon.com/authors/fk-studio</string>
+    <string name="flaticon_attribution_fk_studio"> Fk Studio </string>
 
     <string name="imgs_blob_start">Formas creadas por: </string>
     <string name="imgs_blob_title">Blobmaker</string>
@@ -105,6 +107,7 @@
     <string name="info_calendar_cycle">Ciclo</string>
     <string name="info_calendar_break">Descanso</string>
     <string name="my_method_settings">Configuración</string>
+    <string name="analytics">Informes</string>
     <string name="my_method_change">Cambiar método</string>
     <string name="my_method_alarm">Alarma</string>
     <string name="my_method_notif">Notificaciones</string>
@@ -119,7 +122,8 @@
     // AlarmSettings
     <string name="alarm_settings_title">Configuración</string>
     <string name="alarm_settings_desc">Configura aquí la hora en la cual quieres que te recordemos sobre tu método anticonceptivo</string>
-    <string name="content_description_expand">Expandir</string>
+    <string name="content_description_expand_more">Expandir</string>
+    <string name="content_description_expand_less">Contraer</string>
     <string name="settings_btn_save">GUARDAR</string>
 
     // Dialogs
@@ -172,5 +176,41 @@
     <string name="my_cycle_msg_21_day">Está cerca un nuevo ciclo</string>
     <string name="my_cycle_msg_22_to_28_day">No te olvides de registrar tu ciclo</string>
     <string name="my_cycle_msg_29_day">Tu nuevo ciclo debería haber comenzado.\nNo te olvides de registrarlo</string>
+
+    // PAINSCALE DIALOG
+    <string name="ic_content_desc_pain_scale">Ingresar mis estados de ánimo</string>
+    <string name="dialog_pain_scale_cancel">Cancelar</string>
+    <string name="dialog_pain_scale_save">Guardar</string>
+    <string name="dialog_pain_scale_title">Selecciona tu nivel de dolor:</string>
+    <string name="pain_scale_title_0">Sin dolor</string>
+    <string name="pain_scale_title_1">Suave</string>
+    <string name="pain_scale_title_2">Leve</string>
+    <string name="pain_scale_title_3">Tolerable</string>
+    <string name="pain_scale_title_4">Moderado</string>
+    <string name="pain_scale_title_5">Molesto</string>
+    <string name="pain_scale_title_6">Intenso</string>
+    <string name="pain_scale_title_7">Severo</string>
+    <string name="pain_scale_title_8">Insoportable</string>
+    <string name="pain_scale_cont_desc_0">icono de dolor, sin dolor</string>
+    <string name="pain_scale_cont_desc_1">icono de dolor, dolor suave</string>
+    <string name="pain_scale_cont_desc_2">icono de dolor, dolor leve</string>
+    <string name="pain_scale_cont_desc_3">icono de dolor, dolor tolerable</string>
+    <string name="pain_scale_cont_desc_4">icono de dolor, dolor moderado</string>
+    <string name="pain_scale_cont_desc_5">icono de dolor, dolor molesto</string>
+    <string name="pain_scale_cont_desc_6">icono de dolor, dolor intenso</string>
+    <string name="pain_scale_cont_desc_7">icono de dolor, dolor severo</string>
+    <string name="pain_scale_cont_desc_8">icono de dolor, dolor insoportable</string>
+    <string name="pain_save_successfully">Estado guardado</string>
+    <string name="generic_msg_successful">Guardado exitosamente!</string>
+
+    // Analytics
+    <string name="show_history_title">Ver historial</string>
+    <string name="hide_history_title">Esconder historial</string>
+    <string name="pain_line_chart_title">Picos de dolor</string>
+    <string name="pain_pie_chart_title">Dolores más frecuentes</string>
+    <string name="pain_reference_title">Referencia</string>
+    <string name="empty_analytics_text">Aún no tenemos información suficiente para completar los informes</string>
+    <string name="error_analytics_text">Oops! Nos hemos encontrado con un error.\nVuelve a intentarlo más tarde.</string>
+    <string name="pain_history_card_day">Día #%s del ciclo</string>
 
 </resources>

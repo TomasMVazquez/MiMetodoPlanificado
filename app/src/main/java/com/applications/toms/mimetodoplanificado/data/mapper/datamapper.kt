@@ -3,8 +3,10 @@ package com.applications.toms.mimetodoplanificado.data.mapper
 import com.applications.toms.domain.MethodAndStartDate
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.MyCycle
+import com.applications.toms.domain.PainScaleModel
 import com.applications.toms.mimetodoplanificado.data.model.ChosenMethod
 import com.applications.toms.mimetodoplanificado.data.model.MyCycleDatabaseModel
+import com.applications.toms.mimetodoplanificado.data.model.PainScaleDatabaseModel
 import com.applications.toms.mimetodoplanificado.ui.utils.toFormattedString
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -52,4 +54,18 @@ fun MyCycle.toDatabaseModel(): MyCycleDatabaseModel =
         startDate = this.startDate.toFormattedString(),
         nextCycle = this.nextCycle.toFormattedString(),
         totalDaysCycle = this.totalDaysCycle
+    )
+
+fun PainScaleModel.toDatabaseModel(): PainScaleDatabaseModel =
+    PainScaleDatabaseModel(
+        date = this.date.toFormattedString(),
+        painScale = this.painScale,
+        dayOfCycle = this.dayOfCycle
+    )
+
+fun PainScaleDatabaseModel.toModel(formatter: DateTimeFormatter): PainScaleModel =
+    PainScaleModel(
+        date = LocalDate.parse(this.date, formatter),
+        painScale = this.painScale,
+        dayOfCycle = dayOfCycle
     )

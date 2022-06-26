@@ -8,11 +8,8 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
 import com.applications.toms.usecases.method.GetChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -34,13 +31,17 @@ class MyMethodViewModel @Inject constructor(
         viewModelScope.launch {
             getChosenMethodUseCase.execute(Unit)
                 .onSuccess { response ->
+                    val endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1)
                     _state.value = State(
                         loading = false,
                         methodChosen = response.first,
                         startDate = response.first.methodAndStartDate.startDate,
-                        endDate = response.first.methodAndStartDate.startDate.plusDays(response.first.totalDaysCycle - 1),
+                        endDate = endDate,
                         nextCycle = response.second,
                         breakDays = response.first.breakDays,
+                        totalDays = response.first.methodAndStartDate.startDate.until(response.second).days + 1,
+                        currentDay = response.first.methodAndStartDate.startDate.until(LocalDate.now()).days + 1,
+                        breakDayStarts = endDate.minusDays(response.first.breakDays.toLong() - 1),
                         isNotificationEnable = response.first.isNotificationEnable,
                         notificationTime = response.first.notificationTime,
                         isAlarmEnable = response.first.isAlarmEnable,
@@ -64,6 +65,9 @@ class MyMethodViewModel @Inject constructor(
         val endDate: LocalDate? = null,
         val nextCycle: LocalDate? = null,
         val breakDays: Int? = null,
+        val totalDays: Int = -1,
+        val currentDay: Int = -1,
+        val breakDayStarts: LocalDate? = null,
         val isNotificationEnable: Boolean? = null,
         val notificationTime: String? = null,
         val isAlarmEnable: Boolean? = null,

@@ -21,7 +21,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.ui.components.DefaultSnackbar
 import com.applications.toms.mimetodoplanificado.ui.components.MyMethodCustomToolbar
-import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.mimetodoplanificado.ui.components.dialogs.AlertDialogConfirmMethodChange
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCyclePage
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mymethod.MyMethodPage
@@ -29,7 +28,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @ExperimentalPagerApi
 @ExperimentalAnimationApi
@@ -40,7 +38,8 @@ fun MyMethodScreen(
     appState: MyMethodState = rememberMyMethodState(),
     viewModel: MyMethodScreenViewModel = hiltViewModel(),
     onMethodDeleted: () -> Unit,
-    goToAlarmSettings: () -> Unit
+    goToAlarmSettings: () -> Unit,
+    goToAnalytics: () -> Unit
 ) {
 
     val isOnlyCycle = appState.state.collectAsState().value.isOnlyCycle
@@ -58,23 +57,23 @@ fun MyMethodScreen(
                 MyMethodScreenViewModel.Event.GoToAlarmSettings -> {
                     goToAlarmSettings()
                 }
-                is MyMethodScreenViewModel.Event.SnackBarEvent -> {
-                    appState.addSnackBarType(it.snackBarType)
-                    appState.channel.trySend(it.snackBarType.channel)
+                MyMethodScreenViewModel.Event.GoToAnalytics -> {
+                    goToAnalytics()
                 }
             }
         }
     }
 
-    LaunchedEffect(appState.channel) {
-        appState.channel.receiveAsFlow().collect { channel ->
-            appState.scaffoldState.snackbarHostState.showSnackbar(
-                message = when (channel) {
-                    SnackBarType.ERROR.channel -> appState.state.value.snackBarType.text
-                        ?: appState.context.getString(R.string.snackbar_message_error_message)
-                    else -> appState.context.getString(R.string.snackbar_message_generic)
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collect {
+            when (it) {
+                is MyMethodScreenViewModel.Effect.SnackBarEvent -> {
+                    appState.addSnackBarType(it.snackBarType)
+                    appState.scaffoldState.snackbarHostState.showSnackbar(
+                        message = it.msg ?: appState.context.getString(R.string.snackbar_message_error_message)
+                    )
                 }
-            )
+            }
         }
     }
 
@@ -98,8 +97,10 @@ fun MyMethodScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             Column() {
                 MyMethodCustomToolbar(
+                    isOnlyCycle = isOnlyCycle,
                     onChangeMethodClick = { viewModel.onMethodChangeClick() },
-                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() }
+                    onGoToAlarmSettingsClick = { viewModel.onGoToAlarmSettingsClick() },
+                    onGoToAnalyticsClick = { viewModel.onGoToAnalyticsClick() }
                 )
 
                 HorizontalPagerIndicator(
@@ -119,8 +120,8 @@ fun MyMethodScreen(
                     state = appState.pagerState
                 ) { page ->
                     if (isOnlyCycle || page == 1) {
-                        MyCyclePage() { error ->
-                            viewModel.onErrorDetected(error)
+                        MyCyclePage() { type, msg ->
+                            viewModel.showSnackBar(type, msg)
                         }
                     } else
                         MyMethodPage(context = appState.context)

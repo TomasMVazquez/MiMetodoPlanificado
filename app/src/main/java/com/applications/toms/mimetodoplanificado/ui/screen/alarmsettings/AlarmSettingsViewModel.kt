@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -30,36 +31,46 @@ class AlarmSettingsViewModel @Inject constructor(
             getChosenMethodUseCase.execute(Unit)
                 .onSuccess {
                     methodChosen = it.first
-                    _state.value = _state.value.copy(
-                        dataRetrieved = true,
-                        isNotificationEnable = it.first.isNotificationEnable,
-                        notificationTime = it.first.notificationTime,
-                        isAlarmEnable = it.first.isAlarmEnable,
-                        alarmTime = it.first.alarmTime
-                    )
+                    _state.update { state ->
+                        state.copy(
+                            dataRetrieved = true,
+                            isNotificationEnable = it.first.isNotificationEnable,
+                            notificationTime = it.first.notificationTime,
+                            isAlarmEnable = it.first.isAlarmEnable,
+                            alarmTime = it.first.alarmTime
+                        )
+                    }
                 }
                 .onFailure {
-                    _state.value = _state.value.copy(error = true)
+                    _state.update { state ->
+                        state.copy(
+                            error = true
+                        )
+                    }
                 }
         }
     }
 
     fun changeNotificationValue(enable: Boolean, time: String?) {
-        _state.value = _state.value.copy(
-            changeStateNotSaved = true,
-            hasNotificationChange = true,
-            isNotificationEnable = enable,
-            notificationTime = time
-        )
+        _state.update { state ->
+            state.copy(
+                changeStateNotSaved = true,
+                hasNotificationChange = true,
+                isNotificationEnable = enable,
+                notificationTime = time
+            )
+        }
     }
 
     fun changeAlarmValue(enable: Boolean, time: String?) {
-        _state.value = _state.value.copy(
-            changeStateNotSaved = true,
-            hasAlarmChange = true,
-            isAlarmEnable = enable,
-            alarmTime = time
-        )
+        _state.update { state ->
+            state.copy(
+                changeStateNotSaved = true,
+                hasAlarmChange = true,
+                isAlarmEnable = enable,
+                alarmTime = time
+            )
+        }
     }
 
     fun onSaveMethodChosen(
@@ -79,13 +90,19 @@ class AlarmSettingsViewModel @Inject constructor(
                 )
             )
                 .onSuccess {
-                    _state.value = _state.value.copy(
-                        changesSaved = true,
-                        changeStateNotSaved = false
-                    )
+                    _state.update { state ->
+                        state.copy(
+                            changesSaved = true,
+                            changeStateNotSaved = false
+                        )
+                    }
                 }
                 .onFailure {
-                    _state.value = _state.value.copy(error = true)
+                    _state.update { state ->
+                        state.copy(
+                            error = true
+                        )
+                    }
                 }
         }
     }

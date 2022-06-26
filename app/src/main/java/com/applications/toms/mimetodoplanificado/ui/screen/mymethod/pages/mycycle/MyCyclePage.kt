@@ -4,17 +4,21 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -29,48 +33,88 @@ import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.ui.components.CircularDaysProgress
 import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateComponent
+import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
+import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButtonPainScale
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
+import com.applications.toms.mimetodoplanificado.ui.components.dialogs.DialogAddPainScale
 import com.applications.toms.mimetodoplanificado.ui.components.generics.ButtonType
 import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericButton
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.Companion.SAVE_PAIN_SUCCESS
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mycycle.MyCycleViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.utils.safeLet
 import com.applications.toms.mimetodoplanificado.ui.utils.toCalendarMonth
 import com.google.accompanist.pager.ExperimentalPagerApi
+import kotlinx.coroutines.flow.collect
 import java.time.LocalDate
 
 @ExperimentalPagerApi
+@ExperimentalMaterialApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
 @Composable
 fun MyCyclePage(
     viewModel: MyCycleViewModel = hiltViewModel(),
-    onErrorListener: (String) -> Unit
+    listener: (SnackBarType, String) -> Unit
 ) {
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
     val state by viewModel.state.collectAsState(State())
 
-    state.errorState?.let { error ->
-        onErrorListener(
-            when (error) {
-                ErrorStates.EMPTY -> stringResource(R.string.snackbar_message_error_empty)
-                ErrorStates.NOT_SAVED -> stringResource(R.string.snackbar_message_error_not_saved)
-                else -> stringResource(R.string.snackbar_message_error_message)
+    LaunchedEffect(key1 = viewModel.effect) {
+        viewModel.effect.collect {
+            when(it){
+                is MyCycleViewModel.Effect.Error -> {
+                    listener(
+                        SnackBarType.ERROR,
+                        when (it.error) {
+                            ErrorStates.EMPTY -> context.getString(R.string.snackbar_message_error_empty)
+                            ErrorStates.NOT_SAVED -> context.getString(R.string.snackbar_message_error_not_saved)
+                            else -> context.getString(R.string.snackbar_message_error_message)
+                        }
+                    )
+                }
+                is MyCycleViewModel.Effect.Success -> {
+                    listener(
+                        SnackBarType.SUCCESS,
+                        when (it.from) {
+                            SAVE_PAIN_SUCCESS -> {
+                                showDialog = false
+                                context.getString(R.string.pain_save_successfully)
+                            }
+                            else -> context.getString(R.string.generic_msg_successful)
+                        }
+                    )
+                }
             }
-        )
-        viewModel.onResetError()
+        }
     }
 
-    MyCycleContent(state) {
-        viewModel.saveMyCycle(it)
-        createCycleNotifications(context)
-    }
+    MyCycleContent(
+        state = state,
+        onRegisterPeriod = {
+            viewModel.saveMyCycle(it)
+            createCycleNotifications(context)
+        },
+        onShowDialogPainScale = {
+            showDialog = true
+        }
+    )
+
+    DialogAddPainScale(
+        showDialog = showDialog,
+        setShowDialog = { showDialog = it },
+        onSavePainScale = { viewModel.onSavePainScale(it) }
+    )
+
 }
 
+@ExperimentalMaterialApi
 @Composable
 fun MyCycleContent(
     state: State,
-    onRegisterPeriod: (LocalDate) -> Unit
+    onRegisterPeriod: (LocalDate) -> Unit,
+    onShowDialogPainScale: () -> Unit
 ) {
 
     var showDatePicker by rememberSaveable { mutableStateOf(false) }
@@ -80,9 +124,6 @@ fun MyCycleContent(
         val monthTo = to.toCalendarMonth()
         val calendarYear = if (monthFrom.monthNumber == monthTo.monthNumber)
             listOf(monthFrom) else listOf(monthFrom, monthTo)
-
-        val totalDays = (from.until(to).days + 1).toFloat()
-        val currentDay = (from.until(LocalDate.now()).days + 1).toFloat()
 
         Column(
             modifier = Modifier
@@ -109,13 +150,20 @@ fun MyCycleContent(
                  * Progress Day
                  */
                 if (!showDatePicker){
-                    CircularDaysProgress(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(dimensionResource(id = R.dimen.padding_medium)),
-                        percentage = currentDay.div(totalDays),
-                        number = totalDays.toInt()
-                    )
+                    Box(modifier = Modifier.weight(1f)) {
+                        CircularDaysProgress(
+                            modifier = Modifier
+                                .padding(dimensionResource(id = R.dimen.padding_medium)),
+                            percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
+                            number = state.totalDays
+                        )
+
+                        CardButtonPainScale(
+                            modifier = Modifier.align(Alignment.TopEnd)
+                        ) {
+                            onShowDialogPainScale()
+                        }
+                    }
                 }
             } else {
                 EmptyStateComponent()
@@ -136,10 +184,10 @@ fun MyCycleContent(
                         .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
                     text = when {
                         !state.hasCycleConfigured -> stringResource(R.string.my_cycle_empty_info)
-                        currentDay.toInt() == 1 -> stringResource(R.string.my_cycle_msg_first_day)
-                        currentDay.toInt() == 21 -> stringResource(R.string.my_cycle_msg_21_day)
-                        currentDay.toInt() in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
-                        currentDay.toInt() > 28 -> stringResource(R.string.my_cycle_msg_29_day)
+                        state.currentDay == 1 -> stringResource(R.string.my_cycle_msg_first_day)
+                        state.currentDay == 21 -> stringResource(R.string.my_cycle_msg_21_day)
+                        state.currentDay in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
+                        state.currentDay > 28 -> stringResource(R.string.my_cycle_msg_29_day)
                         else -> ""
                     },
                     style = MaterialTheme.typography.body2,

@@ -18,7 +18,6 @@ import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_DAY_25
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.CYCLE_DAY_29
 import com.google.accompanist.pager.ExperimentalPagerApi
 import java.util.Calendar
-import java.util.concurrent.TimeUnit
 
 @ExperimentalPagerApi
 @ExperimentalAnimationApi

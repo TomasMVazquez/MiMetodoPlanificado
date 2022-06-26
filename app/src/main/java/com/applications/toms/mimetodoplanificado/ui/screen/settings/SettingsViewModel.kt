@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
@@ -43,40 +44,71 @@ class SettingsViewModel @Inject constructor(
     val event: SharedFlow<Event> = _event.asSharedFlow()
 
     fun changeLoading(show: Boolean) {
-        _state.value = _state.value.copy(loading = show)
+        _state.update { state ->
+            state.copy(
+                loading = show
+            )
+        }
     }
 
     fun changeEnable(enable: Boolean) {
-        _state.value = _state.value.copy(enable = enable)
+        _state.update { state ->
+            state.copy(
+                enable = enable
+            )
+        }
     }
 
     fun setMethodChosen(methodChosen: MethodAndStartDate) {
-        _state.value = _state.value.copy(methodAndStartDate = methodChosen)
+        _state.update { state ->
+            state.copy(
+                methodAndStartDate = methodChosen
+            )
+        }
     }
 
     fun changeStartDate(date: LocalDate) {
-        _state.value = _state.value.copy(
-            methodAndStartDate = _state.value.methodAndStartDate.copy(
-                startDate = date
+        _state.update { state ->
+            state.copy(
+                methodAndStartDate = _state.value.methodAndStartDate.copy(
+                    startDate = date
+                )
             )
-        )
+        }
     }
 
     fun changeTotalDaysCycle(days: Int) {
-        _state.value =
-            _state.value.copy(totalDaysCycle = if (days == 30) CYCLE_30_DAYS else CYCLE_90_DAYS)
+        _state.update { state ->
+            state.copy(
+                totalDaysCycle = if (days == 30) CYCLE_30_DAYS else CYCLE_90_DAYS
+            )
+        }
     }
 
     fun changeBreakDays(days: Int) {
-        _state.value = _state.value.copy(breakDays = days)
+        _state.update { state ->
+            state.copy(
+                breakDays = days
+            )
+        }
     }
 
     fun changeNotificationValue(value: Boolean, time: String?) {
-        _state.value = _state.value.copy(isNotificationEnable = value, notificationTime = time)
+        _state.update { state ->
+            state.copy(
+                isNotificationEnable = value,
+                notificationTime = time
+            )
+        }
     }
 
     fun changeAlarmValue(value: Boolean, time: String?) {
-        _state.value = _state.value.copy(isAlarmEnable = value, alarmTime = time)
+        _state.update { state ->
+            state.copy(
+                isAlarmEnable = value,
+                alarmTime = time
+            )
+        }
     }
 
     fun onSaveMethodChosen(methodChosen: MethodChosen) {
@@ -137,16 +169,18 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun resetState() {
-        _state.value = _state.value.copy(
-            loading = false,
-            enable = false,
-            totalDaysCycle = TOTAL_CYCLE_DAYS,
-            breakDays = 5,
-            isNotificationEnable = false,
-            notificationTime = null,
-            isAlarmEnable = false,
-            alarmTime = null
-        )
+        _state.update { state ->
+            state.copy(
+                loading = false,
+                enable = false,
+                totalDaysCycle = TOTAL_CYCLE_DAYS,
+                breakDays = 5,
+                isNotificationEnable = false,
+                notificationTime = null,
+                isAlarmEnable = false,
+                alarmTime = null
+            )
+        }
     }
 
     data class SettingsState(

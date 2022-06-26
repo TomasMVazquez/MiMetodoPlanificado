@@ -7,9 +7,11 @@ import com.applications.toms.data.onSuccess
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
 import com.applications.toms.usecases.method.DeleteChosenMethodUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,46 +23,54 @@ class MyMethodScreenViewModel @Inject constructor(
     private val _event = MutableSharedFlow<Event>()
     val event: SharedFlow<Event> = _event.asSharedFlow()
 
+    private val _effect: Channel<Effect> = Channel()
+    val effect = _effect.receiveAsFlow()
+
     fun onMethodChangeClick() {
-        viewModelScope.launch {
-            _event.emit(
-                Event.ConfirmMethodChange
-            )
-        }
+        emitEvent(Event.ConfirmMethodChange)
     }
 
     fun onDeleteCurrentMethod() {
         viewModelScope.launch {
             deleteChosenMethodUseCase.execute(Unit)
                 .onSuccess {
-                    _event.emit(
-                        Event.MethodDeleted
-                    )
+                    emitEvent(Event.MethodDeleted)
                 }
                 .onFailure {
-                    onErrorDetected()
+                    showSnackBar(SnackBarType.ERROR)
                 }
         }
     }
 
     fun onGoToAlarmSettingsClick() {
+        emitEvent(Event.GoToAlarmSettings)
+    }
+
+    fun onGoToAnalyticsClick() {
+        emitEvent(Event.GoToAnalytics)
+    }
+
+    fun showSnackBar(type: SnackBarType, msg: String? = null) {
+        emitEffect(
+            Effect.SnackBarEvent(
+                snackBarType = type,
+                msg = msg
+            )
+        )
+    }
+
+    private fun emitEvent(event: Event) {
         viewModelScope.launch {
             _event.emit(
-                Event.GoToAlarmSettings
+                event
             )
         }
     }
 
-    fun onErrorDetected(error: String? = null) {
-        val typeError = SnackBarType.ERROR
-        error?.let {
-            typeError.apply {
-                text = it
-            }
-        }
+    private fun emitEffect(effect: Effect) {
         viewModelScope.launch {
-            _event.emit(
-                Event.SnackBarEvent(typeError)
+            _effect.send(
+                effect
             )
         }
     }
@@ -69,8 +79,13 @@ class MyMethodScreenViewModel @Inject constructor(
         object ConfirmMethodChange : Event()
         object MethodDeleted : Event()
         object GoToAlarmSettings : Event()
+        object GoToAnalytics : Event()
+    }
+
+    sealed class Effect {
         data class SnackBarEvent(
-            val snackBarType: SnackBarType
-        ) : Event()
+            val snackBarType: SnackBarType,
+            val msg: String?
+        ) : Effect()
     }
 }

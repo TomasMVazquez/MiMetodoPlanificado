@@ -14,10 +14,10 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 @ExperimentalMaterialApi
 @ExperimentalPagerApi
@@ -25,11 +25,10 @@ import kotlinx.coroutines.flow.asStateFlow
 fun rememberMyMethodState(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     context: Context = LocalContext.current,
-    channel: Channel<Int> = remember { Channel(Channel.CONFLATED) },
     pagerState: PagerState = rememberPagerState(0),
     coroutineScope: CoroutineScope = rememberCoroutineScope()
 ): MyMethodState = remember(coroutineScope) {
-    MyMethodState(scaffoldState, context, channel, pagerState, coroutineScope)
+    MyMethodState(scaffoldState, context, pagerState, coroutineScope)
 }
 
 @ExperimentalPagerApi
@@ -37,7 +36,6 @@ fun rememberMyMethodState(
 class MyMethodState(
     val scaffoldState: ScaffoldState,
     val context: Context,
-    val channel: Channel<Int>,
     val pagerState: PagerState,
     private val coroutineScope: CoroutineScope,
 ) {
@@ -46,21 +44,27 @@ class MyMethodState(
     val state: StateFlow<State> = _state.asStateFlow()
 
     init {
-        _state.value = state.value.copy(
-            isOnlyCycle = isOnlyCycle(context)
-        )
+        _state.update { state ->
+            state.copy(
+                isOnlyCycle = isOnlyCycle(context)
+            )
+        }
     }
 
     fun changeOpenDialogState(value: Boolean) {
-        _state.value = state.value.copy(
-            openDialog = value
-        )
+        _state.update { state ->
+            state.copy(
+                openDialog = value
+            )
+        }
     }
 
     fun addSnackBarType(snackBarType: SnackBarType) {
-        _state.value = state.value.copy(
-            snackBarType = snackBarType
-        )
+        _state.update { state ->
+            state.copy(
+                snackBarType = snackBarType
+            )
+        }
     }
 
     data class State(
