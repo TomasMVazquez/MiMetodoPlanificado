@@ -1,6 +1,7 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.analytics
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +40,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateCompone
 import com.applications.toms.mimetodoplanificado.ui.components.analytics.LineChart
 import com.applications.toms.mimetodoplanificado.ui.components.analytics.PieChart
 import com.applications.toms.mimetodoplanificado.ui.components.painscale.CardPain
+import com.applications.toms.mimetodoplanificado.ui.components.painscale.CardPainHistory
 import com.applications.toms.mimetodoplanificado.ui.screen.analytics.MyAnalyticsViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.theme.LightBlack
 import com.applications.toms.mimetodoplanificado.ui.theme.Purple
@@ -71,6 +73,7 @@ fun AnalyticsContent(
     goBack: () -> Unit
 ) {
     var expandReference by rememberSaveable { mutableStateOf(true) }
+    var showHistory by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_tiny))) {
 
@@ -92,10 +95,7 @@ fun AnalyticsContent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(
-                        start = dimensionResource(id = R.dimen.padding_large),
-                        bottom = dimensionResource(id = R.dimen.padding_medium)
-                    ),
+                    .padding(start = dimensionResource(id = R.dimen.padding_large)),
                 text = stringResource(id = R.string.analytics),
                 style = MaterialTheme.typography.h4,
                 color = MaterialTheme.colors.onPrimary,
@@ -111,105 +111,137 @@ fun AnalyticsContent(
                 EmptyStateComponent(textToShow = stringResource(R.string.empty_analytics_text))
             }
             else -> {
-                LazyColumn {
-                    /**
-                     * Reference
-                     */
-                    item {
-                        Row(
-                            horizontalArrangement = Arrangement.Start,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = dimensionResource(id = R.dimen.padding_small)),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Text(
+                        modifier = Modifier.clickable {
+                            showHistory = !showHistory
+                        },
+                        text = if (showHistory) stringResource(id = R.string.hide_history_title)
+                        else stringResource(id = R.string.show_history_title),
+                        style = MaterialTheme.typography.overline,
+                        color = MaterialTheme.colors.secondary
+                    )
+                }
+
+                AnimatedVisibility(visible = showHistory) {
+                    LazyColumn(
+                        modifier = Modifier.padding(top = dimensionResource(id = R.dimen.padding_medium))
+                    ) {
+                        items(state.painScaleHistory) {
+                            CardPainHistory(
+                                painScaleModel = it,
+                                painScaleCard = painScales[it.painScale],
+                                elevation = dimensionResource(id = R.dimen.card_elevation)
+                            )
+                        }
+                    }
+                }
+
+                AnimatedVisibility(visible = !showHistory) {
+                    LazyColumn {
+                        /**
+                         * Reference
+                         */
+                        item {
+                            Row(
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(
+                                            start = dimensionResource(id = R.dimen.padding_medium),
+                                            bottom = dimensionResource(id = R.dimen.padding_medium)
+                                        ),
+                                    text = stringResource(id = R.string.pain_reference_title),
+                                    style = MaterialTheme.typography.h6,
+                                    color = MaterialTheme.colors.onPrimary,
+                                    textAlign = TextAlign.Start
+                                )
+
+                                IconToggleButton(
+                                    checked = expandReference,
+                                    onCheckedChange = { expandReference = it }
+                                ) {
+                                    Icon(
+                                        imageVector = if (expandReference) Icons.Default.ExpandMore else Icons.Default.ExpandLess,
+                                        contentDescription = stringResource(R.string.content_description_expand_more),
+                                        tint = MaterialTheme.colors.onBackground
+                                    )
+                                }
+                            }
+
+                            AnimatedVisibility(visible = expandReference) {
+                                LazyRow {
+                                    items(painScales) {
+                                        CardPain(
+                                            modifier = Modifier
+                                                .width(dimensionResource(id = R.dimen.card_pain_width))
+                                                .padding(dimensionResource(id = R.dimen.padding_small)),
+                                            painScaleCard = it,
+                                            showPainScaleNumber = true,
+                                            selectedPainScaleCard = null
+                                        )
+                                    }
+                                }
+                            }
+                        }
+
+                        /**
+                         * Pain Line Chart
+                         */
+                        item {
                             Text(
                                 modifier = Modifier
+                                    .fillMaxWidth()
                                     .padding(
+                                        top = dimensionResource(id = R.dimen.padding_large),
                                         start = dimensionResource(id = R.dimen.padding_medium),
-                                        bottom = dimensionResource(id = R.dimen.padding_medium)
+                                        bottom = dimensionResource(id = R.dimen.padding_small)
                                     ),
-                                text = stringResource(id = R.string.pain_reference_title),
+                                text = stringResource(id = R.string.pain_line_chart_title),
                                 style = MaterialTheme.typography.h6,
                                 color = MaterialTheme.colors.onPrimary,
                                 textAlign = TextAlign.Start
                             )
-                            
-                            IconToggleButton(
-                                checked = expandReference,
-                                onCheckedChange = { expandReference = it }
-                            ) {
-                                Icon(
-                                    imageVector = if(expandReference) Icons.Default.ExpandMore else Icons.Default.ExpandLess,
-                                    contentDescription = stringResource(R.string.content_description_expand_more),
-                                    tint = MaterialTheme.colors.onBackground
-                                )
-                            }
+
+                            LineChart(
+                                lineChartData = state.lineChartData,
+                                verticalAxisValues = listOf(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f),
+                                verticalAxisLabelColor = VividRaspberry,
+                                horizontalAxisLabelColor = Purple,
+                                lineColor = LightBlack,
+                                verticalAxisLabelFontSize = 12.sp,
+                                horizontalAxisLabelFontSize = 10.sp,
+                                isShowVerticalAxis = true
+                            )
                         }
 
-                        AnimatedVisibility(visible = expandReference) {
-                            LazyRow {
-                                items(painScales) {
-                                    CardPain(
-                                        modifier = Modifier
-                                            .width(dimensionResource(id = R.dimen.card_pain_width))
-                                            .padding(dimensionResource(id = R.dimen.padding_small)),
-                                        painScaleCard = it,
-                                        showPainScaleNumber = true,
-                                        selectedPainScaleCard = null,
-                                        onClickCard = { }
-                                    )
-                                }
-                            }   
+                        /**
+                         * Pain Line Chart
+                         */
+                        item {
+                            Text(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(
+                                        top = dimensionResource(id = R.dimen.padding_large),
+                                        start = dimensionResource(id = R.dimen.padding_medium),
+                                        bottom = dimensionResource(id = R.dimen.padding_small)
+                                    ),
+                                text = stringResource(id = R.string.pain_pie_chart_title),
+                                style = MaterialTheme.typography.h6,
+                                color = MaterialTheme.colors.onPrimary,
+                                textAlign = TextAlign.Start
+                            )
+
+                            PieChart(state.pieChartData)
                         }
-                    }
-
-                    /**
-                     * Pain Line Chart
-                     */
-                    item {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = dimensionResource(id = R.dimen.padding_large),
-                                    start = dimensionResource(id = R.dimen.padding_medium),
-                                    bottom = dimensionResource(id = R.dimen.padding_small)
-                                ),
-                            text = stringResource(id = R.string.pain_line_chart_title),
-                            style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.onPrimary,
-                            textAlign = TextAlign.Start
-                        )
-
-                        LineChart(
-                            lineChartData = state.lineChartData,
-                            verticalAxisValues = listOf(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f),
-                            verticalAxisLabelColor = VividRaspberry,
-                            horizontalAxisLabelColor = Purple,
-                            lineColor = LightBlack,
-                            verticalAxisLabelFontSize = 12.sp,
-                            horizontalAxisLabelFontSize = 10.sp,
-                            isShowVerticalAxis = true
-                        )
-                    }
-
-                    /**
-                     * Pain Line Chart
-                     */
-                    item {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(
-                                    top = dimensionResource(id = R.dimen.padding_large),
-                                    start = dimensionResource(id = R.dimen.padding_medium),
-                                    bottom = dimensionResource(id = R.dimen.padding_small)
-                                ),
-                            text = stringResource(id = R.string.pain_pie_chart_title),
-                            style = MaterialTheme.typography.h6,
-                            color = MaterialTheme.colors.onPrimary,
-                            textAlign = TextAlign.Start
-                        )
-
-                        PieChart(state.pieChartData)
                     }
                 }
             }

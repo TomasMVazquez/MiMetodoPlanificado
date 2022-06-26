@@ -204,10 +204,13 @@
     <string name="generic_msg_successful">Guardado exitosamente!</string>
 
     // Analytics
+    <string name="show_history_title">Ver historial</string>
+    <string name="hide_history_title">Esconder historial</string>
     <string name="pain_line_chart_title">Picos de dolor</string>
     <string name="pain_pie_chart_title">Dolores más frecuentes</string>
     <string name="pain_reference_title">Referencia</string>
     <string name="empty_analytics_text">Aún no tenemos información suficiente para completar los informes</string>
     <string name="error_analytics_text">Oops! Nos hemos encontrado con un error.\nVuelve a intentarlo más tarde.</string>
+    <string name="pain_history_card_day">Día #%s del ciclo</string>
 
 </resources>

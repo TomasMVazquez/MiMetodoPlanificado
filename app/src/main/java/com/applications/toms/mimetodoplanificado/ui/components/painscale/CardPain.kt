@@ -27,10 +27,11 @@ fun CardPain(
     showPainScaleNumber: Boolean = false,
     elevation: Dp = 1.dp,
     selectedPainScaleCard: Int?,
-    onClickCard: (Int) -> Unit
+    onClickCard: ((Int) -> Unit)? = null
 ) {
     Card(
-        onClick = { onClickCard(painScaleCard.painScale) },
+        onClick = { if (onClickCard != null) onClickCard(painScaleCard.painScale) },
+        enabled = onClickCard != null,
         modifier = modifier,
         backgroundColor = if (selectedPainScaleCard == painScaleCard.painScale) CarnationPink
         else MaterialTheme.colors.primary,
