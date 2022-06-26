@@ -33,6 +33,7 @@ import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.createRepeatingAlarm
+import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createCycleNotifications
 import com.applications.toms.mimetodoplanificado.alarmandnotification.notification.createRepeatingNotification
 import com.applications.toms.mimetodoplanificado.ui.components.MyLoadingContent
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
@@ -44,6 +45,7 @@ import com.applications.toms.mimetodoplanificado.ui.components.settings.AlarmSet
 import com.applications.toms.mimetodoplanificado.ui.components.settings.DatePickerSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettings21Cycle
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMonthly
+import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsMyCycle
 import com.applications.toms.mimetodoplanificado.ui.components.settings.InfoSettingsPills
 import com.applications.toms.mimetodoplanificado.ui.components.settings.NotificationSettingsItem
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.SettingsViewModel.Event
@@ -61,7 +63,7 @@ fun Settings(
     method: MethodAndStartDate,
     viewModel: SettingsViewModel = hiltViewModel(),
     onCancel: (SnackBarType?) -> Unit,
-    onDone: () -> Unit
+    onDone: (Method?) -> Unit
 ) {
     val state by viewModel.state.collectAsState(SettingsState())
     val context = LocalContext.current
@@ -75,6 +77,12 @@ fun Settings(
                     event.saveMethodState
                         .onSuccess {
                             viewModel.resetState()
+                            if (event.method == Method.CYCLE) {
+                                createCycleNotifications(
+                                    context = context,
+                                    daysFromStart = event.daysFromStart + 1
+                                )
+                            }
                             if (event.notificationsState == true && event.method != null) {
                                 createRepeatingNotification(
                                     context = context,
@@ -93,7 +101,7 @@ fun Settings(
                                     daysFromStart = event.daysFromStart
                                 )
                             }
-                            onDone()
+                            onDone(state.methodAndStartDate.methodChosen)
                         }
                         .onFailure {
                             viewModel.resetState()
@@ -148,7 +156,8 @@ fun Settings(
                         Method.RING -> stringResource(R.string.ring)
                         Method.SHOOT -> stringResource(R.string.injection)
                         Method.PATCH -> stringResource(R.string.patch)
-                        null -> ""
+                        Method.CYCLE -> stringResource(R.string.cycle)
+                        else -> ""
                     }
                 ),
                 style = MaterialTheme.typography.h5,
@@ -160,7 +169,10 @@ fun Settings(
                  * Start Date Picker
                  */
                 item {
-                    DatePickerSettingsItem(state.methodAndStartDate.startDate) {
+                    DatePickerSettingsItem(
+                        date = state.methodAndStartDate.startDate,
+                        cycle = state.methodAndStartDate.methodChosen == Method.CYCLE
+                    ) {
                         viewModel.changeStartDate(it)
                     }
 
@@ -201,6 +213,11 @@ fun Settings(
                             viewModel.changeBreakDays(TOTAL_CYCLE_DAYS.toInt().minus(CYCLE_21_DAYS.toInt()))
                             viewModel.changeEnable(true)
                         }
+                        Method.CYCLE -> {
+                            viewModel.changeBreakDays(0)
+                            viewModel.changeEnable(true)
+                            InfoSettingsMyCycle(startDate = state.methodAndStartDate.startDate)
+                        }
                     }
 
                     GenericSpacer(
@@ -209,36 +226,37 @@ fun Settings(
                     )
                 }
 
-                /**
-                 * Notification & Alarm Time Picker
-                 */
-                item {
-                    NotificationSettingsItem(
-                        isEnable = state.isNotificationEnable,
-                        timeSet = state.notificationTime
-                    ) { isNotifEnable, time ->
-                        viewModel.changeNotificationValue(
-                            value = isNotifEnable,
-                            time = time
+                if (state.methodAndStartDate.methodChosen != Method.CYCLE) {
+                    /**
+                     * Notification & Alarm Time Picker
+                     */
+                    item {
+                        NotificationSettingsItem(
+                            isEnable = state.isNotificationEnable,
+                            timeSet = state.notificationTime
+                        ) { isNotifEnable, time ->
+                            viewModel.changeNotificationValue(
+                                value = isNotifEnable,
+                                time = time
+                            )
+                        }
+
+                        AlarmSettingsItem(
+                            isEnable = state.isAlarmEnable,
+                            timeSet = state.alarmTime
+                        ) { isAlarmEnabled, time ->
+                            viewModel.changeAlarmValue(
+                                value = isAlarmEnabled,
+                                time = time
+                            )
+                        }
+
+                        GenericSpacer(
+                            type = SpacerType.VERTICAL,
+                            padding = dimensionResource(id = R.dimen.padding_xlarge)
                         )
                     }
-
-                    AlarmSettingsItem(
-                        isEnable = state.isAlarmEnable,
-                        timeSet = state.alarmTime
-                    ) { isAlarmEnabled, time ->
-                        viewModel.changeAlarmValue(
-                            value = isAlarmEnabled,
-                            time = time
-                        )
-                    }
-
-                    GenericSpacer(
-                        type = SpacerType.VERTICAL,
-                        padding = dimensionResource(id = R.dimen.padding_xlarge)
-                    )
                 }
-
                 /**
                  * Confirm Button
                  */

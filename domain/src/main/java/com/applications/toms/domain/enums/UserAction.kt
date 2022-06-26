@@ -6,5 +6,6 @@ enum class UserAction{
     RING,
     SHOOT,
     PATCH,
+    CYCLE,
     NONE
 }

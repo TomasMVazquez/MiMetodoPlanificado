@@ -32,6 +32,7 @@ fun Week(
                 if (from.month.value == to.month.value) {
                     when {
                         day.value.isEmpty() -> day
+                        from.dayOfMonth == to.dayOfMonth -> day
                         day.value.toInt() == from.dayOfMonth -> day.apply { status = DaySelectedStatus.FirstDay }
                         day.value.toInt() < breakDayStarts.dayOfMonth &&
                                 day.value.toInt() > from.dayOfMonth &&

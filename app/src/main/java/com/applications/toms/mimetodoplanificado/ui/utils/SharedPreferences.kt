@@ -11,6 +11,7 @@ fun getSharedPreferences(context: Context): SharedPreferences {
 object SharedPreferencesKeys {
     const val ON_BOARDING = "onBoarding"
     const val ON_METHOD_SAVED = "onMethodSaved"
+    const val ON_ONLY_CYCLE = "onOnlyCycle"
     const val ON_REBOOT = "onReboot"
 }
 
@@ -29,7 +30,12 @@ fun hasOnBoardingAlreadyShown(context: Context): Boolean {
  * To check if a method is saved or not
  */
 fun onSavedMethod(context: Context, isSaved: Boolean = true) {
-    getSharedPreferences(context).edit { putBoolean(SharedPreferencesKeys.ON_METHOD_SAVED, isSaved) }
+    getSharedPreferences(context).edit {
+        putBoolean(
+            SharedPreferencesKeys.ON_METHOD_SAVED,
+            isSaved
+        )
+    }
 }
 
 fun isMethodSaved(context: Context): Boolean {
@@ -37,10 +43,31 @@ fun isMethodSaved(context: Context): Boolean {
 }
 
 /**
+ * To check if only Cycle has been chosen
+ */
+fun onOnlyCycleChosen(context: Context, isOnlyCycle: Boolean = true) {
+    getSharedPreferences(context).edit {
+        putBoolean(
+            SharedPreferencesKeys.ON_ONLY_CYCLE,
+            isOnlyCycle
+        )
+    }
+}
+
+fun isOnlyCycle(context: Context): Boolean {
+    return getSharedPreferences(context).getBoolean(SharedPreferencesKeys.ON_ONLY_CYCLE, false)
+}
+
+/**
  * To check if device was rebooted
  */
 fun onRebooted(context: Context, hasBeenReboot: Boolean = true) {
-    getSharedPreferences(context).edit { putBoolean(SharedPreferencesKeys.ON_REBOOT, hasBeenReboot) }
+    getSharedPreferences(context).edit {
+        putBoolean(
+            SharedPreferencesKeys.ON_REBOOT,
+            hasBeenReboot
+        )
+    }
 }
 
 fun hasBeenReboot(context: Context): Boolean {

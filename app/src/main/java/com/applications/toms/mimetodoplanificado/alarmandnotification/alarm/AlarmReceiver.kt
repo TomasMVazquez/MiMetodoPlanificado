@@ -21,7 +21,7 @@ class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val bundle = intent.extras
 
-        var title = context.getString(R.string.app_name)
+        var title = context.getString(R.string.my_method)
         var text = context.getString(R.string.notification_desc_generic)
 
         var delay: Long? = null
@@ -38,14 +38,18 @@ class AlarmReceiver : BroadcastReceiver() {
             }
             Method.RING.name -> {
                 title = context.getString(R.string.ring)
-                text = context.getString(R.string.notification_desc_ring)
+                text = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21)
+                    context.getString(R.string.notification_desc_out_ring)
+                else context.getString(R.string.notification_desc_in_ring)
                 method = Method.RING
                 daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) 7L else 21L
                 delay = currentTime + TimeUnit.DAYS.toMillis(daysOfDelay)
             }
             Method.PATCH.name -> {
                 title = context.getString(R.string.patch)
-                text = context.getString(R.string.notification_desc_path)
+                text = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21)
+                    context.getString(R.string.notification_desc_out_path)
+                else context.getString(R.string.notification_desc_in_path)
                 method = Method.PATCH
                 daysOfDelay = if (bundle.getInt(NOTIFICATION_CYCLE_KEY.key) == 21) 7L else 21L
                 delay = currentTime + TimeUnit.HOURS.toMillis(daysOfDelay)

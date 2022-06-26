@@ -13,6 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Warning
@@ -26,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.applications.toms.mimetodoplanificado.R
 import com.applications.toms.mimetodoplanificado.alarmandnotification.alarm.cancelRepeatingAlarm
@@ -77,10 +79,11 @@ fun AlarmSettings(
         ) {
             alarmSettingsViewModel.methodChosen.methodAndStartDate.methodChosen?.let {
                 val daysCycle = alarmSettingsViewModel.methodChosen.totalDaysCycle.toInt()
-                val fromStart = alarmSettingsViewModel.methodChosen.methodAndStartDate.startDate.until(
-                    LocalDate.now(),
-                    ChronoUnit.DAYS
-                )
+                val fromStart =
+                    alarmSettingsViewModel.methodChosen.methodAndStartDate.startDate.until(
+                        LocalDate.now(),
+                        ChronoUnit.DAYS
+                    )
                 if (state.hasNotificationChange) {
                     if (state.isNotificationEnable)
                         state.notificationTime?.let { notificationTime ->
@@ -184,6 +187,33 @@ fun AlarmSettingsContent(
                 )
             }
         }
+
+        /**
+         * Title
+         */
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding_large),
+                    bottom = dimensionResource(id = R.dimen.padding_medium)
+                ),
+            text = stringResource(id = R.string.alarm_settings_title),
+            style = MaterialTheme.typography.h4,
+            color = MaterialTheme.colors.onPrimary,
+            textAlign = TextAlign.Start
+        )
+        /**
+         * Subtitle
+         */
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = dimensionResource(id = R.dimen.padding_large)),
+            text = stringResource(id = R.string.alarm_settings_desc),
+            style = MaterialTheme.typography.subtitle2,
+            textAlign = TextAlign.Start
+        )
 
         LazyColumn(modifier = Modifier.padding(horizontal = dimensionResource(id = R.dimen.padding_large))) {
             item {

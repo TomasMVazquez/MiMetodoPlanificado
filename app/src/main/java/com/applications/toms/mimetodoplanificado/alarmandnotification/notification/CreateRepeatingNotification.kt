@@ -38,7 +38,8 @@ fun createRepeatingNotification(
         NOTIFICATION_METHOD_KEY.key to method.name,
         NOTIFICATION_CYCLE_KEY.key to when (method) {
             Method.PILLS -> {
-                if (System.currentTimeMillis() - timeInMillis > 0) time = timeInMillis + TimeUnit.HOURS.toMillis(24L)
+                if (System.currentTimeMillis() - timeInMillis > 0) time =
+                    timeInMillis + TimeUnit.HOURS.toMillis(24L)
                 totalDaysCycle
             }
             Method.RING,
@@ -47,16 +48,19 @@ fun createRepeatingNotification(
                     if (daysFromStart < CYCLE_21_DAYS) {
                         time = timeInMillis + TimeUnit.DAYS.toMillis(CYCLE_21_DAYS - daysFromStart)
                         CYCLE_21_DAYS
-                    }else{
-                        time = timeInMillis + TimeUnit.DAYS.toMillis(TOTAL_CYCLE_DAYS - daysFromStart)
+                    } else {
+                        time =
+                            timeInMillis + TimeUnit.DAYS.toMillis(TOTAL_CYCLE_DAYS - daysFromStart)
                         CYCLE_7_DAYS
                     }
                 } else totalDaysCycle
             }
             Method.PATCH -> {
-                time = timeInMillis + TimeUnit.DAYS.toMillis(totalDaysCycle.toLong() - daysFromStart)
+                time =
+                    timeInMillis + TimeUnit.DAYS.toMillis(totalDaysCycle.toLong() - daysFromStart)
                 totalDaysCycle
             }
+            else -> {}
         }
     )
     intent.putExtras(bundle)

@@ -5,5 +5,6 @@ enum class NavFeature(val route: String, val subRoute: String = "") {
     ON_BOARDING("home","onBoarding"),
     ABOUT_US("home","about"),
     MY_METHOD("home","myMethod"),
-    ALARM_SETTINGS("home","alarmSettings")
+    ALARM_SETTINGS("home","alarmSettings"),
+    MY_ANALYTICS("home","myAnalytics")
 }

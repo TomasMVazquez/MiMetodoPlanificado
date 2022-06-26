@@ -16,8 +16,9 @@ import com.applications.toms.mimetodoplanificado.alarmandnotification.notificati
 import com.applications.toms.mimetodoplanificado.ui.navigation.NavCommand.ContentType
 import com.applications.toms.mimetodoplanificado.ui.screen.aboutus.AboutUs
 import com.applications.toms.mimetodoplanificado.ui.screen.alarmsettings.AlarmSettings
+import com.applications.toms.mimetodoplanificado.ui.screen.analytics.MyAnalytics
 import com.applications.toms.mimetodoplanificado.ui.screen.home.Home
-import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethod
+import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.MyMethodScreen
 import com.applications.toms.mimetodoplanificado.ui.screen.onboarding.OnBoarding
 import com.applications.toms.mimetodoplanificado.ui.utils.onSavedMethod
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -109,24 +110,35 @@ private fun NavGraphBuilder.myMethodNav (
         route = NavFeature.MY_METHOD.route
     ){
         composable(navCommand = ContentType(NavFeature.MY_METHOD)) {
-            MyMethod(
-                onMethodDeleted = { wasNotificationEnable, wasAlarmEnable ->
-                    onSavedMethod(navController.context,false)
-                    if (wasNotificationEnable) cancelRepeatingNotification(navController.context)
-                    if (wasAlarmEnable) cancelRepeatingAlarm(navController.context)
+            MyMethodScreen(
+                onMethodDeleted = {
+                    onSavedMethod(navController.context, false)
+                    cancelRepeatingNotification(navController.context)
+                    cancelRepeatingAlarm(navController.context)
                     onMethodDeleted()
                 },
                 goToAlarmSettings = {
                     navController.navigate(ContentType(NavFeature.ALARM_SETTINGS).route)
+                },
+                goToAnalytics = {
+                    navController.navigate(ContentType(NavFeature.MY_ANALYTICS).route)
                 }
             )
         }
 
-        composable(navCommand = ContentType(NavFeature.ALARM_SETTINGS)){
+        composable(navCommand = ContentType(NavFeature.ALARM_SETTINGS)) {
             AlarmSettings(
                 onSave = {
                     navController.navigate(ContentType(NavFeature.MY_METHOD).route)
                 },
+                goBack = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(navCommand = ContentType(NavFeature.MY_ANALYTICS)) {
+            MyAnalytics(
                 goBack = {
                     navController.popBackStack()
                 }

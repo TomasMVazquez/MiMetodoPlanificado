@@ -73,7 +73,7 @@ fun AboutUs(goBack: () -> Unit) {
 
             item {
                 Text(
-                    text = stringResource(R.string.app_name),
+                    text = stringResource(R.string.my_method),
                     style = MaterialTheme.typography.h1,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -215,6 +215,64 @@ fun AboutUs(goBack: () -> Unit) {
                             text = "${stringResource(id = R.string.flaticon_attribution_good)} ",
                             tag = stringResource(id = R.string.flaticon_attribution_good),
                             annotation = stringResource(id = R.string.flaticon_attribution_good_link),
+                            onClick = {
+                                uriHandler.openUri(it.item)
+                            }
+                        ),
+                        LinkTextData(text = "${stringResource(id = R.string.flaticon_attribution_from)} "),
+                        LinkTextData(
+                            text = stringResource(id = R.string.flaticon_attribution_title),
+                            tag = stringResource(id = R.string.flaticon_attribution_title),
+                            annotation = stringResource(id = R.string.flaticon_attribution_link),
+                            onClick = {
+                                uriHandler.openUri(it.item)
+                            }
+                        )
+                    )
+                )
+                GenericSpacer(
+                    type = SpacerType.VERTICAL,
+                    padding = dimensionResource(id = R.dimen.spacer_small)
+                )
+            }
+
+            item {
+                LinkText(
+                    linkTextData = listOf(
+                        LinkTextData(text = "${stringResource(id = R.string.flaticon_attribution_start)} "),
+                        LinkTextData(
+                            text = "${stringResource(id = R.string.flaticon_attribution_designer_nata)} ",
+                            tag = stringResource(id = R.string.flaticon_attribution_designer_nata),
+                            annotation = stringResource(id = R.string.flaticon_attribution_designer_nata_link),
+                            onClick = {
+                                uriHandler.openUri(it.item)
+                            }
+                        ),
+                        LinkTextData(text = "${stringResource(id = R.string.flaticon_attribution_from)} "),
+                        LinkTextData(
+                            text = stringResource(id = R.string.flaticon_attribution_title),
+                            tag = stringResource(id = R.string.flaticon_attribution_title),
+                            annotation = stringResource(id = R.string.flaticon_attribution_link),
+                            onClick = {
+                                uriHandler.openUri(it.item)
+                            }
+                        )
+                    )
+                )
+                GenericSpacer(
+                    type = SpacerType.VERTICAL,
+                    padding = dimensionResource(id = R.dimen.spacer_small)
+                )
+            }
+
+            item {
+                LinkText(
+                    linkTextData = listOf(
+                        LinkTextData(text = "${stringResource(id = R.string.flaticon_attribution_start)} "),
+                        LinkTextData(
+                            text = "${stringResource(id = R.string.flaticon_attribution_fk_studio)} ",
+                            tag = stringResource(id = R.string.flaticon_attribution_fk_studio),
+                            annotation = stringResource(id = R.string.flaticon_attribution_fk_studio_link),
                             onClick = {
                                 uriHandler.openUri(it.item)
                             }

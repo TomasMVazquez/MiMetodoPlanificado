@@ -1,13 +1,10 @@
-package com.applications.toms.usecases
+package com.applications.toms.usecases.method
 
 import com.applications.toms.data.Either
-import com.applications.toms.data.eitherFailure
-import com.applications.toms.data.eitherSuccess
-import com.applications.toms.data.onFailure
-import com.applications.toms.data.onSuccess
 import com.applications.toms.data.repository.ChosenMethodRepository
 import com.applications.toms.domain.MethodChosen
 import com.applications.toms.domain.enums.ErrorStates
+import com.applications.toms.usecases.UseCase
 import java.time.LocalDate
 
 class GetChosenMethodUseCase(
@@ -16,6 +13,5 @@ class GetChosenMethodUseCase(
 
     override suspend fun buildUseCase(input: Unit): Either<Pair<MethodChosen, LocalDate>, ErrorStates> =
         chosenMethodRepository.getChosenMethod()
-            .onSuccess { eitherSuccess(it) }
-            .onFailure { eitherFailure(it) }
+
 }

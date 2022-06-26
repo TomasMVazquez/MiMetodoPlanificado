@@ -47,5 +47,6 @@ Es por ello que queremos agradecerles y reconocerlos aquí, brindando su informa
 * Icons made by [AbtoCreative](https://www.flaticon.com/authors/abtocreative) from [www.flaticon.com](https://www.flaticon.com/)
 * Icons made by [kliwir art](https://www.flaticon.com/authors/kliwir-art) from [www.flaticon.com](https://www.flaticon.com/)
 * Icons made by [Good Ware](https://www.flaticon.com/authors/good-ware) from [www.flaticon.com](https://www.flaticon.com/)
+* Icons made by [Designer-Nata](https://www.flaticon.com/authors/designer-nata) from [www.flaticon.com](https://www.flaticon.com/)
 * Formas creadas por [Blobmaker](https://www.blobmaker.app)
 * Imagenes creadas por [Itg Digital](https://itg.digital/)

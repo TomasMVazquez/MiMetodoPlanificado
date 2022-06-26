@@ -1,5 +1,6 @@
 package com.applications.toms.mimetodoplanificado.ui.screen.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
@@ -39,14 +40,13 @@ import com.applications.toms.domain.MethodCard
 import com.applications.toms.domain.enums.Method
 import com.applications.toms.domain.enums.UserAction
 import com.applications.toms.mimetodoplanificado.R
-import com.applications.toms.mimetodoplanificado.ui.components.CardButton
 import com.applications.toms.mimetodoplanificado.ui.components.DefaultSnackbar
 import com.applications.toms.mimetodoplanificado.ui.components.SnackBarType
+import com.applications.toms.mimetodoplanificado.ui.components.cardbuttons.CardButton
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.Settings
 import com.applications.toms.mimetodoplanificado.ui.utils.methods.methods
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.receiveAsFlow
 
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
@@ -60,18 +60,21 @@ fun Home(
 ) {
     var snackBarType: SnackBarType by remember { mutableStateOf(SnackBarType.DEFAULT) }
 
-    LaunchedEffect(appState.channel) {
-        appState.channel.receiveAsFlow().collect { channel ->
-            SnackBarType.values().firstOrNull { type -> type.channel == channel }?.let {
-                snackBarType = it
-                appState.scaffoldState.snackbarHostState.showSnackbar(
-                    message = when (channel) {
-                        SnackBarType.ERROR.channel -> appState.context.getString(R.string.snackbar_message_error_message)
-                        else -> appState.context.getString(R.string.snackbar_message_generic)
-                    }
-                )
+    LaunchedEffect(key1 = appState.effect) {
+        appState.effect.collect {
+            when(it) {
+                is HomeAppState.Effect.SnackBarEvent -> {
+                    snackBarType = it.snackBarType
+                    appState.scaffoldState.snackbarHostState.showSnackbar(
+                        message = it.msg ?: appState.context.getString(R.string.snackbar_message_generic)
+                    )
+                }
             }
         }
+    }
+
+    BackHandler(appState.modalBottomSheetState.isVisible) {
+        appState.hideModalSheet()
     }
 
     ModalBottomSheetLayout(
@@ -79,13 +82,14 @@ fun Home(
             Settings(
                 method = appState.state.collectAsState().value.methodAndStartDate,
                 onCancel = { type ->
-                    //TODO WHEN CLOSE SHEET ADD ANIMATION
-                    type?.let { appState.channel.trySend(it.channel) }
+                    type?.let { appState.showSnackBar(type) }
                     appState.hideModalSheet()
                 },
                 onDone = {
-                    appState.onSaveMethod()
-                    goToMyMethod()
+                    it?.let {
+                        appState.onSaveMethod(it == Method.CYCLE)
+                        goToMyMethod()
+                    }
                 }
             )
         },
@@ -96,16 +100,15 @@ fun Home(
             scaffoldState = appState.scaffoldState,
             snackbarHost = { appState.scaffoldState.snackbarHostState }
         ) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
+            Box(modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize()) {
                 Column {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                start = dimensionResource(id = R.dimen.padding_large),
-                                top = dimensionResource(id = R.dimen.no_padding),
-                                end = dimensionResource(id = R.dimen.no_padding),
-                                bottom = dimensionResource(id = R.dimen.padding_medium)
+                                start = dimensionResource(id = R.dimen.padding_large)
                             ),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.End
@@ -124,8 +127,7 @@ fun Home(
                     HomeContent(methods) { method, userAction ->
                         when (userAction) {
                             UserAction.NONE -> {
-                                snackBarType = SnackBarType.ERROR
-                                appState.channel.trySend(SnackBarType.ERROR.channel)
+                                appState.showSnackBar(SnackBarType.ERROR)
                             }
                             else -> {
                                 appState.setMethodChosen(method)
@@ -158,7 +160,6 @@ fun HomeContent(
 
     Column(
         modifier = Modifier.padding(
-            vertical = dimensionResource(id = R.dimen.no_padding),
             horizontal = dimensionResource(id = R.dimen.padding_large)
         ),
         verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.Top),
@@ -183,5 +184,4 @@ fun HomeContent(
             }
         }
     }
-
 }
