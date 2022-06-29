@@ -16,6 +16,7 @@
     <dimen name="spacer_xxxlarge">20dp</dimen>
 
     <dimen name="padding_xlarge">22dp</dimen>
+    <dimen name="padding_large_plus">22dp</dimen>
     <dimen name="padding_large">16dp</dimen>
     <dimen name="padding_medium">8dp</dimen>
     <dimen name="padding_small">4dp</dimen>

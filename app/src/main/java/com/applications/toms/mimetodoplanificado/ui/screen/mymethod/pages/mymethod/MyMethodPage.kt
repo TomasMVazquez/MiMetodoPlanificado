@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -28,8 +31,6 @@ import com.applications.toms.mimetodoplanificado.ui.components.EmptyStateCompone
 import com.applications.toms.mimetodoplanificado.ui.components.InfoNotificationsAndAlarm
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.Calendar
 import com.applications.toms.mimetodoplanificado.ui.components.customcalendar.InfoCalendar
-import com.applications.toms.mimetodoplanificado.ui.components.generics.GenericSpacer
-import com.applications.toms.mimetodoplanificado.ui.components.generics.SpacerType
 import com.applications.toms.mimetodoplanificado.ui.screen.mymethod.pages.mymethod.MyMethodViewModel.State
 import com.applications.toms.mimetodoplanificado.ui.screen.settings.ConfirmRebootSettings
 import com.applications.toms.mimetodoplanificado.ui.utils.hasBeenReboot
@@ -96,7 +97,7 @@ fun MyMethodContent(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(dimensionResource(id = R.dimen.padding_medium)),
-            verticalArrangement = Arrangement.Center,
+            verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if (state.loading) {
@@ -108,7 +109,7 @@ fun MyMethodContent(
                 Text(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = dimensionResource(id = R.dimen.padding_large)),
+                        .padding(bottom = dimensionResource(id = R.dimen.padding_tiny)),
                     text = when (state.methodChosen?.methodAndStartDate?.methodChosen) {
                         Method.PILLS -> stringResource(R.string.pills)
                         Method.RING -> stringResource(R.string.ring)
@@ -120,49 +121,56 @@ fun MyMethodContent(
                     color = MaterialTheme.colors.onPrimary,
                     textAlign = TextAlign.Center
                 )
-                /**
-                 * Progress Day
-                 */
-                CircularDaysProgress(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(dimensionResource(id = R.dimen.padding_medium)),
-                    percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
-                    number = state.totalDays,
-                    color = if (LocalDate.now() >= state.breakDayStarts) MaterialTheme.colors.secondaryVariant
-                    else MaterialTheme.colors.secondary
-                )
 
-                GenericSpacer(
-                    type = SpacerType.VERTICAL,
-                    padding = dimensionResource(id = R.dimen.spacer_small)
-                )
-                /**
-                 * Info Notif & Alarm
-                 */
-                InfoNotificationsAndAlarm(
-                    state.isAlarmEnable,
-                    state.alarmTime,
-                    state.isNotificationEnable,
-                    state.notificationTime
-                )
+                LazyColumn {
+                    item {
+                        /**
+                         * Progress Day
+                         */
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = dimensionResource(id = R.dimen.padding_large)),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            CircularDaysProgress(
+                                modifier = Modifier
+                                    .size(dimensionResource(id = R.dimen.progress_day_size))
+                                    .padding(dimensionResource(id = R.dimen.padding_medium)),
+                                percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
+                                number = state.totalDays,
+                                color = if (LocalDate.now() >= state.breakDayStarts) MaterialTheme.colors.secondaryVariant
+                                else MaterialTheme.colors.secondary
+                            )
+                        }
+                    }
+                    item {
+                        /**
+                         * Info Notif & Alarm
+                         */
+                        InfoNotificationsAndAlarm(
+                            modifier = Modifier.padding(vertical = dimensionResource(id = R.dimen.spacer_medium)),
+                            state.isAlarmEnable,
+                            state.alarmTime,
+                            state.isNotificationEnable,
+                            state.notificationTime
+                        )
+                    }
+                    item {
+                        /**
+                         * Calendar
+                         */
+                        Calendar(
+                            modifier = Modifier.fillMaxWidth(),
+                            calendarYear = calendarYear,
+                            from = from,
+                            to = to,
+                            breakDays = state.breakDays ?: 0
+                        )
 
-                GenericSpacer(
-                    type = SpacerType.VERTICAL,
-                    padding = dimensionResource(id = R.dimen.spacer_medium)
-                )
-                /**
-                 * Calendar
-                 */
-                Calendar(
-                    modifier = Modifier.fillMaxWidth(),
-                    calendarYear = calendarYear,
-                    from = from,
-                    to = to,
-                    breakDays = state.breakDays ?: 0
-                )
-
-                InfoCalendar()
+                        InfoCalendar()
+                    }
+                }
             }
         }
     }

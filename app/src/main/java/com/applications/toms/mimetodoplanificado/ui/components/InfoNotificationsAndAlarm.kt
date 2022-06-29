@@ -20,9 +20,15 @@ import androidx.compose.ui.res.stringResource
 import com.applications.toms.mimetodoplanificado.R
 
 @Composable
-fun InfoNotificationsAndAlarm(alarm: Boolean?, alarmTime: String?, notifications: Boolean?, notificationTime: String?) {
+fun InfoNotificationsAndAlarm(
+    modifier: Modifier = Modifier,
+    alarm: Boolean?,
+    alarmTime: String?,
+    notifications: Boolean?,
+    notificationTime: String?
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(dimensionResource(id = R.dimen.padding_tiny)),
         horizontalArrangement = Arrangement.SpaceAround,

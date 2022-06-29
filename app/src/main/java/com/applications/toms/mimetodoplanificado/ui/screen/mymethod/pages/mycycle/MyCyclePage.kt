@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -138,110 +140,126 @@ fun MyCycleContent(
             Text(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = dimensionResource(id = R.dimen.padding_large)),
+                    .padding(bottom = dimensionResource(id = R.dimen.padding_tiny)),
                 text = stringResource(id = R.string.my_cycle_page_title),
                 style = MaterialTheme.typography.h3,
                 color = MaterialTheme.colors.onPrimary,
                 textAlign = TextAlign.Center
             )
 
-            if (state.hasCycleConfigured) {
-                /**
-                 * Progress Day
-                 */
-                if (!showDatePicker){
-                    Box(modifier = Modifier.weight(1f)) {
-                        CircularDaysProgress(
-                            modifier = Modifier
-                                .padding(dimensionResource(id = R.dimen.padding_medium)),
-                            percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
-                            number = state.totalDays
-                        )
+            LazyColumn {
+                item {
+                    if (state.hasCycleConfigured) {
+                        /**
+                         * Progress Day
+                         */
+                        if (!showDatePicker) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = dimensionResource(id = R.dimen.padding_large_plus)),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                CircularDaysProgress(
+                                    modifier = Modifier
+                                        .size(dimensionResource(id = R.dimen.progress_day_size))
+                                        .padding(dimensionResource(id = R.dimen.padding_medium)),
+                                    percentage = state.currentDay.toFloat().div(state.totalDays.toFloat()),
+                                    number = state.totalDays
+                                )
 
-                        CardButtonPainScale(
-                            modifier = Modifier.align(Alignment.TopEnd)
+                                CardButtonPainScale(
+                                    modifier = Modifier.align(Alignment.TopEnd)
+                                ) {
+                                    onShowDialogPainScale()
+                                }
+                            }
+                        }
+                    } else {
+                        if (!showDatePicker) EmptyStateComponent()
+                    }
+                }
+                item {
+                    /**
+                     * Info
+                     */
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = dimensionResource(id = R.dimen.padding_large)),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
+                            text = when {
+                                !state.hasCycleConfigured -> stringResource(R.string.my_cycle_empty_info)
+                                state.currentDay == 1 -> stringResource(R.string.my_cycle_msg_first_day)
+                                state.currentDay == 21 -> stringResource(R.string.my_cycle_msg_21_day)
+                                state.currentDay in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
+                                state.currentDay > 28 -> stringResource(R.string.my_cycle_msg_29_day)
+                                else -> ""
+                            },
+                            style = MaterialTheme.typography.body2,
+                            textAlign = TextAlign.Center
+                        )
+                        GenericButton(
+                            buttonType = ButtonType.HIGH_EMPHASIS,
+                            text = stringResource(id = R.string.register_my_period_today)
                         ) {
-                            onShowDialogPainScale()
+                            onRegisterPeriod(LocalDate.now())
                         }
                     }
                 }
-            } else {
-                EmptyStateComponent()
-            }
-            /**
-             * Info
-             */
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = dimensionResource(id = R.dimen.padding_large)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = dimensionResource(id = R.dimen.padding_small)),
-                    text = when {
-                        !state.hasCycleConfigured -> stringResource(R.string.my_cycle_empty_info)
-                        state.currentDay == 1 -> stringResource(R.string.my_cycle_msg_first_day)
-                        state.currentDay == 21 -> stringResource(R.string.my_cycle_msg_21_day)
-                        state.currentDay in 22..28 -> stringResource(R.string.my_cycle_msg_22_to_28_day)
-                        state.currentDay > 28 -> stringResource(R.string.my_cycle_msg_29_day)
-                        else -> ""
-                    },
-                    style = MaterialTheme.typography.body2,
-                    textAlign = TextAlign.Center
-                )
-                GenericButton(
-                    buttonType = ButtonType.HIGH_EMPHASIS,
-                    text = stringResource(id = R.string.register_my_period_today)
-                ) {
-                    onRegisterPeriod(LocalDate.now())
+                item {
+                    /**
+                     * Button select date
+                     */
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = dimensionResource(id = R.dimen.padding_large)),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        GenericButton(
+                            buttonType = ButtonType.LOW_EMPHASIS,
+                            text = stringResource(id = R.string.register_my_period)
+                        ) {
+                            showDatePicker = true
+                        }
+                    }
+                    /**
+                     * Date Picker
+                     */
+                    AnimatedVisibility(visible = showDatePicker) {
+                        DatePickerSettingsItem(
+                            date = LocalDate.now(),
+                            cycle = true
+                        ) {
+                            showDatePicker = false
+                            onRegisterPeriod(it)
+                        }
+                    }
                 }
-            }
-            /**
-             * Button select date
-             */
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = dimensionResource(id = R.dimen.padding_large)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.End
-            ) {
-                GenericButton(
-                    buttonType = ButtonType.LOW_EMPHASIS,
-                    text = stringResource(id = R.string.register_my_period)
-                ) {
-                    showDatePicker = true
+                item {
+                    /**
+                     * Calendar
+                     */
+                    AnimatedVisibility(visible = !showDatePicker) {
+                        Calendar(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
+                            calendarYear = calendarYear,
+                            from = from,
+                            to = to,
+                            breakDays = 0
+                        )
+                    }
                 }
-            }
-            /**
-             * Date Picker
-             */
-            AnimatedVisibility(visible = showDatePicker) {
-                DatePickerSettingsItem(
-                    date = LocalDate.now(),
-                    cycle = true
-                ) {
-                    showDatePicker = false
-                    onRegisterPeriod(it)
-                }
-            }
-            /**
-             * Calendar
-             */
-            AnimatedVisibility(visible = !showDatePicker) {
-                Calendar(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = dimensionResource(id = R.dimen.padding_small)),
-                    calendarYear = calendarYear,
-                    from = from,
-                    to = to,
-                    breakDays = 0
-                )
             }
         }
     }
