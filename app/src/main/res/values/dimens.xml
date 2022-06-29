@@ -2,6 +2,7 @@
 <resources>
     <dimen name="onboarding_image_size">200dp</dimen>
     <dimen name="pie_chart_size">200dp</dimen>
+    <dimen name="progress_day_size">250dp</dimen>
 
     <dimen name="padding_bottom_sheet">24dp</dimen>
     <dimen name="corner_bottom_sheet">0dp</dimen>
