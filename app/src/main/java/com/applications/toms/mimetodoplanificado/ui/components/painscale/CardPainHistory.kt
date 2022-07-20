@@ -1,6 +1,7 @@
 package com.applications.toms.mimetodoplanificado.ui.components.painscale
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -71,7 +72,10 @@ fun CardPainHistory(
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
-                Row {
+                Row(
+                    modifier = Modifier.weight(0.5f),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     Text(
                         modifier = Modifier.padding(end = dimensionResource(id = R.dimen.border_xxsmall)),
                         text = "${painScaleCard.painScale}. ",
@@ -86,11 +90,16 @@ fun CardPainHistory(
                     )
                 }
 
-                PainScaleImage(
-                    painScaleIcon = painScaleCard.icon,
-                    painScaleContDesc = painScaleCard.icon_description,
-                    filterGray = false
-                )
+                Box(
+                    modifier = Modifier.weight(0.5f),
+                    contentAlignment = Alignment.Center
+                ) {
+                    PainScaleImage(
+                        painScaleIcon = painScaleCard.icon,
+                        painScaleContDesc = painScaleCard.icon_description,
+                        filterGray = false
+                    )
+                }
             }
         }
     }

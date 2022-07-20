@@ -5,6 +5,7 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import com.applications.toms.domain.PainScaleCard
 import com.applications.toms.mimetodoplanificado.R
+import com.applications.toms.mimetodoplanificado.ui.theme.PainScale0
 import com.applications.toms.mimetodoplanificado.ui.theme.PainScale1
 import com.applications.toms.mimetodoplanificado.ui.theme.PainScale2
 import com.applications.toms.mimetodoplanificado.ui.theme.PainScale3
@@ -21,7 +22,7 @@ val painScaleCards: List<PainScaleCard>
             name = stringResource(R.string.pain_scale_title_0),
             icon = R.drawable.ic_pain_scale_1,
             icon_description = stringResource(R.string.pain_scale_cont_desc_0),
-            color = PainScale1.toArgb(),
+            color = PainScale0.toArgb(),
         ),
         PainScaleCard(
             painScale = 1,

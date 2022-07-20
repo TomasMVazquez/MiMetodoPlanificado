@@ -213,9 +213,9 @@ fun AnalyticsContent(
                             LineChart(
                                 lineChartData = state.lineChartData,
                                 verticalAxisValues = listOf(0f, 1f, 2f, 3f, 4f, 5f, 6f, 7f, 8f),
-                                verticalAxisLabelColor = VividRaspberry,
-                                horizontalAxisLabelColor = Purple,
-                                lineColor = LightBlack,
+                                verticalAxisLabelColor = MaterialTheme.colors.secondaryVariant,
+                                horizontalAxisLabelColor = MaterialTheme.colors.secondary,
+                                lineColor = MaterialTheme.colors.onPrimary,
                                 verticalAxisLabelFontSize = 12.sp,
                                 horizontalAxisLabelFontSize = 10.sp,
                                 isShowVerticalAxis = true

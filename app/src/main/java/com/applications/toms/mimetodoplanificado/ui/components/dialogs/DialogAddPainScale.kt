@@ -110,7 +110,7 @@ fun DialogContent(onClickCancel: () -> Unit,onClickSave: (Int) -> Unit) {
                     text = stringResource(R.string.dialog_pain_scale_save)
                 ) {
                     loading = true
-                    onClickSave(painScale)
+                    if (painScale >= 0) onClickSave(painScale) else onClickCancel()
                 }
             }
         }

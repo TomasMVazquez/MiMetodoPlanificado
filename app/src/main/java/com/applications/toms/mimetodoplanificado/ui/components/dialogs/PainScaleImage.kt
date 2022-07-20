@@ -11,7 +11,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun PainScaleImage(painScaleIcon: Int, painScaleContDesc: String, filterGray: Boolean) {
+fun PainScaleImage(
+    modifier: Modifier = Modifier,
+    painScaleIcon: Int,
+    painScaleContDesc: String,
+    filterGray: Boolean
+) {
     Image(
         modifier = Modifier
             .size(40.dp)
