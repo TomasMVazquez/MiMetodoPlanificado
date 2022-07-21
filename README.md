@@ -19,13 +19,12 @@ Mi Método Planificado App incluye las siguientes características:
 ### Screenshots / PlayStore
 [Mi Método Planificado](https://play.google.com/store/apps/details?id=com.applications.toms.mimetodoplanificado)
 
-
 ### Requirements
 * Min. Android SDK: 26
 * Target Android SDK: 31
 
 ### Version
-* 2.0
+* 2.0.2
 
 ### Herramientas de desarrollo
 * Android Studio
